@@ -44,26 +44,26 @@ export const App: React.FC = () => {
 
   return (
     <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '2rem 1.5rem', width: '100%' }}>
-      {/* App Header */}
+      {/* Header */}
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
           <div
             style={{
-              background: 'linear-gradient(135deg, #ff9f1c, #ff4081)',
+              background: 'linear-gradient(135deg, var(--color-primary), var(--color-info))',
               padding: '0.75rem',
               borderRadius: '18px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 20px rgba(255, 159, 28, 0.4)',
+              boxShadow: 'var(--shadow-glow-lavender)',
             }}
           >
-            <CatIcon size={30} color="#000" />
+            <CatIcon size={30} color="#0B1020" />
           </div>
           <div>
-            <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0 }}>Cat Guardian</h1>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              Passaporte de Segurança Felino • Hackathon DEV Weekend
+            <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0, color: 'var(--color-text)' }}>Cat Guardian</h1>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
+              Passaporte de Segurança Felino • Midnight Guardian System
             </p>
           </div>
         </div>
@@ -72,8 +72,8 @@ export const App: React.FC = () => {
           <span className="badge badge-safe">
             <ShieldCheck size={14} /> Jidoka Verified
           </span>
-          <span style={{ color: 'var(--accent-purple)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', fontWeight: '600' }}>
-            <Sparkles size={16} /> IA Engine Ready
+          <span style={{ color: 'var(--color-primary-light)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', fontWeight: '600' }}>
+            <Sparkles size={16} color="var(--color-primary)" /> Guardian AI Ready
           </span>
         </div>
       </header>
@@ -81,7 +81,7 @@ export const App: React.FC = () => {
       {/* Main Content Area */}
       <main>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-muted)' }}>
+          <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--color-text-muted)' }}>
             Carregando passaportes felinos...
           </div>
         ) : (

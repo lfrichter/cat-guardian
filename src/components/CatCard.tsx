@@ -19,26 +19,33 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, onSelect, onToggleLost })
         justifyContent: 'space-between',
         position: 'relative',
         cursor: 'pointer',
-        border: cat.isLost ? '1px solid rgba(255, 64, 129, 0.4)' : undefined,
+        borderColor: cat.isLost ? 'rgba(251, 113, 133, 0.45)' : undefined,
+        boxShadow: cat.isLost ? 'var(--shadow-glow-coral)' : undefined,
       }}
       onClick={() => onSelect(cat)}
     >
-      {/* Top Banner / Badges */}
+      {/* Top Banner / Status Badges */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <span className={cat.isLost ? 'badge badge-lost' : 'badge badge-safe'}>
           {cat.isLost ? (
             <>
-              <AlertTriangle size={13} /> MODO PERDIDO ATIVO
+              <AlertTriangle size={13} /> MODO PERDIDO
             </>
           ) : (
             <>
-              <ShieldCheck size={13} /> SEGURA
+              <ShieldCheck size={13} /> PROTEGIDO
             </>
           )}
         </span>
         <button
-          className="btn btn-secondary"
-          style={{ padding: '0.35rem 0.6rem', fontSize: '0.75rem', gap: '0.3rem' }}
+          className={cat.isLost ? 'btn btn-secondary' : 'btn btn-secondary'}
+          style={{
+            padding: '0.35rem 0.65rem',
+            fontSize: '0.75rem',
+            gap: '0.3rem',
+            borderColor: cat.isLost ? 'rgba(251, 113, 133, 0.4)' : undefined,
+            color: cat.isLost ? 'var(--color-danger)' : undefined,
+          }}
           onClick={(e) => {
             e.stopPropagation()
             onToggleLost(cat)
@@ -58,55 +65,61 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, onSelect, onToggleLost })
             height: '72px',
             borderRadius: '16px',
             objectFit: 'cover',
-            border: '2px solid var(--border-glass)',
+            border: `2px solid ${cat.isLost ? 'var(--color-danger)' : 'var(--glass-border)'}`,
           }}
         />
         <div>
-          <h3 style={{ fontSize: '1.3rem', fontWeight: '700', margin: 0, color: 'var(--text-main)' }}>{cat.name}</h3>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>
+          <h3 style={{ fontSize: '1.3rem', fontWeight: '700', margin: 0, color: 'var(--color-text)' }}>{cat.name}</h3>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
             {cat.breed} • {cat.gender === 'fêmea' ? 'Fêmea' : 'Macho'}
           </p>
           {cat.microchipNumber && (
-            <p style={{ color: 'var(--accent-amber)', fontSize: '0.75rem', margin: '0.2rem 0 0 0', fontWeight: '600' }}>
+            <p style={{ color: 'var(--color-primary)', fontSize: '0.75rem', margin: '0.2rem 0 0 0', fontWeight: '600' }}>
               Microchip: {cat.microchipNumber}
             </p>
           )}
         </div>
       </div>
 
-      {/* Color Pattern & Traits */}
-      <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1rem', flexGrow: 1 }}>
+      {/* Color Pattern */}
+      <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1rem', flexGrow: 1 }}>
         {cat.colorPattern}
       </p>
 
-      {/* AI Summary Banner if present */}
+      {/* AI Summary Banner */}
       {cat.aiProfileSummary && (
         <div
+          className="ai-highlight-box"
           style={{
-            background: 'rgba(168, 85, 247, 0.08)',
-            border: '1px solid rgba(168, 85, 247, 0.2)',
-            borderRadius: '10px',
-            padding: '0.6rem 0.8rem',
+            padding: '0.65rem 0.85rem',
             marginBottom: '1rem',
             display: 'flex',
             alignItems: 'flex-start',
             gap: '0.5rem',
           }}
         >
-          <Sparkles size={16} color="var(--accent-purple)" style={{ flexShrink: 0, marginTop: '2px' }} />
-          <p style={{ fontSize: '0.78rem', color: '#e9d5ff', margin: 0, lineHeight: 1.4 }}>
+          <Sparkles size={16} color="var(--color-primary)" style={{ flexShrink: 0, marginTop: '2px' }} />
+          <p style={{ fontSize: '0.78rem', color: 'var(--color-text)', margin: 0, lineHeight: 1.4 }}>
             {cat.aiProfileSummary}
           </p>
         </div>
       )}
 
       {/* Footer Actions */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem', borderTop: '1px solid var(--border-glass)' }}>
-        <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-          <HeartPulse size={14} color="var(--accent-emerald)" /> Ver Passaporte
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingTop: '0.75rem',
+          borderTop: '1px solid var(--glass-border)',
+        }}
+      >
+        <span style={{ fontSize: '0.8rem', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: '600' }}>
+          <HeartPulse size={15} color="var(--color-success)" /> Ver Passaporte
         </span>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <span style={{ color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center' }}>
+          <span style={{ color: 'var(--color-info)', display: 'flex', alignItems: 'center' }}>
             <QrCode size={18} />
           </span>
         </div>

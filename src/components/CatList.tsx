@@ -48,21 +48,21 @@ export const CatList: React.FC<CatListProps> = ({ cats, onSelectCat, onToggleLos
           >
             <Search
               size={18}
-              color="var(--text-muted)"
+              color="var(--color-text-muted)"
               style={{ position: 'absolute', left: '1rem', pointerEvents: 'none' }}
             />
             <input
               type="text"
-              placeholder="Buscar por nome, raça ou cor..."
+              placeholder="Buscar felino por nome, raça ou pelagem..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: '100%',
                 padding: '0.75rem 1rem 0.75rem 2.75rem',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid var(--border-glass)',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid var(--glass-border)',
                 borderRadius: 'var(--radius-md)',
-                color: 'var(--text-main)',
+                color: 'var(--color-text)',
                 fontSize: '0.95rem',
                 outline: 'none',
               }}
@@ -70,7 +70,7 @@ export const CatList: React.FC<CatListProps> = ({ cats, onSelectCat, onToggleLos
           </div>
 
           <button
-            className={`btn ${filterLost ? 'btn-primary' : 'btn-secondary'}`}
+            className={`btn ${filterLost ? 'btn-danger' : 'btn-secondary'}`}
             onClick={() => setFilterLost(!filterLost)}
             style={{ whiteSpace: 'nowrap' }}
           >
@@ -79,7 +79,7 @@ export const CatList: React.FC<CatListProps> = ({ cats, onSelectCat, onToggleLos
         </div>
 
         <button className="btn btn-primary" onClick={onAddCat} style={{ whiteSpace: 'nowrap' }}>
-          <Plus size={18} /> Cadastrar Novo Gato
+          <Plus size={18} /> Cadastrar Novo Felino
         </button>
       </div>
 
@@ -87,7 +87,7 @@ export const CatList: React.FC<CatListProps> = ({ cats, onSelectCat, onToggleLos
       {filteredCats.length === 0 ? (
         <div
           className="glass-panel"
-          style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}
+          style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}
         >
           <p style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>Nenhum gato encontrado para o filtro selecionado.</p>
           <button className="btn btn-secondary" onClick={() => { setSearchQuery(''); setFilterLost(false); }}>
