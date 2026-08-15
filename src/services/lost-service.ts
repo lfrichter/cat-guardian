@@ -1,5 +1,7 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { Sighting, CreateSightingInput } from '@/types/lost'
+import { emailService } from '@/services/email-service'
+import { catService } from '@/services/cat-service'
 import { logClientError } from '@/utils/log-error'
 
 const LOCAL_STORAGE_SIGHTINGS_KEY = 'cat_guardian_sightings_v1'
@@ -20,7 +22,7 @@ function setLocalSightings(sightings: Sighting[]): void {
 
 export const lostService = {
   /**
-   * TASK-141: Report a cat sighting by a finder.
+   * TASK-141 & TASK-142: Report a cat sighting by a finder and send Blind Contact Relay email to owner.
    */
   async reportSighting(input: CreateSightingInput): Promise<Sighting> {
     const newSighting: Sighting = {
@@ -28,6 +30,20 @@ export const lostService = {
       id: `sighting-${Date.now()}`,
       createdAt: new Date().toISOString(),
     }
+
+    // Trigger Blind Contact Relay Email Notification asynchronously
+    catService.getCatById(input.catId).then((cat) => {
+      if (cat) {
+        emailService.sendSightingNotification({
+          catName: cat.name,
+          ownerEmail: cat.ownerEmail || 'catguardian213@gmail.com',
+          finderName: input.finderName,
+          finderPhone: input.finderPhone,
+          location: input.location,
+          message: input.message,
+        })
+      }
+    })
 
     if (isSupabaseConfigured()) {
       try {
@@ -95,14 +111,5 @@ export const lostService = {
 
     const local = getLocalSightings()
     return local.filter((s) => s.catId === catId)
-  },
-
-  /**
-   * TASK-142: Contact Relay intermediate proxy format URL.
-   */
-  generateContactRelayUrl(ownerPhone: string, catName: string): string {
-    const cleanPhone = ownerPhone.replace(/\D/g, '')
-    const defaultMsg = encodeURIComponent(`Olá! Encontrei seu gato ${catName} através da tag do Cat Guardian.`)
-    return `https://wa.me/${cleanPhone}?text=${defaultMsg}`
   },
 }

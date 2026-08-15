@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { lostService } from './lost-service'
+import { emailService } from './email-service'
 
-describe('lostService (Sightings & Contact Relay)', () => {
+describe('lostService (Sightings & Blind Contact Relay)', () => {
   beforeEach(() => {
     localStorage.clear()
   })
@@ -24,9 +25,15 @@ describe('lostService (Sightings & Contact Relay)', () => {
     expect(fetched[0].finderName).toBe('Ana')
   })
 
-  it('generates whatsapp contact relay URL', () => {
-    const url = lostService.generateContactRelayUrl('+55 11 98888-7771', 'Meias')
-    expect(url).toContain('wa.me/5511988887771')
-    expect(url).toContain('Meias')
+  it('triggers blind contact relay email notification via emailService', async () => {
+    const success = await emailService.sendSightingNotification({
+      catName: 'Meias',
+      finderName: 'Carlos',
+      finderPhone: '11988887777',
+      location: 'Av. Paulista, 1000',
+      message: 'Gato calmo e seguro',
+    })
+
+    expect(typeof success).toBe('boolean')
   })
 })

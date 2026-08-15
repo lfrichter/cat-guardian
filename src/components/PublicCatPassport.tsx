@@ -2,7 +2,7 @@ import React from 'react'
 import { Cat } from '@/types/cat'
 import { catService } from '@/services/cat-service'
 import { lostService } from '@/services/lost-service'
-import { AlertTriangle, ShieldCheck, Phone, Mail, MapPin, Send, CheckCircle2, Sparkles, MessageCircle } from 'lucide-react'
+import { AlertTriangle, ShieldCheck, Send, CheckCircle2, Sparkles, MessageSquare } from 'lucide-react'
 
 interface PublicCatPassportProps {
   catId: string
@@ -17,6 +17,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
   const [locationText, setLocationText] = React.useState('')
   const [finderNotes, setFinderNotes] = React.useState('')
   const [sightingSent, setSightingSent] = React.useState(false)
+  const [submitting, setSubmitting] = React.useState(false)
 
   React.useEffect(() => {
     catService.getCatById(catId).then((c) => {
@@ -28,16 +29,20 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
   const handleReportSighting = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!finderPhone || !locationText) return
+    setSubmitting(true)
 
-    await lostService.reportSighting({
-      catId,
-      location: locationText,
-      message: finderNotes,
-      finderName,
-      finderPhone,
-    })
-
-    setSightingSent(true)
+    try {
+      await lostService.reportSighting({
+        catId,
+        location: locationText,
+        message: finderNotes,
+        finderName,
+        finderPhone,
+      })
+      setSightingSent(true)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handleGetLocation = () => {
@@ -47,7 +52,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
           setLocationText(`GPS: ${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`)
         },
         () => {
-          setLocationText('GPS indisponível, informe a rua/bairro manualmente.')
+          setLocationText('GPS indisponível. Informe a rua/bairro manualmente.')
         }
       )
     }
@@ -75,11 +80,9 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
     )
   }
 
-  const whatsappUrl = lostService.generateContactRelayUrl(cat.ownerPhone, cat.name)
-
   return (
     <div style={{ maxWidth: '680px', margin: '2rem auto', padding: '0 1rem' }}>
-      {/* Lost Mode Emergency Banner if Missing */}
+      {/* Lost Mode Emergency Banner */}
       {cat.isLost ? (
         <div
           style={{
@@ -96,7 +99,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
             <h2 style={{ fontSize: '1.6rem', fontWeight: '800', margin: 0 }}>GATO DECLARADO DESAPARECIDO</h2>
           </div>
           <p style={{ margin: 0, fontSize: '0.95rem', opacity: 0.95, lineHeight: 1.5 }}>
-            Por favor, ajude este felino a voltar para casa! Se você o encontrou ou viu, entre em contato com o tutor através do botão de emergência abaixo.
+            Por favor, ajude este felino a voltar para casa! Preencha o formulário seguro de avistamento abaixo para notificar instantaneamente o tutor.
           </p>
           {cat.lostNotes && (
             <div style={{ marginTop: '0.85rem', padding: '0.75rem', background: 'rgba(0, 0, 0, 0.25)', borderRadius: '8px', fontSize: '0.9rem' }}>
@@ -119,13 +122,15 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
         >
           <ShieldCheck size={24} color="var(--color-success)" />
           <div>
-            <strong style={{ color: 'var(--color-success)', display: 'block' }}>Cartão de Segurança Público</strong>
-            <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>Perfil verificado na rede de proteção Cat Guardian.</span>
+            <strong style={{ color: 'var(--color-success)', display: 'block' }}>Passaporte de Segurança Público</strong>
+            <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+              Perfil verificado na rede de proteção Cat Guardian.
+            </span>
           </div>
         </div>
       )}
 
-      {/* Main Public Passport Card (Privacy Preserved) */}
+      {/* Cat Information Card (Strict Privacy: Owner details excluded) */}
       <div className="glass-panel" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           <img
@@ -168,37 +173,21 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
           </div>
         )}
 
-        {/* Contact Relay Section (TASK-142 Privacy Intermediate) */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--color-text)' }}>Contatar Tutor (Contact Relay)</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
-            <a href={`tel:${cat.ownerPhone}`} className="btn btn-primary" style={{ justifyContent: 'center' }}>
-              <Phone size={18} /> Ligação de Emergência
-            </a>
-            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ justifyContent: 'center', borderColor: '#25D366', color: '#25D366' }}>
-              <MessageCircle size={18} /> WhatsApp Tutor
-            </a>
-            <a href={`mailto:${cat.ownerEmail}`} className="btn btn-secondary" style={{ justifyContent: 'center' }}>
-              <Mail size={18} /> E-mail Tutor
-            </a>
-          </div>
-        </div>
-
-        {/* Report Sighting Form (TASK-141) */}
+        {/* Blind Contact Relay Form (TASK-142: Zero exposure of Owner phone/email) */}
         <div style={{ background: 'var(--color-surface)', padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--glass-border)' }}>
           <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <MapPin size={18} color="var(--color-danger)" /> Viu ou Encontrou este Felino?
+            <MessageSquare size={18} color="var(--color-primary)" /> Enviar Mensagem ao Tutor (Blind Contact Relay)
           </h3>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
-            Envie o local de avistamento e seu telefone para o tutor ser notificado imediatamente.
+            Informe seus dados e o local do felino. O Cat Guardian intermediará a comunicação e notificará o tutor instantaneamente sem expor contatos.
           </p>
 
           {sightingSent ? (
             <div style={{ textAlign: 'center', padding: '1.5rem', color: 'var(--color-success)' }}>
               <CheckCircle2 size={40} style={{ marginBottom: '0.5rem' }} />
-              <h4>Avistamento Registrado com Sucesso!</h4>
+              <h4>Mensagem & Avistamento Enviados com Sucesso!</h4>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-                As informações foram enviadas para o tutor. Muito obrigado por colaborar!
+                O tutor de {cat.name} foi notificado por e-mail e pelo sistema de segurança. Muito obrigado por ajudar!
               </p>
             </div>
           ) : (
@@ -215,7 +204,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>Seu Telefone *</label>
+                  <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>Seu Telefone para Contato *</label>
                   <input
                     type="tel"
                     required
@@ -229,7 +218,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
 
               <div style={{ marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Localização de Avistamento *</label>
+                  <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Local de Avistamento *</label>
                   <button type="button" onClick={handleGetLocation} style={{ background: 'none', border: 'none', color: 'var(--color-info)', fontSize: '0.75rem', cursor: 'pointer' }}>
                     📍 Capturar GPS Atual
                   </button>
@@ -245,18 +234,18 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
               </div>
 
               <div style={{ marginBottom: '1.25rem' }}>
-                <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>Observações do Encontro</label>
+                <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>Mensagem / Observação para o Tutor</label>
                 <textarea
                   rows={2}
                   value={finderNotes}
                   onChange={(e) => setFinderNotes(e.target.value)}
-                  placeholder="Ex: Está calmo, bebendo água em uma tigela..."
+                  placeholder="Ex: Está bem cuidado, dei água..."
                   style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px', fontSize: '0.85rem' }}
                 />
               </div>
 
-              <button type="submit" className="btn btn-danger" style={{ width: '100%', justifyContent: 'center' }}>
-                <Send size={18} /> Alertar Tutor do Avistamento
+              <button type="submit" className="btn btn-primary" disabled={submitting} style={{ width: '100%', justifyContent: 'center' }}>
+                <Send size={18} /> {submitting ? 'Enviando Alerta ao Tutor...' : 'Notificar Tutor com Segurança'}
               </button>
             </form>
           )}
