@@ -1,5 +1,11 @@
 # Cat Guardian 🐾
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Hackathon_MVP-A78BFA?style=for-the-badge" alt="Status: Hackathon MVP" />
+  <img src="https://img.shields.io/badge/Version-1.0.0-34D399?style=for-the-badge" alt="Version 1.0.0" />
+  <img src="https://img.shields.io/badge/Pipeline-Jidoka_Gate-FBBF24?style=for-the-badge&logo=githubactions&logoColor=white" alt="Jidoka Gate Pipeline" />
+</p>
+
 > Digital Safety Passport for Cats — Hackathon DEV Weekend MVP
 
 Cat Guardian é um passaporte de segurança felino leve, elegante e potencializado por Inteligência Artificial (Gemini API), projetado para tutores e situações de alerta de emergência.
@@ -37,6 +43,17 @@ A interface do **Cat Guardian** opera estritamente sob a especificação do **Mi
 - **Backend / Database**: Supabase (PostgreSQL + RLS + Migrations Forward-Only)
 - **AI Integration**: Gemini API (`@google/generative-ai`)
 - **Governança**: Framework IA 2.0 (`Gemini → Local Worker → Jidoka Gate → Humano`)
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React 19" />
+  <img src="https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 6" />
+  <img src="https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/Gemini_API-4285F4?style=flat-square&logo=googlegemini&logoColor=white" alt="Gemini API" />
+  <img src="https://img.shields.io/badge/Vitest-3-6E9F81?style=flat-square&logo=vitest&logoColor=white" alt="Vitest" />
+  <img src="https://img.shields.io/badge/ESLint-9-4B32C3?style=flat-square&logo=eslint&logoColor=white" alt="ESLint" />
+  <img src="https://img.shields.io/badge/Lucide_React-Icons-F56565?style=flat-square&logo=lucide&logoColor=white" alt="Lucide" />
+</p>
 
 ---
 
@@ -86,3 +103,21 @@ npm run typecheck
 npm run test
 npm run build
 ```
+
+## 🎯 Jidoka Gate Pipeline Status
+
+### 📝 Workflow Summary
+
+| Stage | Command | Status | Artifacts |
+| :--- | :--- | :--- | :--- |
+| 1️⃣ **Lint** | `npm run lint` | ✅ **PASS** | `.eslint-results.json` |
+| 2️⃣ **Typecheck** | `npm run typecheck` | ✅ **PASS** | `.tsc-results.json` |
+| 3️⃣ **Tests** | `npm run test` | ✅ **PASS** | `.vitest-results.json`, `.coverage/` |
+| 4️⃣ **Build** | `npm run build` | ✅ **PASS** | `dist/` |
+
+### 📋 Pipeline Test Results
+
+![Lint Passing](https://img.shields.io/badge/Lint-ESLint_9-4B32C3?logo=eslint)
+![Typecheck Passing](https://img.shields.io/badge/Typecheck-TSC_5.7-3178C6?logo=typescript)
+![Tests Passing](https://img.shields.io/badge/Tests-Vitest_3-6E9F81?logo=vitest)
+![Build Passing](https://img.shields.io/badge/Build-Vite_6-646CFF?logo=vite)
