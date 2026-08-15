@@ -32,7 +32,7 @@
 - **Risk**: HIGH
 - **Agent**: Gemini
 - **Approval**: Human
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-005: Implement Centralized Error Logging (`logClientError`)
 - **Description**: Build `@/utils/log-error.ts` to log UI and runtime errors to Supabase `client_errors` table.

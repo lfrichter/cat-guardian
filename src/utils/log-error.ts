@@ -29,12 +29,12 @@ export async function logClientError({
 
   try {
     if (supabase) {
-      await supabase.from('client_errors').insert({
+      await (supabase.from('client_errors') as any).insert({
         context,
         error_message: errorMessage,
         error_stack: errorStack,
         user_email: userEmail || 'anonymous',
-        metadata: JSON.stringify(metadata),
+        metadata: metadata,
         created_at: new Date().toISOString(),
       })
     }
