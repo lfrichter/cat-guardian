@@ -1,98 +1,107 @@
 import React from 'react'
 import { Cat } from '@/types/cat'
 import { CatCard } from './CatCard'
-import { Plus, Search } from 'lucide-react'
+import { Search, Plus, Cat as CatIcon } from 'lucide-react'
 
 interface CatListProps {
   cats: Cat[]
+  isAuthenticated?: boolean
   onSelectCat: (cat: Cat) => void
   onToggleLost: (cat: Cat) => void
   onAddCat: () => void
+  onRequireAuth?: () => void
 }
 
-export const CatList: React.FC<CatListProps> = ({ cats, onSelectCat, onToggleLost, onAddCat }) => {
-  const [searchQuery, setSearchQuery] = React.useState('')
-  const [filterLost, setFilterLost] = React.useState(false)
+export const CatList: React.FC<CatListProps> = ({
+  cats,
+  isAuthenticated,
+  onSelectCat,
+  onToggleLost,
+  onAddCat,
+  onRequireAuth,
+}) => {
+  const [searchTerm, setSearchTerm] = React.useState('')
+  const [filterLostOnly, setFilterLostOnly] = React.useState(false)
 
   const filteredCats = cats.filter((cat) => {
     const matchesSearch =
-      cat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cat.breed.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cat.colorPattern.toLowerCase().includes(searchQuery.toLowerCase())
+      cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cat.breed.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cat.colorPattern.toLowerCase().includes(searchTerm.toLowerCase())
 
-    const matchesLostFilter = filterLost ? cat.isLost : true
-    return matchesSearch && matchesLostFilter
+    const matchesFilter = filterLostOnly ? cat.isLost : true
+    return matchesSearch && matchesFilter
   })
 
   return (
-    <section>
-      {/* Search & Actions Bar */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: '1rem',
-          flexWrap: 'wrap',
-          marginBottom: '2rem',
-        }}
-      >
-        <div style={{ display: 'flex', gap: '1rem', flex: 1, minWidth: '280px' }}>
-          <div
-            style={{
-              position: 'relative',
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
+    <div>
+      {/* Controls Bar */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', flex: 1, minWidth: '280px', flexWrap: 'wrap' }}>
+          {/* Search Input */}
+          <div style={{ position: 'relative', flex: 1 }}>
             <Search
               size={18}
-              color="var(--color-text-muted)"
-              style={{ position: 'absolute', left: '1rem', pointerEvents: 'none' }}
+              style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }}
             />
             <input
               type="text"
-              placeholder="Buscar felino por nome, raça ou pelagem..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Buscar por nome, raça ou cor..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               style={{
                 width: '100%',
                 padding: '0.75rem 1rem 0.75rem 2.75rem',
-                background: 'rgba(255, 255, 255, 0.04)',
+                background: 'var(--color-surface)',
                 border: '1px solid var(--glass-border)',
-                borderRadius: 'var(--radius-md)',
+                borderRadius: '12px',
                 color: 'var(--color-text)',
-                fontSize: '0.95rem',
                 outline: 'none',
               }}
             />
           </div>
 
+          {/* Lost Filter Button */}
           <button
-            className={`btn ${filterLost ? 'btn-danger' : 'btn-secondary'}`}
-            onClick={() => setFilterLost(!filterLost)}
-            style={{ whiteSpace: 'nowrap' }}
+            className="btn btn-secondary"
+            onClick={() => setFilterLostOnly(!filterLostOnly)}
+            style={{
+              borderColor: filterLostOnly ? 'var(--color-danger)' : undefined,
+              color: filterLostOnly ? 'var(--color-danger)' : undefined,
+            }}
           >
-            {filterLost ? 'Mostrando Apenas Perdidos' : 'Filtrar Perdidos'}
+            {filterLostOnly ? 'Exibindo: Apenas Perdidos' : 'Filtrar Perdidos'}
           </button>
         </div>
 
-        <button className="btn btn-primary" onClick={onAddCat} style={{ whiteSpace: 'nowrap' }}>
-          <Plus size={18} /> Cadastrar Novo Felino
+        {/* Add Cat Button (Requires Auth) */}
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            if (!isAuthenticated && onRequireAuth) {
+              onRequireAuth()
+              return
+            }
+            onAddCat()
+          }}
+        >
+          <Plus size={18} /> Cadastrar Felino
         </button>
       </div>
 
-      {/* Grid of Cat Cards */}
+      {/* Grid List */}
       {filteredCats.length === 0 ? (
         <div
           className="glass-panel"
-          style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}
+          style={{
+            textAlign: 'center',
+            padding: '4rem 2rem',
+            color: 'var(--color-text-muted)',
+          }}
         >
-          <p style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>Nenhum gato encontrado para o filtro selecionado.</p>
-          <button className="btn btn-secondary" onClick={() => { setSearchQuery(''); setFilterLost(false); }}>
-            Limpar Filtros
-          </button>
+          <CatIcon size={48} style={{ opacity: 0.4, marginBottom: '1rem' }} />
+          <h3>Nenhum passaporte felino encontrado</h3>
+          <p>Tente ajustar a busca ou cadastre um novo felino.</p>
         </div>
       ) : (
         <div
@@ -106,12 +115,14 @@ export const CatList: React.FC<CatListProps> = ({ cats, onSelectCat, onToggleLos
             <CatCard
               key={cat.id}
               cat={cat}
+              isAuthenticated={isAuthenticated}
               onSelect={onSelectCat}
               onToggleLost={onToggleLost}
+              onRequireAuth={onRequireAuth}
             />
           ))}
         </div>
       )}
-    </section>
+    </div>
   )
 }

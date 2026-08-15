@@ -47,6 +47,10 @@ export const App: React.FC = () => {
   }, [loadCats])
 
   const handleToggleLost = async (cat: Cat) => {
+    if (!currentUser) {
+      setIsAuthOpen(true)
+      return
+    }
     const updated = await catService.updateCat(cat.id, {
       isLost: !cat.isLost,
       lostNotes: !cat.isLost ? 'Ativado pelo tutor via painel Cat Guardian.' : undefined,
@@ -58,16 +62,20 @@ export const App: React.FC = () => {
   }
 
   const handleSaveCat = async (input: CreateCatInput | UpdateCatInput, id?: string) => {
+    if (!currentUser) {
+      setIsAuthOpen(true)
+      return
+    }
     if (id) {
       const updated = await catService.updateCat(id, input as UpdateCatInput)
       setCats((prev) => prev.map((c) => (c.id === id ? updated : c)))
     } else {
       const created = await catService.createCat({
         ...(input as CreateCatInput),
-        ownerId: currentUser?.id,
-        ownerName: currentUser?.name || (input as CreateCatInput).ownerName,
-        ownerEmail: currentUser?.email || (input as CreateCatInput).ownerEmail,
-        ownerPhone: currentUser?.phone || (input as CreateCatInput).ownerPhone,
+        ownerId: currentUser.id,
+        ownerName: currentUser.name,
+        ownerEmail: currentUser.email,
+        ownerPhone: currentUser.phone,
       })
       setCats((prev) => [created, ...prev])
     }
@@ -75,6 +83,10 @@ export const App: React.FC = () => {
   }
 
   const handleDeleteCat = async (id: string) => {
+    if (!currentUser) {
+      setIsAuthOpen(true)
+      return
+    }
     await catService.deleteCat(id)
     setCats((prev) => prev.filter((c) => c.id !== id))
     if (selectedCat?.id === id) {
@@ -130,7 +142,7 @@ export const App: React.FC = () => {
           <div>
             <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0, color: 'var(--color-text)' }}>Cat Guardian</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              Passaporte de Segurança Felino • Plataforma de Proteção
+              Passaporte de Segurança Felino • Midnight Guardian System
             </p>
           </div>
         </div>
@@ -182,9 +194,11 @@ export const App: React.FC = () => {
             <DashboardSummary cats={cats} onSelectCat={(cat) => setSelectedCat(cat)} />
             <CatList
               cats={cats}
+              isAuthenticated={Boolean(currentUser)}
               onSelectCat={(cat) => setSelectedCat(cat)}
               onToggleLost={handleToggleLost}
               onAddCat={() => { setCatToEdit(null); setIsFormOpen(true); }}
+              onRequireAuth={() => setIsAuthOpen(true)}
             />
           </>
         )}
@@ -194,17 +208,23 @@ export const App: React.FC = () => {
       {selectedCat && (
         <CatDetailModal
           cat={selectedCat}
+          currentUser={currentUser}
           onClose={() => setSelectedCat(null)}
           onToggleLost={handleToggleLost}
           onEditCat={(cat) => {
+            if (!currentUser) {
+              setIsAuthOpen(true)
+              return
+            }
             setCatToEdit(cat)
             setIsFormOpen(true)
           }}
+          onRequireAuth={() => setIsAuthOpen(true)}
         />
       )}
 
-      {/* Registration & Edit Form Modal */}
-      {(isFormOpen || catToEdit) && (
+      {/* Registration & Edit Form Modal (Protected by Auth) */}
+      {(isFormOpen || catToEdit) && currentUser && (
         <CatFormModal
           catToEdit={catToEdit}
           onClose={() => { setIsFormOpen(false); setCatToEdit(null); }}

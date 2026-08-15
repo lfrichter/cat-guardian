@@ -1,18 +1,28 @@
 import React from 'react'
 import { Cat } from '@/types/cat'
+import { OwnerProfile } from '@/types/owner'
 import { HealthRecord, HealthRecordType, computeHealthStatus } from '@/types/health'
 import { catService } from '@/services/cat-service'
 import { QRCodeTag } from './QRCodeTag'
-import { X, ShieldCheck, AlertTriangle, HeartPulse, Phone, Mail, User, Plus, Sparkles, QrCode, Edit3, Trash2 } from 'lucide-react'
+import { X, ShieldCheck, AlertTriangle, HeartPulse, Plus, Sparkles, QrCode, Edit3, Trash2, Lock, User, Phone, Mail } from 'lucide-react'
 
 interface CatDetailModalProps {
   cat: Cat | null
+  currentUser: OwnerProfile | null
   onClose: () => void
   onToggleLost: (cat: Cat) => void
   onEditCat?: (cat: Cat) => void
+  onRequireAuth: () => void
 }
 
-export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, onToggleLost, onEditCat }) => {
+export const CatDetailModal: React.FC<CatDetailModalProps> = ({
+  cat,
+  currentUser,
+  onClose,
+  onToggleLost,
+  onEditCat,
+  onRequireAuth,
+}) => {
   const [healthRecords, setHealthRecords] = React.useState<HealthRecord[]>([])
   const [showAddRecord, setShowAddRecord] = React.useState(false)
   const [showQRTag, setShowQRTag] = React.useState(false)
@@ -22,6 +32,8 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
   const [vetName, setVetName] = React.useState('')
   const [dateAdministered, setDateAdministered] = React.useState('')
   const [nextDueDate, setNextDueDate] = React.useState('')
+
+  const isOwner = Boolean(currentUser && (!cat?.ownerId || cat?.ownerId === currentUser.id))
 
   React.useEffect(() => {
     if (cat) {
@@ -33,9 +45,17 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
 
   const healthSummary = computeHealthStatus(healthRecords)
 
+  const handleAction = (actionFn: () => void) => {
+    if (!currentUser) {
+      onRequireAuth()
+      return
+    }
+    actionFn()
+  }
+
   const handleAddHealthRecord = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!title) return
+    if (!title || !currentUser) return
     const created = await catService.addHealthRecord({
       catId: cat.id,
       recordType,
@@ -53,6 +73,10 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
   }
 
   const handleDeleteRecord = async (id: string) => {
+    if (!currentUser) {
+      onRequireAuth()
+      return
+    }
     await catService.deleteHealthRecord(id)
     setHealthRecords((prev) => prev.filter((r) => r.id !== id))
   }
@@ -132,21 +156,27 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
               </p>
             )}
           </div>
+
+          {/* Action Buttons with Strict Auth Protection */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {onEditCat && (
               <button
                 className="btn btn-secondary"
-                onClick={() => { onClose(); onEditCat(cat); }}
+                onClick={() => handleAction(() => { onClose(); onEditCat(cat); })}
                 style={{ fontSize: '0.85rem' }}
               >
-                <Edit3 size={16} /> Editar Perfil
+                {currentUser ? <Edit3 size={16} /> : <Lock size={16} color="var(--color-warning)" />} Editar Perfil
               </button>
             )}
             <button
               className={cat.isLost ? 'btn btn-secondary' : 'btn btn-danger'}
-              onClick={() => onToggleLost(cat)}
+              onClick={() => handleAction(() => onToggleLost(cat))}
             >
-              {cat.isLost ? 'Desativar Modo Perdido' : '⚠️ Declarar Desaparecido'}
+              {currentUser ? (
+                cat.isLost ? 'Desativar Modo Perdido' : '⚠️ Declarar Desaparecido'
+              ) : (
+                '🔒 Entrar para Declarar Perdido'
+              )}
             </button>
             <button
               className="btn btn-secondary"
@@ -158,7 +188,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
           </div>
         </div>
 
-        {/* QR Code Tag Toggle View */}
+        {/* QR Code Tag View */}
         {showQRTag && (
           <div style={{ marginBottom: '2rem' }}>
             <QRCodeTag cat={cat} />
@@ -167,13 +197,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
 
         {/* AI Profile Section */}
         {cat.aiProfileSummary && (
-          <div
-            className="ai-highlight-box"
-            style={{
-              padding: '1.25rem',
-              marginBottom: '2rem',
-            }}
-          >
+          <div className="ai-highlight-box" style={{ padding: '1.25rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: 'var(--color-primary)' }}>
               <Sparkles size={18} />
               <strong style={{ fontSize: '0.95rem' }}>Passaporte de Identificação IA</strong>
@@ -184,27 +208,45 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
           </div>
         )}
 
-        {/* Tutor & Contact Info */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-          <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
-              <User size={15} /> Tutor Responsável
+        {/* Tutor & Contact Info - Rendered ONLY if Tutor is Logged In */}
+        {isOwner ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+            <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
+                <User size={15} /> Tutor Responsável
+              </div>
+              <strong style={{ color: 'var(--color-text)' }}>{cat.ownerName}</strong>
             </div>
-            <strong style={{ color: 'var(--color-text)' }}>{cat.ownerName}</strong>
-          </div>
-          <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
-              <Phone size={15} /> Telefone de Contato
+            <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
+                <Phone size={15} /> Telefone de Contato
+              </div>
+              <strong style={{ color: 'var(--color-text)' }}>{cat.ownerPhone}</strong>
             </div>
-            <strong style={{ color: 'var(--color-text)' }}>{cat.ownerPhone}</strong>
-          </div>
-          <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
-              <Mail size={15} /> E-mail
+            <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
+                <Mail size={15} /> E-mail
+              </div>
+              <strong style={{ color: 'var(--color-text)' }}>{cat.ownerEmail}</strong>
             </div>
-            <strong style={{ color: 'var(--color-text)' }}>{cat.ownerEmail}</strong>
           </div>
-        </div>
+        ) : (
+          <div
+            style={{
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px dashed var(--glass-border)',
+              padding: '1rem',
+              borderRadius: '12px',
+              marginBottom: '2rem',
+              textAlign: 'center',
+            }}
+          >
+            <Lock size={18} color="var(--color-warning)" style={{ marginBottom: '0.3rem' }} />
+            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+              Dados de contato do tutor protegidos. Faça login para gerenciar este passaporte.
+            </p>
+          </div>
+        )}
 
         {/* Health Passport Section */}
         <div style={{ marginBottom: '2rem' }}>
@@ -212,13 +254,15 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
             <h3 style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: 'var(--color-text)' }}>
               <HeartPulse size={20} color="var(--color-success)" /> Passaporte de Saúde & Vacinas
             </h3>
-            <button className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }} onClick={() => setShowAddRecord(!showAddRecord)}>
-              <Plus size={16} /> Adicionar Registro
-            </button>
+            {currentUser && (
+              <button className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }} onClick={() => setShowAddRecord(!showAddRecord)}>
+                <Plus size={16} /> Adicionar Registro
+              </button>
+            )}
           </div>
 
           {/* Add Health Record Form */}
-          {showAddRecord && (
+          {showAddRecord && currentUser && (
             <form onSubmit={handleAddHealthRecord} style={{ background: 'var(--color-surface)', padding: '1.25rem', borderRadius: '14px', marginBottom: '1.5rem', border: '1px solid var(--glass-border)' }}>
               <h4 style={{ marginBottom: '1rem', fontSize: '1rem', color: 'var(--color-text)' }}>Novo Registro Médico</h4>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
@@ -317,12 +361,14 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
                         {hr.nextDueDate && <div style={{ color: 'var(--color-warning)', fontWeight: '600' }}>Reforço: {hr.nextDueDate}</div>}
                       </div>
                     )}
-                    <button
-                      onClick={() => handleDeleteRecord(hr.id)}
-                      style={{ background: 'none', border: 'none', color: 'var(--color-danger)', cursor: 'pointer', opacity: 0.8 }}
-                    >
-                      <Trash2 size={16} />
-                    </button>
+                    {currentUser && (
+                      <button
+                        onClick={() => handleDeleteRecord(hr.id)}
+                        style={{ background: 'none', border: 'none', color: 'var(--color-danger)', cursor: 'pointer', opacity: 0.8 }}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

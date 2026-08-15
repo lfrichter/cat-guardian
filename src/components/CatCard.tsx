@@ -1,14 +1,16 @@
 import React from 'react'
 import { Cat } from '@/types/cat'
-import { ShieldCheck, AlertTriangle, QrCode, Sparkles, HeartPulse } from 'lucide-react'
+import { ShieldCheck, AlertTriangle, QrCode, Sparkles, HeartPulse, Lock } from 'lucide-react'
 
 interface CatCardProps {
   cat: Cat
+  isAuthenticated?: boolean
   onSelect: (cat: Cat) => void
   onToggleLost: (cat: Cat) => void
+  onRequireAuth?: () => void
 }
 
-export const CatCard: React.FC<CatCardProps> = ({ cat, onSelect, onToggleLost }) => {
+export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect, onToggleLost, onRequireAuth }) => {
   return (
     <div
       className="glass-panel"
@@ -38,7 +40,7 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, onSelect, onToggleLost })
           )}
         </span>
         <button
-          className={cat.isLost ? 'btn btn-secondary' : 'btn btn-secondary'}
+          className="btn btn-secondary"
           style={{
             padding: '0.35rem 0.65rem',
             fontSize: '0.75rem',
@@ -48,10 +50,20 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, onSelect, onToggleLost })
           }}
           onClick={(e) => {
             e.stopPropagation()
+            if (!isAuthenticated && onRequireAuth) {
+              onRequireAuth()
+              return
+            }
             onToggleLost(cat)
           }}
         >
-          {cat.isLost ? 'Desativar Alerta' : 'Declarar Perdido'}
+          {isAuthenticated ? (
+            cat.isLost ? 'Desativar Alerta' : 'Declarar Perdido'
+          ) : (
+            <>
+              <Lock size={12} /> Alterar Status
+            </>
+          )}
         </button>
       </div>
 
