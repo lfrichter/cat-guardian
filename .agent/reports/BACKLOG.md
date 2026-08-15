@@ -104,7 +104,7 @@
 - **Risk**: HIGH
 - **Agent**: Gemini
 - **Approval**: Human
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-013: Build AI Cat Profile Generator
 - **Description**: Feature to synthesize raw owner notes into descriptive, non-biometric identification passports.
@@ -112,7 +112,7 @@
 - **Risk**: MEDIUM
 - **Agent**: Opencoder 8B
 - **Approval**: Gemini Review
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-014: Implement AI Health Assistant
 - **Description**: AI care assistant providing non-diagnostic health tips, care guidance, and diet advice.
@@ -120,7 +120,7 @@
 - **Risk**: MEDIUM
 - **Agent**: Opencoder 8B
 - **Approval**: Gemini Review
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-015: Create AI Safety Guardrails & System Prompts
 - **Description**: Enforce medical non-diagnosis disclaimer and safety rules in system prompts.
@@ -128,7 +128,7 @@
 - **Risk**: HIGH
 - **Agent**: Gemini
 - **Approval**: Human
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ---
 

@@ -4,12 +4,16 @@ import { catService } from '@/services/cat-service'
 import { CatList } from '@/components/CatList'
 import { CatDetailModal } from '@/components/CatDetailModal'
 import { CatFormModal } from '@/components/CatFormModal'
-import { ShieldCheck, Cat as CatIcon, Sparkles } from 'lucide-react'
+import { AIGeneratorModal } from '@/components/AIGeneratorModal'
+import { AIHealthAssistantModal } from '@/components/AIHealthAssistantModal'
+import { ShieldCheck, Cat as CatIcon, Sparkles, HeartPulse } from 'lucide-react'
 
 export const App: React.FC = () => {
   const [cats, setCats] = React.useState<Cat[]>([])
   const [selectedCat, setSelectedCat] = React.useState<Cat | null>(null)
   const [isFormOpen, setIsFormOpen] = React.useState(false)
+  const [aiCatTarget, setAiCatTarget] = React.useState<Cat | null>(null)
+  const [isHealthAssistantOpen, setIsHealthAssistantOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
 
   const loadCats = React.useCallback(async () => {
@@ -42,6 +46,14 @@ export const App: React.FC = () => {
     setCats((prev) => [created, ...prev])
   }
 
+  const handleApplyAIProfile = async (catId: string, aiSummary: string) => {
+    const updated = await catService.updateCat(catId, { aiProfileSummary: aiSummary })
+    setCats((prev) => prev.map((c) => (c.id === catId ? updated : c)))
+    if (selectedCat && selectedCat.id === catId) {
+      setSelectedCat(updated)
+    }
+  }
+
   return (
     <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '2rem 1.5rem', width: '100%' }}>
       {/* Header */}
@@ -63,17 +75,24 @@ export const App: React.FC = () => {
           <div>
             <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0, color: 'var(--color-text)' }}>Cat Guardian</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              Passaporte de Segurança Felino • Midnight Guardian System
+              Passaporte de Segurança Felino • AI-Powered
             </p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => setIsHealthAssistantOpen(true)}
+            style={{ padding: '0.5rem 0.9rem', fontSize: '0.85rem' }}
+          >
+            <HeartPulse size={16} color="var(--color-success)" /> Consultar IA de Saúde
+          </button>
           <span className="badge badge-safe">
             <ShieldCheck size={14} /> Jidoka Verified
           </span>
           <span style={{ color: 'var(--color-primary-light)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', fontWeight: '600' }}>
-            <Sparkles size={16} color="var(--color-primary)" /> Guardian AI Ready
+            <Sparkles size={16} color="var(--color-primary)" /> Gemini Active
           </span>
         </div>
       </header>
@@ -108,6 +127,23 @@ export const App: React.FC = () => {
         <CatFormModal
           onClose={() => setIsFormOpen(false)}
           onSave={handleCreateCat}
+        />
+      )}
+
+      {/* AI Profile Generator Modal */}
+      {aiCatTarget && (
+        <AIGeneratorModal
+          cat={aiCatTarget}
+          onClose={() => setAiCatTarget(null)}
+          onApplyProfile={handleApplyAIProfile}
+        />
+      )}
+
+      {/* AI Health Assistant Modal */}
+      {isHealthAssistantOpen && (
+        <AIHealthAssistantModal
+          cat={selectedCat}
+          onClose={() => setIsHealthAssistantOpen(false)}
         />
       )}
     </div>
