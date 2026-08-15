@@ -24,7 +24,7 @@
 - **Risk**: MEDIUM
 - **Agent**: Opencoder 8B
 - **Approval**: Gemini Review
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-004: Create initial Supabase database migrations
 - **Description**: Create forward-only migrations for `cats`, `health_records`, and `client_errors` tables.
@@ -40,7 +40,7 @@
 - **Risk**: MEDIUM
 - **Agent**: Opencoder 8B
 - **Approval**: Gemini Review
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ---
 
