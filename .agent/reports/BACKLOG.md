@@ -170,6 +170,38 @@
 - **Approval**: Human
 - **Status**: DONE (Jidoka Gate PASS)
 
+### TASK-150: Dashboard 2.0
+- **Description**: Operational dashboard summary with safety stats and lost incident notifications.
+- **Epic**: WAVE-4
+- **Risk**: MEDIUM
+- **Agent**: Opencoder 8B
+- **Approval**: Gemini Review
+- **Status**: DONE (Jidoka Gate PASS)
+
+### TASK-160: Owner Profile management UI
+- **Description**: Owner profile drawer and authentication management UI.
+- **Epic**: WAVE-4
+- **Risk**: LOW
+- **Agent**: Mistral 7B
+- **Approval**: Auto (after Jidoka PASS)
+- **Status**: DONE (Jidoka Gate PASS)
+
+### TASK-170: Mobile Polish
+- **Description**: Responsive design polish across QR Page, Lost Mode, and Found flow.
+- **Epic**: WAVE-4
+- **Risk**: LOW
+- **Agent**: Mistral 7B
+- **Approval**: Auto (after Jidoka PASS)
+- **Status**: DONE (Jidoka Gate PASS)
+
+### TASK-180: E2E Critical Flow Tests
+- **Description**: End-to-end critical journey testing from authentication to sighting resolution.
+- **Epic**: WAVE-4
+- **Risk**: HIGH
+- **Agent**: Gemini
+- **Approval**: Human
+- **Status**: DONE (Jidoka Gate PASS)
+
 ---
 
 ## EPIC-004: SAFETY

@@ -3,6 +3,7 @@ import { Cat, CreateCatInput, UpdateCatInput } from '@/types/cat'
 import { catService } from '@/services/cat-service'
 import { authService } from '@/services/auth-service'
 import { OwnerProfile } from '@/types/owner'
+import { DashboardSummary } from '@/components/DashboardSummary'
 import { CatList } from '@/components/CatList'
 import { CatDetailModal } from '@/components/CatDetailModal'
 import { CatFormModal } from '@/components/CatFormModal'
@@ -111,7 +112,7 @@ export const App: React.FC = () => {
   return (
     <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '2rem 1.5rem', width: '100%' }}>
       {/* Header */}
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
           <div
             style={{
@@ -129,7 +130,7 @@ export const App: React.FC = () => {
           <div>
             <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0, color: 'var(--color-text)' }}>Cat Guardian</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              Passaporte de Segurança Felino • Wave 2 Active
+              Passaporte de Segurança Felino • Plataforma de Proteção
             </p>
           </div>
         </div>
@@ -177,12 +178,15 @@ export const App: React.FC = () => {
             Carregando passaportes felinos...
           </div>
         ) : (
-          <CatList
-            cats={cats}
-            onSelectCat={(cat) => setSelectedCat(cat)}
-            onToggleLost={handleToggleLost}
-            onAddCat={() => { setCatToEdit(null); setIsFormOpen(true); }}
-          />
+          <>
+            <DashboardSummary cats={cats} onSelectCat={(cat) => setSelectedCat(cat)} />
+            <CatList
+              cats={cats}
+              onSelectCat={(cat) => setSelectedCat(cat)}
+              onToggleLost={handleToggleLost}
+              onAddCat={() => { setCatToEdit(null); setIsFormOpen(true); }}
+            />
+          </>
         )}
       </main>
 
