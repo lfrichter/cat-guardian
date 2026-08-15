@@ -140,7 +140,7 @@
 - **Risk**: LOW
 - **Agent**: Mistral 7B
 - **Approval**: Auto (after Jidoka PASS)
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-017: Implement Lost Mode Toggle & State Manager
 - **Description**: One-click Lost Mode trigger that updates public passport status and broadcasts missing alert.
@@ -148,7 +148,7 @@
 - **Risk**: MEDIUM
 - **Agent**: Opencoder 8B
 - **Approval**: Gemini Review
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-018: Build Public Missing Cat Passport Page
 - **Description**: Publicly accessible, mobile-optimized page showing missing cat info, owner contact, and emergency actions.
@@ -156,7 +156,7 @@
 - **Risk**: MEDIUM
 - **Agent**: Opencoder 8B
 - **Approval**: Gemini Review
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-019: Implement Emergency Contact & Location Share module
 - **Description**: Form allowing finders to report cat location and send instant notification to cat owner.
@@ -164,7 +164,7 @@
 - **Risk**: MEDIUM
 - **Agent**: Opencoder 8B
 - **Approval**: Gemini Review
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-020: Full Jidoka Audit, Performance & UX Verification
 - **Description**: Final pipeline run (`lint`, `typecheck`, `test`, `build`), accessibility and deployment checks.
@@ -172,4 +172,4 @@
 - **Risk**: HIGH
 - **Agent**: Gemini
 - **Approval**: Human
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)

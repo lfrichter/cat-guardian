@@ -6,6 +6,7 @@ import { CatDetailModal } from '@/components/CatDetailModal'
 import { CatFormModal } from '@/components/CatFormModal'
 import { AIGeneratorModal } from '@/components/AIGeneratorModal'
 import { AIHealthAssistantModal } from '@/components/AIHealthAssistantModal'
+import { PublicCatPassport } from '@/components/PublicCatPassport'
 import { ShieldCheck, Cat as CatIcon, Sparkles, HeartPulse } from 'lucide-react'
 
 export const App: React.FC = () => {
@@ -15,6 +16,10 @@ export const App: React.FC = () => {
   const [aiCatTarget, setAiCatTarget] = React.useState<Cat | null>(null)
   const [isHealthAssistantOpen, setIsHealthAssistantOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
+
+  // Public Passport URL Route Handler
+  const urlParams = new URLSearchParams(window.location.search)
+  const publicCatId = urlParams.get('catId')
 
   const loadCats = React.useCallback(async () => {
     setLoading(true)
@@ -54,6 +59,19 @@ export const App: React.FC = () => {
     }
   }
 
+  // If public Cat Passport URL parameter is active (QR code scan mode)
+  if (publicCatId) {
+    return (
+      <PublicCatPassport
+        catId={publicCatId}
+        onBackToApp={() => {
+          window.history.pushState({}, '', window.location.pathname)
+          window.location.reload()
+        }}
+      />
+    )
+  }
+
   return (
     <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '2rem 1.5rem', width: '100%' }}>
       {/* Header */}
@@ -75,7 +93,7 @@ export const App: React.FC = () => {
           <div>
             <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0, color: 'var(--color-text)' }}>Cat Guardian</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              Passaporte de Segurança Felino • AI-Powered
+              Passaporte de Segurança Felino • Midnight Guardian
             </p>
           </div>
         </div>

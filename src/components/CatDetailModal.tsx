@@ -2,7 +2,8 @@ import React from 'react'
 import { Cat } from '@/types/cat'
 import { HealthRecord, HealthRecordType } from '@/types/health'
 import { catService } from '@/services/cat-service'
-import { X, ShieldCheck, AlertTriangle, HeartPulse, Phone, Mail, User, Plus, Sparkles } from 'lucide-react'
+import { QRCodeTag } from './QRCodeTag'
+import { X, ShieldCheck, AlertTriangle, HeartPulse, Phone, Mail, User, Plus, Sparkles, QrCode } from 'lucide-react'
 
 interface CatDetailModalProps {
   cat: Cat | null
@@ -13,6 +14,7 @@ interface CatDetailModalProps {
 export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, onToggleLost }) => {
   const [healthRecords, setHealthRecords] = React.useState<HealthRecord[]>([])
   const [showAddRecord, setShowAddRecord] = React.useState(false)
+  const [showQRTag, setShowQRTag] = React.useState(false)
   const [recordType, setRecordType] = React.useState<HealthRecordType>('vaccine')
   const [title, setTitle] = React.useState('')
   const [description, setDescription] = React.useState('')
@@ -119,14 +121,30 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
               </p>
             )}
           </div>
-          <button
-            className={cat.isLost ? 'btn btn-secondary' : 'btn btn-danger'}
-            onClick={() => onToggleLost(cat)}
-            style={{ height: 'fit-content' }}
-          >
-            {cat.isLost ? 'Desativar Modo Perdido' : '⚠️ Declarar Desaparecido'}
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <button
+              className={cat.isLost ? 'btn btn-secondary' : 'btn btn-danger'}
+              onClick={() => onToggleLost(cat)}
+            >
+              {cat.isLost ? 'Desativar Modo Perdido' : '⚠️ Declarar Desaparecido'}
+            </button>
+
+            <button
+              className="btn btn-secondary"
+              onClick={() => setShowQRTag(!showQRTag)}
+              style={{ fontSize: '0.85rem' }}
+            >
+              <QrCode size={16} color="var(--color-info)" /> {showQRTag ? 'Ocultar Tag QR' : 'Ver Tag de Coleira'}
+            </button>
+          </div>
         </div>
+
+        {/* QR Code Tag Toggle View */}
+        {showQRTag && (
+          <div style={{ marginBottom: '2rem' }}>
+            <QRCodeTag cat={cat} />
+          </div>
+        )}
 
         {/* AI Profile Section */}
         {cat.aiProfileSummary && (
