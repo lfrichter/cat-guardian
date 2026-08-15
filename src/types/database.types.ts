@@ -24,6 +24,7 @@ export interface Database {
           owner_name: string
           owner_phone: string
           owner_email: string
+          owner_id: string | null
           ai_profile_summary: string | null
           created_at: string
           updated_at: string

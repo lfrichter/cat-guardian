@@ -12,6 +12,7 @@ export interface Cat {
   ownerName: string
   ownerPhone: string
   ownerEmail: string
+  ownerId?: string
   aiProfileSummary?: string
   createdAt?: string
   updatedAt?: string

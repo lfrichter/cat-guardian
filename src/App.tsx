@@ -1,13 +1,16 @@
 import React from 'react'
 import { Cat, CreateCatInput } from '@/types/cat'
 import { catService } from '@/services/cat-service'
+import { authService } from '@/services/auth-service'
+import { OwnerProfile } from '@/types/owner'
 import { CatList } from '@/components/CatList'
 import { CatDetailModal } from '@/components/CatDetailModal'
 import { CatFormModal } from '@/components/CatFormModal'
 import { AIGeneratorModal } from '@/components/AIGeneratorModal'
 import { AIHealthAssistantModal } from '@/components/AIHealthAssistantModal'
 import { PublicCatPassport } from '@/components/PublicCatPassport'
-import { ShieldCheck, Cat as CatIcon, Sparkles, HeartPulse } from 'lucide-react'
+import { AuthModal, OwnerProfileDrawer } from '@/components/AuthModal'
+import { ShieldCheck, Cat as CatIcon, Sparkles, HeartPulse, User } from 'lucide-react'
 
 export const App: React.FC = () => {
   const [cats, setCats] = React.useState<Cat[]>([])
@@ -15,6 +18,9 @@ export const App: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = React.useState(false)
   const [aiCatTarget, setAiCatTarget] = React.useState<Cat | null>(null)
   const [isHealthAssistantOpen, setIsHealthAssistantOpen] = React.useState(false)
+  const [isAuthOpen, setIsAuthOpen] = React.useState(false)
+  const [isProfileOpen, setIsProfileOpen] = React.useState(false)
+  const [currentUser, setCurrentUser] = React.useState<OwnerProfile | null>(null)
   const [loading, setLoading] = React.useState(true)
 
   // Public Passport URL Route Handler
@@ -32,7 +38,10 @@ export const App: React.FC = () => {
   }, [])
 
   React.useEffect(() => {
+    authService.getCurrentUser().then(setCurrentUser)
+    const unsubscribe = authService.onAuthStateChange(setCurrentUser)
     loadCats()
+    return () => unsubscribe()
   }, [loadCats])
 
   const handleToggleLost = async (cat: Cat) => {
@@ -47,7 +56,13 @@ export const App: React.FC = () => {
   }
 
   const handleCreateCat = async (input: CreateCatInput) => {
-    const created = await catService.createCat(input)
+    const created = await catService.createCat({
+      ...input,
+      ownerId: currentUser?.id,
+      ownerName: currentUser?.name || input.ownerName,
+      ownerEmail: currentUser?.email || input.ownerEmail,
+      ownerPhone: currentUser?.phone || input.ownerPhone,
+    })
     setCats((prev) => [created, ...prev])
   }
 
@@ -57,6 +72,12 @@ export const App: React.FC = () => {
     if (selectedCat && selectedCat.id === catId) {
       setSelectedCat(updated)
     }
+  }
+
+  const handleSignOut = async () => {
+    await authService.signOut()
+    setCurrentUser(null)
+    setIsProfileOpen(false)
   }
 
   // If public Cat Passport URL parameter is active (QR code scan mode)
@@ -93,7 +114,7 @@ export const App: React.FC = () => {
           <div>
             <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0, color: 'var(--color-text)' }}>Cat Guardian</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              Passaporte de Segurança Felino • Midnight Guardian
+              Passaporte de Segurança Felino • Midnight Guardian System
             </p>
           </div>
         </div>
@@ -106,8 +127,27 @@ export const App: React.FC = () => {
           >
             <HeartPulse size={16} color="var(--color-success)" /> Consultar IA de Saúde
           </button>
+
+          {currentUser ? (
+            <button
+              className="btn btn-secondary"
+              onClick={() => setIsProfileOpen(true)}
+              style={{ padding: '0.5rem 0.9rem', fontSize: '0.85rem', borderColor: 'var(--color-primary)' }}
+            >
+              <User size={16} color="var(--color-primary)" /> {currentUser.name}
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              onClick={() => setIsAuthOpen(true)}
+              style={{ padding: '0.5rem 0.9rem', fontSize: '0.85rem' }}
+            >
+              <User size={16} /> Entrar / Cadastrar
+            </button>
+          )}
+
           <span className="badge badge-safe">
-            <ShieldCheck size={14} /> Jidoka Verified
+            <ShieldCheck size={14} /> Wave 1 Auth
           </span>
           <span style={{ color: 'var(--color-primary-light)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', fontWeight: '600' }}>
             <Sparkles size={16} color="var(--color-primary)" /> Gemini Active
@@ -162,6 +202,23 @@ export const App: React.FC = () => {
         <AIHealthAssistantModal
           cat={selectedCat}
           onClose={() => setIsHealthAssistantOpen(false)}
+        />
+      )}
+
+      {/* Auth Login/Signup Modal */}
+      {isAuthOpen && (
+        <AuthModal
+          onClose={() => setIsAuthOpen(false)}
+          onAuthSuccess={(user) => setCurrentUser(user)}
+        />
+      )}
+
+      {/* Owner Profile Drawer */}
+      {isProfileOpen && currentUser && (
+        <OwnerProfileDrawer
+          owner={currentUser}
+          onSignOut={handleSignOut}
+          onClose={() => setIsProfileOpen(false)}
         />
       )}
     </div>
