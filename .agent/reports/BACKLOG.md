@@ -8,7 +8,7 @@
 - **Risk**: LOW
 - **Agent**: Mistral 7B
 - **Approval**: Auto (after Jidoka PASS)
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-002: Setup ESLint, TypeScript config & Jidoka scripts
 - **Description**: Configure linting, typechecking, test setup, and npm scripts (`lint`, `typecheck`, `test`, `build`).
@@ -16,7 +16,7 @@
 - **Risk**: LOW
 - **Agent**: Mistral 7B
 - **Approval**: Auto (after Jidoka PASS)
-- **Status**: PENDING
+- **Status**: DONE (Jidoka Gate PASS)
 
 ### TASK-003: Setup Supabase client & environment configuration
 - **Description**: Initialize Supabase client factory, environment configuration, and connection error handling.
