@@ -1,17 +1,18 @@
 import React from 'react'
 import { Cat } from '@/types/cat'
-import { HealthRecord, HealthRecordType } from '@/types/health'
+import { HealthRecord, HealthRecordType, computeHealthStatus } from '@/types/health'
 import { catService } from '@/services/cat-service'
 import { QRCodeTag } from './QRCodeTag'
-import { X, ShieldCheck, AlertTriangle, HeartPulse, Phone, Mail, User, Plus, Sparkles, QrCode } from 'lucide-react'
+import { X, ShieldCheck, AlertTriangle, HeartPulse, Phone, Mail, User, Plus, Sparkles, QrCode, Edit3, Trash2 } from 'lucide-react'
 
 interface CatDetailModalProps {
   cat: Cat | null
   onClose: () => void
   onToggleLost: (cat: Cat) => void
+  onEditCat?: (cat: Cat) => void
 }
 
-export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, onToggleLost }) => {
+export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, onToggleLost, onEditCat }) => {
   const [healthRecords, setHealthRecords] = React.useState<HealthRecord[]>([])
   const [showAddRecord, setShowAddRecord] = React.useState(false)
   const [showQRTag, setShowQRTag] = React.useState(false)
@@ -30,6 +31,8 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
 
   if (!cat) return null
 
+  const healthSummary = computeHealthStatus(healthRecords)
+
   const handleAddHealthRecord = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!title) return
@@ -47,6 +50,11 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
     setDescription('')
     setVetName('')
     setShowAddRecord(false)
+  }
+
+  const handleDeleteRecord = async (id: string) => {
+    await catService.deleteHealthRecord(id)
+    setHealthRecords((prev) => prev.filter((r) => r.id !== id))
   }
 
   return (
@@ -105,11 +113,14 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
             }}
           />
           <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
               <h2 style={{ fontSize: '2rem', margin: 0, color: 'var(--color-text)' }}>{cat.name}</h2>
               <span className={cat.isLost ? 'badge badge-lost' : 'badge badge-safe'}>
                 {cat.isLost ? <AlertTriangle size={13} /> : <ShieldCheck size={13} />}
                 {cat.isLost ? 'MODO PERDIDO ATIVO' : 'PROTEGIDO'}
+              </span>
+              <span style={{ fontSize: '0.8rem', fontWeight: '700', color: healthSummary.colorToken }}>
+                {healthSummary.label}
               </span>
             </div>
             <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>
@@ -122,13 +133,21 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
             )}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {onEditCat && (
+              <button
+                className="btn btn-secondary"
+                onClick={() => { onClose(); onEditCat(cat); }}
+                style={{ fontSize: '0.85rem' }}
+              >
+                <Edit3 size={16} /> Editar Perfil
+              </button>
+            )}
             <button
               className={cat.isLost ? 'btn btn-secondary' : 'btn btn-danger'}
               onClick={() => onToggleLost(cat)}
             >
               {cat.isLost ? 'Desativar Modo Perdido' : '⚠️ Declarar Desaparecido'}
             </button>
-
             <button
               className="btn btn-secondary"
               onClick={() => setShowQRTag(!showQRTag)}
@@ -189,7 +208,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
 
         {/* Health Passport Section */}
         <div style={{ marginBottom: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
             <h3 style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: 'var(--color-text)' }}>
               <HeartPulse size={20} color="var(--color-success)" /> Passaporte de Saúde & Vacinas
             </h3>
@@ -291,12 +310,20 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({ cat, onClose, on
                     {hr.description && <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: '0.2rem 0 0 0' }}>{hr.description}</p>}
                     {hr.vetName && <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', margin: '0.2rem 0 0 0' }}>Vet: {hr.vetName}</p>}
                   </div>
-                  {hr.dateAdministered && (
-                    <div style={{ textAlign: 'right', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-                      <div>Aplicado: {hr.dateAdministered}</div>
-                      {hr.nextDueDate && <div style={{ color: 'var(--color-warning)', fontWeight: '600' }}>Reforço: {hr.nextDueDate}</div>}
-                    </div>
-                  )}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    {hr.dateAdministered && (
+                      <div style={{ textAlign: 'right', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+                        <div>Aplicado: {hr.dateAdministered}</div>
+                        {hr.nextDueDate && <div style={{ color: 'var(--color-warning)', fontWeight: '600' }}>Reforço: {hr.nextDueDate}</div>}
+                      </div>
+                    )}
+                    <button
+                      onClick={() => handleDeleteRecord(hr.id)}
+                      style={{ background: 'none', border: 'none', color: 'var(--color-danger)', cursor: 'pointer', opacity: 0.8 }}
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

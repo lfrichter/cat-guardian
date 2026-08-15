@@ -1,5 +1,5 @@
 import React from 'react'
-import { Cat, CreateCatInput } from '@/types/cat'
+import { Cat, CreateCatInput, UpdateCatInput } from '@/types/cat'
 import { catService } from '@/services/cat-service'
 import { authService } from '@/services/auth-service'
 import { OwnerProfile } from '@/types/owner'
@@ -16,6 +16,7 @@ export const App: React.FC = () => {
   const [cats, setCats] = React.useState<Cat[]>([])
   const [selectedCat, setSelectedCat] = React.useState<Cat | null>(null)
   const [isFormOpen, setIsFormOpen] = React.useState(false)
+  const [catToEdit, setCatToEdit] = React.useState<Cat | null>(null)
   const [aiCatTarget, setAiCatTarget] = React.useState<Cat | null>(null)
   const [isHealthAssistantOpen, setIsHealthAssistantOpen] = React.useState(false)
   const [isAuthOpen, setIsAuthOpen] = React.useState(false)
@@ -55,15 +56,29 @@ export const App: React.FC = () => {
     }
   }
 
-  const handleCreateCat = async (input: CreateCatInput) => {
-    const created = await catService.createCat({
-      ...input,
-      ownerId: currentUser?.id,
-      ownerName: currentUser?.name || input.ownerName,
-      ownerEmail: currentUser?.email || input.ownerEmail,
-      ownerPhone: currentUser?.phone || input.ownerPhone,
-    })
-    setCats((prev) => [created, ...prev])
+  const handleSaveCat = async (input: CreateCatInput | UpdateCatInput, id?: string) => {
+    if (id) {
+      const updated = await catService.updateCat(id, input as UpdateCatInput)
+      setCats((prev) => prev.map((c) => (c.id === id ? updated : c)))
+    } else {
+      const created = await catService.createCat({
+        ...(input as CreateCatInput),
+        ownerId: currentUser?.id,
+        ownerName: currentUser?.name || (input as CreateCatInput).ownerName,
+        ownerEmail: currentUser?.email || (input as CreateCatInput).ownerEmail,
+        ownerPhone: currentUser?.phone || (input as CreateCatInput).ownerPhone,
+      })
+      setCats((prev) => [created, ...prev])
+    }
+    setCatToEdit(null)
+  }
+
+  const handleDeleteCat = async (id: string) => {
+    await catService.deleteCat(id)
+    setCats((prev) => prev.filter((c) => c.id !== id))
+    if (selectedCat?.id === id) {
+      setSelectedCat(null)
+    }
   }
 
   const handleApplyAIProfile = async (catId: string, aiSummary: string) => {
@@ -114,7 +129,7 @@ export const App: React.FC = () => {
           <div>
             <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0, color: 'var(--color-text)' }}>Cat Guardian</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              Passaporte de Segurança Felino • Midnight Guardian System
+              Passaporte de Segurança Felino • Wave 2 Active
             </p>
           </div>
         </div>
@@ -147,7 +162,7 @@ export const App: React.FC = () => {
           )}
 
           <span className="badge badge-safe">
-            <ShieldCheck size={14} /> Wave 1 Auth
+            <ShieldCheck size={14} /> Jidoka Verified
           </span>
           <span style={{ color: 'var(--color-primary-light)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', fontWeight: '600' }}>
             <Sparkles size={16} color="var(--color-primary)" /> Gemini Active
@@ -166,7 +181,7 @@ export const App: React.FC = () => {
             cats={cats}
             onSelectCat={(cat) => setSelectedCat(cat)}
             onToggleLost={handleToggleLost}
-            onAddCat={() => setIsFormOpen(true)}
+            onAddCat={() => { setCatToEdit(null); setIsFormOpen(true); }}
           />
         )}
       </main>
@@ -177,14 +192,20 @@ export const App: React.FC = () => {
           cat={selectedCat}
           onClose={() => setSelectedCat(null)}
           onToggleLost={handleToggleLost}
+          onEditCat={(cat) => {
+            setCatToEdit(cat)
+            setIsFormOpen(true)
+          }}
         />
       )}
 
-      {/* Registration Form Modal */}
-      {isFormOpen && (
+      {/* Registration & Edit Form Modal */}
+      {(isFormOpen || catToEdit) && (
         <CatFormModal
-          onClose={() => setIsFormOpen(false)}
-          onSave={handleCreateCat}
+          catToEdit={catToEdit}
+          onClose={() => { setIsFormOpen(false); setCatToEdit(null); }}
+          onSave={handleSaveCat}
+          onDelete={handleDeleteCat}
         />
       )}
 

@@ -275,4 +275,36 @@ export const catService = {
     localStorage.setItem(LOCAL_STORAGE_HEALTH_KEY, JSON.stringify([newRecord, ...local]))
     return newRecord
   },
+
+  /**
+   * Delete / Archive a cat profile.
+   */
+  async deleteCat(id: string): Promise<void> {
+    if (isSupabaseConfigured()) {
+      try {
+        await (supabase.from('cats') as any).delete().eq('id', id)
+      } catch (err) {
+        logClientError({ error: err, context: 'catService.deleteCat', metadata: { id } })
+      }
+    }
+
+    const local = getLocalCats()
+    setLocalCats(local.filter((c) => c.id !== id))
+  },
+
+  /**
+   * Delete a health record.
+   */
+  async deleteHealthRecord(id: string): Promise<void> {
+    if (isSupabaseConfigured()) {
+      try {
+        await (supabase.from('health_records') as any).delete().eq('id', id)
+      } catch (err) {
+        logClientError({ error: err, context: 'catService.deleteHealthRecord', metadata: { id } })
+      }
+    }
+
+    const local = getLocalHealthRecords()
+    localStorage.setItem(LOCAL_STORAGE_HEALTH_KEY, JSON.stringify(local.filter((hr) => hr.id !== id)))
+  },
 }
