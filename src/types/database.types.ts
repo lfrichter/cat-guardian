@@ -43,6 +43,7 @@ export interface Database {
           owner_name: string
           owner_phone: string
           owner_email: string
+          owner_id?: string | null
           ai_profile_summary?: string | null
           created_at?: string
           updated_at?: string
@@ -61,6 +62,7 @@ export interface Database {
           owner_name?: string
           owner_phone?: string
           owner_email?: string
+          owner_id?: string | null
           ai_profile_summary?: string | null
           created_at?: string
           updated_at?: string
@@ -98,6 +100,70 @@ export interface Database {
           date_administered?: string | null
           next_due_date?: string | null
           vet_name?: string | null
+          created_at?: string
+        }
+      }
+      lost_incidents: {
+        Row: {
+          id: string
+          cat_id: string
+          started_at: string
+          last_seen_at: string | null
+          last_seen_location: string | null
+          notes: string | null
+          status: string
+          resolved_at: string | null
+        }
+        Insert: {
+          id?: string
+          cat_id: string
+          started_at?: string
+          last_seen_at?: string | null
+          last_seen_location?: string | null
+          notes?: string | null
+          status?: string
+          resolved_at?: string | null
+        }
+        Update: {
+          id?: string
+          cat_id?: string
+          started_at?: string
+          last_seen_at?: string | null
+          last_seen_location?: string | null
+          notes?: string | null
+          status?: string
+          resolved_at?: string | null
+        }
+      }
+      sightings: {
+        Row: {
+          id: string
+          lost_incident_id: string | null
+          cat_id: string
+          location: string
+          message: string | null
+          finder_name: string | null
+          finder_phone: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          lost_incident_id?: string | null
+          cat_id: string
+          location: string
+          message?: string | null
+          finder_name?: string | null
+          finder_phone: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          lost_incident_id?: string | null
+          cat_id?: string
+          location?: string
+          message?: string | null
+          finder_name?: string | null
+          finder_phone?: string
           created_at?: string
         }
       }

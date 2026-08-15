@@ -130,6 +130,46 @@
 - **Approval**: Human
 - **Status**: DONE (Jidoka Gate PASS)
 
+### TASK-130: Lost Incident data model
+- **Description**: Lost incident and sighting models for managing missing cat reports.
+- **Epic**: WAVE-3
+- **Risk**: HIGH
+- **Agent**: Gemini
+- **Approval**: Human
+- **Status**: DONE (Jidoka Gate PASS)
+
+### TASK-131: Lost Workflow
+- **Description**: One-click lost mode workflow with last seen location and emergency broadcast.
+- **Epic**: WAVE-3
+- **Risk**: MEDIUM
+- **Agent**: Opencoder 8B
+- **Approval**: Gemini Review
+- **Status**: DONE (Jidoka Gate PASS)
+
+### TASK-140: Public QR Page
+- **Description**: Public QR safety passport separating public rescue data from private owner details.
+- **Epic**: WAVE-3
+- **Risk**: HIGH
+- **Agent**: Gemini
+- **Approval**: Human
+- **Status**: DONE (Jidoka Gate PASS)
+
+### TASK-141: Found Report flow
+- **Description**: Sighting report form enabling finders to submit GPS location and contact info to owners.
+- **Epic**: WAVE-3
+- **Risk**: HIGH
+- **Agent**: Gemini
+- **Approval**: Human
+- **Status**: DONE (Jidoka Gate PASS)
+
+### TASK-142: Contact Relay
+- **Description**: Privacy-preserving contact relay intermediating finder and owner.
+- **Epic**: WAVE-3
+- **Risk**: HIGH
+- **Agent**: Gemini
+- **Approval**: Human
+- **Status**: DONE (Jidoka Gate PASS)
+
 ---
 
 ## EPIC-004: SAFETY

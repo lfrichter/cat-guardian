@@ -5,7 +5,7 @@ import { PublicCatPassport } from './PublicCatPassport'
 describe('PublicCatPassport UI Component', () => {
   it('renders loading state initially', () => {
     render(<PublicCatPassport catId="seed-cat-kiara" />)
-    expect(screen.getByText(/Carregando Passaporte de Segurança Felino/i)).toBeInTheDocument()
+    expect(screen.getByText(/Carregando Cartão de Segurança Felino/i)).toBeInTheDocument()
   })
 
   it('renders missing cat message when cat ID is invalid', async () => {
