@@ -14,6 +14,9 @@ export interface SightingEmailParams {
   message?: string
 }
 
+// Temporarily paused until midnight due to Resend daily quota limit reached (163/100)
+export const EMAIL_PAUSED_UNTIL_MIDNIGHT = true
+
 export const emailService = {
   /**
    * TASK-142: Send Blind Contact Relay email notification to owner via Resend API
@@ -25,6 +28,11 @@ export const emailService = {
     location,
     message,
   }: SightingEmailParams): Promise<boolean> {
+    if (EMAIL_PAUSED_UNTIL_MIDNIGHT) {
+      console.warn('[emailService] Email dispatch temporarily disabled until midnight (Resend daily quota limit exceeded).')
+      return false
+    }
+
     if (!resend) {
       console.warn('[emailService] VITE_RESEND_TOKEN missing, email skipped.')
       return false
