@@ -381,8 +381,8 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     {hr.dateAdministered && (
                       <div style={{ textAlign: 'right', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-                        <div>Aplicado: {hr.dateAdministered}</div>
-                        {hr.nextDueDate && <div style={{ color: 'var(--color-warning)', fontWeight: '600' }}>Reforço: {hr.nextDueDate}</div>}
+                        <div>{t('healthModal.administeredLabel')} {hr.dateAdministered}</div>
+                        {hr.nextDueDate && <div style={{ color: 'var(--color-warning)', fontWeight: '600' }}>{t('healthModal.boosterLabel')} {hr.nextDueDate}</div>}
                       </div>
                     )}
                     {currentUser && (

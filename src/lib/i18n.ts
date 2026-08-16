@@ -277,6 +277,8 @@ const resources = {
         subtitle: 'Assistente Preventivo de Cuidados Felinos',
         placeholder: 'Ex: Qual a frequência correta para escovar o pelo? Como estimular hidratação?',
         loading: 'Consultando diretrizes de cuidados preventivos...',
+        administeredLabel: 'Aplicado:',
+        boosterLabel: 'Reforço:',
       },
     },
   },
