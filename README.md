@@ -97,7 +97,7 @@ Explore Cat Guardian directly without registering:
 
 > **Demo Mode**: Features dedicated demonstration cats (**Oliver (Demo), Simba (Demo), Luna (Demo)**) with *Simba (Demo)* pre-configured in emergency rescue mode for instant lost-flow testing.
 >
-> **Platform Community Wall**: Displays all 10 platform felinos, including the 7 original cats (**Kiara, Golia, Meias, Vaquinha, Tigrinha, Peluda, Gamora**) owned by *Luis Richter* (`macacoharmonico@gmail.com`).
+> **Platform Community Wall**: Displays all 10 platform felinos, including the 7 original cats (**Kiara, Golia, Meias, Vaquinha, Tigrinha, Peluda, Gamora**) owned by *Luis Richter*.
 
 Click **`✨ Explore Demo Mode`** in the application header or authentication modal for instant access.
 
