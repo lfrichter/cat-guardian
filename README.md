@@ -13,6 +13,7 @@
 </p>
 
 <p align="center">
+  <a href="https://cat-guardian.vercel.app"><strong>🌐 Open Live Demo »</strong></a>&nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://github.com/lfrichter/cat-guardian"><strong>Explore GitHub Repository »</strong></a>
 </p>
 
@@ -90,6 +91,8 @@ AI is used selectively where it provides meaningful, practical value:
 
 ## 🚀 Try the Demo
 
+👉 **[🌐 Open Live Demo](https://cat-guardian.vercel.app)**
+
 Explore Cat Guardian directly without registering:
 
 > **Demo Mode**: Includes seven pre-registered cat profiles representing the project's real test scenario (**Kiara, Golia, Meias, Vaquinha, Tigrinha, Peluda, Gamora**), with *Golia* pre-configured for emergency lost flow testing.
@@ -162,7 +165,7 @@ flowchart TD
 
 Under strict privacy enforcement:
 - The public QR passport **never renders or exposes** owner email addresses, phone numbers, or physical location.
-- Finder-to-owner messages are sent via backend relay (**Resend API**) into the database `sightings` table.
+- Finder-to-owner messages are stored in the database `sightings` table and dispatched via backend relay (**Resend API**) to notify the owner, keeping owner contact details strictly confidential.
 - No `mailto:` or `tel:` links are exposed to unauthenticated public visitors.
 
 > ⚠️ **Medical Disclaimer**: Cat Guardian provides informational preventive wellness guidance and health record tracking. It does **not** replace professional veterinary diagnosis, treatment, or medical advice. Always consult a licensed veterinarian for medical emergencies or clinical diagnosis.
@@ -195,7 +198,7 @@ Cat Guardian is a hackathon prototype focused on digital identification, health 
 Cat Guardian features full internationalization:
 - **Default Locale**: English (`en`).
 - **Secondary Locale**: Brazilian Portuguese (`pt-BR`).
-- **Multilingual Database Engine**: PostgreSQL `JSONB` fields (`ai_profile_localized`) store translated profiles natively.
+- **Multilingual Data Model**: PostgreSQL `JSONB` fields (`ai_profile_localized`) store translated profiles natively.
 - **Preserved Identity**: Cat proper names (*Kiara, Golia, Meias, Vaquinha, Tigrinha, Peluda, Gamora*) remain untranslated.
 
 ---
