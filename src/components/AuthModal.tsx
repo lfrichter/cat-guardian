@@ -192,7 +192,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess }) 
             }}
             style={{ width: '100%', justifyContent: 'center', marginBottom: '1rem', borderColor: 'var(--color-primary)' }}
           >
-            <Sparkles size={16} color="var(--color-primary)" /> {t('app.exploreDemo')} (7 Cats)
+            <Sparkles size={16} color="var(--color-primary)" /> {t('app.exploreDemo')}
           </button>
         </form>
 
