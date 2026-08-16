@@ -2,6 +2,7 @@ export interface Cat {
   id: string
   name: string
   breed: string
+  breedLocalized?: Record<string, string>
   birthDate?: string
   gender: 'macho' | 'fêmea' | 'outro'
   colorPattern: string
@@ -22,6 +23,17 @@ export interface Cat {
 
 export type CreateCatInput = Omit<Cat, 'id' | 'createdAt' | 'updatedAt'>
 export type UpdateCatInput = Partial<CreateCatInput>
+
+/**
+ * Utility helper to extract localized breed based on current i18n locale ('en' | 'pt-BR')
+ */
+export function getLocalizedBreed(cat: Cat, currentLang = 'en'): string {
+  if (cat.breedLocalized) {
+    const locText = cat.breedLocalized[currentLang] || cat.breedLocalized['en'] || cat.breedLocalized['pt-BR']
+    if (locText) return locText
+  }
+  return cat.breed || ''
+}
 
 /**
  * Utility helper to extract localized AI profile summary based on current i18n locale ('en' | 'pt-BR')

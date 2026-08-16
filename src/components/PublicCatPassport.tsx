@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cat, getLocalizedCatProfile, getLocalizedColorPattern } from '@/types/cat'
+import { Cat, getLocalizedCatProfile, getLocalizedColorPattern, getLocalizedBreed } from '@/types/cat'
 import { catService } from '@/services/cat-service'
 import { lostService } from '@/services/lost-service'
 import { AlertTriangle, ShieldCheck, Send, CheckCircle2, Sparkles, MessageSquare, MapPin, Loader2 } from 'lucide-react'
@@ -151,7 +151,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
           <div>
             <h1 style={{ fontSize: '2.2rem', margin: 0, color: 'var(--color-text)' }}>{cat.name}</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '1rem', margin: '0.2rem 0' }}>
-              {cat.breed} • {cat.gender === 'fêmea' ? t('catList.female') : t('catList.male')}
+              {getLocalizedBreed(cat, i18n.language)} • {cat.gender === 'fêmea' ? t('catList.female') : t('catList.male')}
             </p>
             <p style={{ color: 'var(--color-text)', fontWeight: '600', fontSize: '0.95rem', margin: 0 }}>
               {t('catList.coatLabel')}: {getLocalizedColorPattern(cat, i18n.language)}

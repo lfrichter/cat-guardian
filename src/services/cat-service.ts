@@ -177,7 +177,8 @@ export const catService = {
             )
             .forEach((row: any) => {
               const cat = mapRowToCat(row)
-              ownedMap.set(cat.id, cat)
+              const enriched = enrichCatWithSeed(cat)
+              ownedMap.set(cat.id, enriched)
             })
         }
 
@@ -194,11 +195,8 @@ export const catService = {
                 !(row.name && row.name.includes('(Demo)') && !['Oliver (Demo)', 'Simba (Demo)', 'Luna (Demo)'].includes(row.name))
             )
             .map((row: any) => {
-              if (ownedMap.has(row.id)) {
-                return ownedMap.get(row.id)!
-              }
-              const cat = mapRowToCat(row)
-              const enriched = enrichCatWithSeed(cat)
+              const baseCat = ownedMap.has(row.id) ? ownedMap.get(row.id)! : mapRowToCat(row)
+              const enriched = enrichCatWithSeed(baseCat)
               return checkIsOwner(enriched) ? enriched : sanitizeCatForPublicRescue(enriched)
             })
         }

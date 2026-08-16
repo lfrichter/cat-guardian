@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cat, getLocalizedCatProfile, getLocalizedColorPattern } from '@/types/cat'
+import { Cat, getLocalizedCatProfile, getLocalizedColorPattern, getLocalizedBreed } from '@/types/cat'
 import { OwnerProfile } from '@/types/owner'
 import { HealthRecord, HealthRecordType, computeHealthStatus, getLocalizedHealthRecord } from '@/types/health'
 import { catService } from '@/services/cat-service'
@@ -147,7 +147,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
               </span>
             </div>
             <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>
-              {cat.breed} • {cat.gender === 'fêmea' ? t('catList.female') : t('catList.male')} • {getLocalizedColorPattern(cat, i18n.language)}
+              {getLocalizedBreed(cat, i18n.language)} • {cat.gender === 'fêmea' ? t('catList.female') : t('catList.male')} • {getLocalizedColorPattern(cat, i18n.language)}
             </p>
             {cat.microchipNumber && (
               <p style={{ color: 'var(--color-primary)', fontSize: '0.85rem', marginTop: '0.25rem', fontWeight: '600' }}>
