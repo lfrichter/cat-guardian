@@ -62,6 +62,8 @@ const resources = {
         healthStatusUnknown: '⚪ Unknown',
         viewCollarTag: 'View Collar Tag',
         hideQRTag: 'Hide QR Tag',
+        protectedContactNotice: 'Owner contact details are protected. Use the Blind Contact Relay to notify the owner securely.',
+        openBlindRelay: 'Open Blind Contact Relay Form',
         disclaimer: 'Informational safety passport. Does not replace veterinary diagnosis or official biometric identification.',
       },
       qrTag: {
@@ -197,6 +199,8 @@ const resources = {
         healthStatusUnknown: '⚪ Não Informado',
         viewCollarTag: 'Ver Tag de Coleira',
         hideQRTag: 'Ocultar Tag QR',
+        protectedContactNotice: 'Dados de contato do tutor protegidos. Utilize o Blind Contact Relay para notificar o tutor de forma anônima.',
+        openBlindRelay: 'Abrir Formulário de Contato Cego (Blind Relay)',
         disclaimer: 'Passaporte informativo de segurança. Não substitui diagnóstico veterinário nem identificação biométrica oficial.',
       },
       qrTag: {

@@ -258,14 +258,14 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
           >
             <Lock size={18} color="var(--color-warning)" style={{ marginBottom: '0.3rem' }} />
             <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-              Dados de contato do tutor protegidos. Utilize o Blind Contact Relay para notificar o tutor de forma anônima.
+              {t('passport.protectedContactNotice')}
             </p>
             <button
               className="btn btn-secondary"
               onClick={() => { onClose(); onOpenPublicPassport(cat.id); }}
               style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}
             >
-              <MessageSquare size={14} /> Abrir Formulário de Contato Cego (Blind Relay)
+              <MessageSquare size={14} /> {t('passport.openBlindRelay')}
             </button>
           </div>
         )}
