@@ -70,6 +70,15 @@ export const App: React.FC = () => {
       setIsAuthOpen(true)
       return
     }
+    const isOwner = Boolean(
+      currentUser &&
+      ((cat.ownerEmail && currentUser.email && cat.ownerEmail === currentUser.email) ||
+       (cat.ownerId && currentUser.id && cat.ownerId === currentUser.id))
+    )
+    if (!isOwner) {
+      handleOpenPublicPassport(cat.id)
+      return
+    }
     const updated = await catService.updateCat(cat.id, {
       isLost: !cat.isLost,
       lostNotes: !cat.isLost ? 'Ativado pelo tutor via painel Cat Guardian.' : undefined,
@@ -296,11 +305,11 @@ export const App: React.FC = () => {
             <CatList
               cats={displayedCats}
               titleHeading={activeTab === 'my' ? t('catList.myCatsHeading') : t('catList.allCatsHeading')}
+              currentUser={currentUser}
               isAuthenticated={Boolean(currentUser)}
               onSelectCat={(cat) => setSelectedCat(cat)}
               onToggleLost={handleToggleLost}
               onAddCat={() => { setCatToEdit(null); setIsFormOpen(true); }}
-              onRequireAuth={() => setIsAuthOpen(true)}
             />
           </>
         )}

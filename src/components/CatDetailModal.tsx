@@ -281,7 +281,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
             <h3 style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: 'var(--color-text)' }}>
               <HeartPulse size={20} color="var(--color-success)" /> {t('passport.healthRecords')}
             </h3>
-            {currentUser && (
+            {isOwner && (
               <button className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }} onClick={() => setShowAddRecord(!showAddRecord)}>
                 <Plus size={16} /> {t('passport.addRecord')}
               </button>
@@ -289,7 +289,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
           </div>
 
           {/* Add Health Record Form */}
-          {showAddRecord && currentUser && (
+          {showAddRecord && isOwner && (
             <form onSubmit={handleAddHealthRecord} style={{ background: 'var(--color-surface)', padding: '1.25rem', borderRadius: '14px', marginBottom: '1.5rem', border: '1px solid var(--glass-border)' }}>
               <h4 style={{ marginBottom: '1rem', fontSize: '1rem', color: 'var(--color-text)' }}>Novo Registro Médico</h4>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
@@ -390,7 +390,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
                         {hr.nextDueDate && <div style={{ color: 'var(--color-warning)', fontWeight: '600' }}>{t('healthModal.boosterLabel')} {hr.nextDueDate}</div>}
                       </div>
                     )}
-                    {currentUser && (
+                    {isOwner && (
                       <button
                         onClick={() => handleDeleteRecord(hr.id)}
                         style={{ background: 'none', border: 'none', color: 'var(--color-danger)', cursor: 'pointer', opacity: 0.8 }}

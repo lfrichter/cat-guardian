@@ -1,18 +1,24 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Cat, getLocalizedCatProfile, getLocalizedColorPattern, getLocalizedBreed } from '@/types/cat'
-import { ShieldCheck, AlertTriangle, QrCode, Sparkles, HeartPulse, Lock } from 'lucide-react'
+import { OwnerProfile } from '@/types/owner'
+import { ShieldCheck, AlertTriangle, QrCode, Sparkles, HeartPulse, MessageSquare } from 'lucide-react'
 
 interface CatCardProps {
   cat: Cat
-  isAuthenticated?: boolean
+  currentUser?: OwnerProfile | null
   onSelect: (cat: Cat) => void
   onToggleLost: (cat: Cat) => void
-  onRequireAuth?: () => void
 }
 
-export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect, onToggleLost, onRequireAuth }) => {
+export const CatCard: React.FC<CatCardProps> = ({ cat, currentUser, onSelect, onToggleLost }) => {
   const { t, i18n } = useTranslation()
+
+  const isOwner = Boolean(
+    currentUser &&
+    ((cat.ownerEmail && currentUser.email && cat.ownerEmail === currentUser.email) ||
+     (cat.ownerId && currentUser.id && cat.ownerId === currentUser.id))
+  )
 
   return (
     <div
@@ -43,28 +49,48 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect
           )}
         </span>
         <button
-          className="btn btn-secondary"
+          className={
+            isOwner
+              ? cat.isLost
+                ? 'btn btn-secondary'
+                : 'btn btn-secondary'
+              : cat.isLost
+              ? 'btn btn-danger'
+              : 'btn btn-secondary'
+          }
           style={{
             padding: '0.35rem 0.65rem',
             fontSize: '0.75rem',
             gap: '0.3rem',
-            borderColor: cat.isLost ? 'rgba(251, 113, 133, 0.4)' : undefined,
-            color: cat.isLost ? 'var(--color-danger)' : undefined,
+            borderColor: isOwner
+              ? cat.isLost
+                ? 'rgba(251, 113, 133, 0.4)'
+                : undefined
+              : undefined,
+            color: isOwner
+              ? cat.isLost
+                ? 'var(--color-danger)'
+                : undefined
+              : undefined,
           }}
           onClick={(e) => {
             e.stopPropagation()
-            if (!isAuthenticated && onRequireAuth) {
-              onRequireAuth()
-              return
+            if (isOwner) {
+              onToggleLost(cat)
+            } else {
+              onSelect(cat)
             }
-            onToggleLost(cat)
           }}
         >
-          {isAuthenticated ? (
-            cat.isLost ? t('catList.deactivateAlert') : t('catList.declareLost')
+          {isOwner ? (
+            cat.isLost ? t('catList.deactivateAlert') : `⚠️ ${t('catList.declareLost')}`
+          ) : cat.isLost ? (
+            <>
+              <AlertTriangle size={12} /> {t('passport.foundCatButton')}
+            </>
           ) : (
             <>
-              <Lock size={12} /> {t('catList.changeStatus')}
+              <MessageSquare size={12} /> {t('passport.sendMessageButton')}
             </>
           )}
         </button>

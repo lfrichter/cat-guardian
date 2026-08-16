@@ -1,27 +1,28 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Cat } from '@/types/cat'
+import { OwnerProfile } from '@/types/owner'
 import { CatCard } from './CatCard'
 import { Search, Plus, Cat as CatIcon } from 'lucide-react'
 
 interface CatListProps {
   cats: Cat[]
   titleHeading?: string
+  currentUser?: OwnerProfile | null
   isAuthenticated?: boolean
   onSelectCat: (cat: Cat) => void
   onToggleLost: (cat: Cat) => void
   onAddCat: () => void
-  onRequireAuth?: () => void
 }
 
 export const CatList: React.FC<CatListProps> = ({
   cats,
   titleHeading,
+  currentUser,
   isAuthenticated,
   onSelectCat,
   onToggleLost,
   onAddCat,
-  onRequireAuth,
 }) => {
   const { t } = useTranslation()
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -65,39 +66,30 @@ export const CatList: React.FC<CatListProps> = ({
                 padding: '0.75rem 1rem 0.75rem 2.75rem',
                 background: 'var(--color-surface)',
                 border: '1px solid var(--glass-border)',
-                borderRadius: '12px',
+                borderRadius: 'var(--radius-md)',
                 color: 'var(--color-text)',
-                outline: 'none',
+                fontSize: '0.95rem',
               }}
             />
           </div>
-
-          {/* Lost Filter Button */}
-          <button
-            className="btn btn-secondary"
-            onClick={() => setFilterLostOnly(!filterLostOnly)}
-            style={{
-              borderColor: filterLostOnly ? 'var(--color-danger)' : undefined,
-              color: filterLostOnly ? 'var(--color-danger)' : undefined,
-            }}
-          >
-            {filterLostOnly ? t('catList.showingLostOnly') : t('catList.filterLostOnly')}
-          </button>
         </div>
 
-        {/* Add Cat Button (Requires Auth) */}
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            if (!isAuthenticated && onRequireAuth) {
-              onRequireAuth()
-              return
-            }
-            onAddCat()
-          }}
-        >
-          <Plus size={18} /> {t('catList.addCat')}
-        </button>
+        {/* Filter Badges & Add Button */}
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <button
+            className={`btn ${filterLostOnly ? 'btn-danger' : 'btn-secondary'}`}
+            onClick={() => setFilterLostOnly(!filterLostOnly)}
+            style={{ fontSize: '0.85rem' }}
+          >
+            {filterLostOnly ? t('catList.showingLostOnly') : t('catList.filterLost')}
+          </button>
+
+          {isAuthenticated && (
+            <button className="btn btn-primary" onClick={onAddCat} style={{ fontSize: '0.85rem' }}>
+              <Plus size={16} /> {t('catList.registerCat')}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Grid List */}
@@ -126,10 +118,9 @@ export const CatList: React.FC<CatListProps> = ({
             <CatCard
               key={cat.id}
               cat={cat}
-              isAuthenticated={isAuthenticated}
+              currentUser={currentUser}
               onSelect={onSelectCat}
               onToggleLost={onToggleLost}
-              onRequireAuth={onRequireAuth}
             />
           ))}
         </div>
