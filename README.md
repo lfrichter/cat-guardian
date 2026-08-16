@@ -69,7 +69,7 @@ It combines an **AI Identification Passport**, **Dynamic QR Collar Tags**, and a
 - **Digital Safety Passport**: Centralized health records, vaccination tracking, and microchip registry.
 - **AI Visual Description**: Gemini API generates descriptive identification profiles based on visible feline traits.
 - **Multilingual JSONB Schema**: Database stores localized AI profiles natively in JSONB (`en` and `pt-BR`).
-- **Dynamic QR Collar Tag**: Scannable collar medal encoding emergency rescue passport links.
+- **Owner-Only Dynamic QR Collar Tag**: Scannable collar medal encoding emergency rescue passport links. Generation and download are strictly restricted to authenticated owners.
 - **Lost Mode Emergency Broadcast**: One-click emergency alert with visual warning banners.
 - **Blind Contact Relay**: Finder-to-owner communication interface powered by **Resend API** (zero contact info exposure).
 - **Vaccination Health Tracker**: Visual status indicators (🟢 Up to Date, 🟡 Needs Attention / Booster, ⚪ Unknown).
@@ -95,7 +95,9 @@ AI is used selectively where it provides meaningful, practical value:
 
 Explore Cat Guardian directly without registering:
 
-> **Demo Mode**: Includes seven pre-registered cat profiles representing the project's real test scenario (**Kiara, Golia, Meias, Vaquinha, Tigrinha, Peluda, Gamora**), with *Golia* pre-configured for emergency lost flow testing.
+> **Demo Mode**: Features dedicated demonstration cats (**Oliver (Demo), Simba (Demo), Luna (Demo)**) with *Simba (Demo)* pre-configured in emergency rescue mode for instant lost-flow testing.
+>
+> **Platform Community Wall**: Displays all 10 platform felinos, including the 7 original cats (**Kiara, Golia, Meias, Vaquinha, Tigrinha, Peluda, Gamora**) owned by *Luis Richter* (`macacoharmonico@gmail.com`).
 
 Click **`✨ Explore Demo Mode`** in the application header or authentication modal for instant access.
 
@@ -188,7 +190,7 @@ Cat Guardian is a hackathon prototype focused on digital identification, health 
 | :--- | :--- | :--- | :--- |
 | 1️⃣ **Lint** | `npm run lint` | ✅ **PASS** | ESLint 9 clean verification (0 errors) |
 | 2️⃣ **Typecheck** | `npm run typecheck` | ✅ **PASS** | `tsc --noEmit` zero type errors |
-| 3️⃣ **Tests** | `npm run test` | ✅ **PASS** | 21 automated tests passing |
+| 3️⃣ **Tests** | `npm run test` | ✅ **PASS** | 39 automated tests passing across 10 test files |
 | 4️⃣ **Build** | `npm run build` | ✅ **PASS** | Production bundle compiled in Vite 6 |
 
 ---
@@ -235,7 +237,7 @@ npm install
 # Run Vite dev server locally
 npm run dev
 
-# Run automated test suite (21 tests)
+# Run automated test suite (39 tests)
 npm run test
 
 # Run full Jidoka Gate validation pipeline
