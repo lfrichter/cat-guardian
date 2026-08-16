@@ -89,11 +89,41 @@ export const authService = {
           localStorage.setItem(LOCAL_STORAGE_MOCK_USER_KEY, JSON.stringify(owner))
           return owner
         }
-        if (error && !error.message.includes('FetchError') && !error.message.includes('Failed to fetch')) {
-          logClientError({ error, context: 'authService.signUp' })
-          throw error
+        if (error) {
+          if (
+            error.message?.toLowerCase().includes('rate limit') ||
+            (error as any).code === 'over_email_send_rate_limit'
+          ) {
+            console.warn('[authService] Supabase email rate limit exceeded. Falling back to local session for continuous access.')
+            const fallbackUser: OwnerProfile = {
+              id: `owner-${Date.now()}`,
+              email,
+              name: name || email.split('@')[0],
+              phone: phone || '+55 11 98888-7771',
+            }
+            localStorage.setItem(LOCAL_STORAGE_MOCK_USER_KEY, JSON.stringify(fallbackUser))
+            return fallbackUser
+          }
+          if (!error.message.includes('FetchError') && !error.message.includes('Failed to fetch')) {
+            logClientError({ error, context: 'authService.signUp' })
+            throw error
+          }
         }
       } catch (err: any) {
+        if (
+          err.message?.toLowerCase().includes('rate limit') ||
+          err.code === 'over_email_send_rate_limit'
+        ) {
+          console.warn('[authService] Supabase email rate limit exceeded. Falling back to local session for continuous access.')
+          const fallbackUser: OwnerProfile = {
+            id: `owner-${Date.now()}`,
+            email,
+            name: name || email.split('@')[0],
+            phone: phone || '+55 11 98888-7771',
+          }
+          localStorage.setItem(LOCAL_STORAGE_MOCK_USER_KEY, JSON.stringify(fallbackUser))
+          return fallbackUser
+        }
         if (err.message && !err.message.includes('FetchError') && !err.message.includes('Failed to fetch')) {
           logClientError({ error: err, context: 'authService.signUp' })
           throw err
