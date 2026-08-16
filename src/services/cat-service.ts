@@ -142,15 +142,19 @@ export const catService = {
           (currentUserEmail && seed.ownerEmail === currentUserEmail) ||
           (currentUserId && seed.ownerId === currentUserId)
         )
-        if (isUserCat) {
-          return {
-            ...cat,
-            ownerEmail: seed.ownerEmail,
-            ownerName: seed.ownerName,
-            ownerPhone: seed.ownerPhone,
-            ownerId: seed.ownerId,
-            microchipNumber: cat.microchipNumber || seed.microchipNumber,
-          }
+        return {
+          ...cat,
+          aiProfileLocalized: cat.aiProfileLocalized || seed.aiProfileLocalized,
+          colorPatternLocalized: cat.colorPatternLocalized || seed.colorPatternLocalized,
+          ...(isUserCat
+            ? {
+                ownerEmail: seed.ownerEmail,
+                ownerName: seed.ownerName,
+                ownerPhone: seed.ownerPhone,
+                ownerId: seed.ownerId,
+                microchipNumber: cat.microchipNumber || seed.microchipNumber,
+              }
+            : {}),
         }
       }
       return cat
