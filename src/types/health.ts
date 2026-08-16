@@ -5,7 +5,9 @@ export interface HealthRecord {
   catId: string
   recordType: HealthRecordType
   title: string
+  titleLocalized?: Record<string, string>
   description?: string
+  descriptionLocalized?: Record<string, string>
   dateAdministered?: string
   nextDueDate?: string
   vetName?: string
@@ -27,7 +29,7 @@ export function computeHealthStatus(records: HealthRecord[]): HealthStatusSummar
   if (vaccineRecords.length === 0) {
     return {
       level: 'UNKNOWN',
-      label: '⚪ Não Informado',
+      label: '⚪ Unknown',
       colorToken: 'var(--color-text-muted)',
     }
   }
@@ -42,14 +44,20 @@ export function computeHealthStatus(records: HealthRecord[]): HealthStatusSummar
   if (hasOverdueOrImpending) {
     return {
       level: 'NEEDS_ATTENTION',
-      label: '🟡 Requer Atenção / Reforço',
+      label: '🟡 Needs Attention / Booster',
       colorToken: 'var(--color-warning)',
     }
   }
 
   return {
     level: 'UP_TO_DATE',
-    label: '🟢 Vacinação Em Dia',
+    label: '🟢 Vaccination Up To Date',
     colorToken: 'var(--color-success)',
   }
+}
+
+export function getLocalizedHealthRecord(record: HealthRecord, currentLang = 'en'): { title: string; description?: string } {
+  const title = (record.titleLocalized && (record.titleLocalized[currentLang] || record.titleLocalized['en'])) || record.title
+  const description = (record.descriptionLocalized && (record.descriptionLocalized[currentLang] || record.descriptionLocalized['en'])) || record.description
+  return { title, description }
 }

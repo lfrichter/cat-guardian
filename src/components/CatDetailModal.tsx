@@ -1,8 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cat, getLocalizedCatProfile } from '@/types/cat'
+import { Cat, getLocalizedCatProfile, getLocalizedColorPattern } from '@/types/cat'
 import { OwnerProfile } from '@/types/owner'
-import { HealthRecord, HealthRecordType, computeHealthStatus } from '@/types/health'
+import { HealthRecord, HealthRecordType, computeHealthStatus, getLocalizedHealthRecord } from '@/types/health'
 import { catService } from '@/services/cat-service'
 import { QRCodeTag } from './QRCodeTag'
 import { X, ShieldCheck, AlertTriangle, HeartPulse, Plus, Sparkles, QrCode, Edit3, Trash2, Lock, User, Phone, Mail, MessageSquare, AlertCircle } from 'lucide-react'
@@ -140,11 +140,13 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
                 {cat.isLost ? t('catList.lostMode') : t('catList.protected')}
               </span>
               <span style={{ fontSize: '0.8rem', fontWeight: '700', color: healthSummary.colorToken }}>
-                {healthSummary.label}
+                {healthSummary.level === 'UP_TO_DATE' && t('passport.healthStatusUpToDate')}
+                {healthSummary.level === 'NEEDS_ATTENTION' && t('passport.healthStatusNeedsAttention')}
+                {healthSummary.level === 'UNKNOWN' && t('passport.healthStatusUnknown')}
               </span>
             </div>
             <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>
-              {cat.breed} • {cat.gender === 'fêmea' ? 'Fêmea' : 'Macho'} • {cat.colorPattern}
+              {cat.breed} • {cat.gender === 'fêmea' ? t('catList.female') : t('catList.male')} • {getLocalizedColorPattern(cat, i18n.language)}
             </p>
             {cat.microchipNumber && (
               <p style={{ color: 'var(--color-primary)', fontSize: '0.85rem', marginTop: '0.25rem', fontWeight: '600' }}>
@@ -353,27 +355,29 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
             <p style={{ color: 'var(--color-text-muted)', fontStyle: 'italic' }}>{t('passport.noRecords')}</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {healthRecords.map((hr) => (
-                <div
-                  key={hr.id}
-                  style={{
-                    background: 'var(--color-surface)',
-                    border: '1px solid var(--glass-border)',
-                    padding: '1rem',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
-                  <div>
-                    <span className="badge badge-safe" style={{ fontSize: '0.7rem', marginBottom: '0.3rem' }}>
-                      {hr.recordType}
-                    </span>
-                    <h4 style={{ margin: 0, fontSize: '1rem', color: 'var(--color-text)' }}>{hr.title}</h4>
-                    {hr.description && <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: '0.2rem 0 0 0' }}>{hr.description}</p>}
-                    {hr.vetName && <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', margin: '0.2rem 0 0 0' }}>Vet: {hr.vetName}</p>}
-                  </div>
+              {healthRecords.map((hr) => {
+                const locHr = getLocalizedHealthRecord(hr, i18n.language)
+                return (
+                  <div
+                    key={hr.id}
+                    style={{
+                      background: 'var(--color-surface)',
+                      border: '1px solid var(--glass-border)',
+                      padding: '1rem',
+                      borderRadius: '12px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div>
+                      <span className="badge badge-safe" style={{ fontSize: '0.7rem', marginBottom: '0.3rem' }}>
+                        {hr.recordType}
+                      </span>
+                      <h4 style={{ margin: 0, fontSize: '1rem', color: 'var(--color-text)' }}>{locHr.title}</h4>
+                      {locHr.description && <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: '0.2rem 0 0 0' }}>{locHr.description}</p>}
+                      {hr.vetName && <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', margin: '0.2rem 0 0 0' }}>Vet: {hr.vetName}</p>}
+                    </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     {hr.dateAdministered && (
                       <div style={{ textAlign: 'right', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
@@ -391,8 +395,9 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
                     )}
                   </div>
                 </div>
-              ))}
-            </div>
+              )
+            })}
+          </div>
           )}
         </div>
 

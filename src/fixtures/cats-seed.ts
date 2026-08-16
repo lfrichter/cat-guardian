@@ -172,7 +172,15 @@ export const SEED_HEALTH_RECORDS: HealthRecord[] = [
     catId: 'seed-cat-kiara',
     recordType: 'vaccine',
     title: 'Vacina V5 (Quíntupla Felina)',
+    titleLocalized: {
+      en: 'Feline V5 Vaccine (5-in-1 Combo)',
+      'pt-BR': 'Vacina V5 (Quíntupla Felina)',
+    },
     description: 'Imunização contra Panleucopenia, Calicivirose, Rinotraqueíte, Clamidiose e FeLV.',
+    descriptionLocalized: {
+      en: 'Immunization against Panleukopenia, Calicivirus, Rhinotracheitis, Chlamydia, and FeLV.',
+      'pt-BR': 'Imunização contra Panleucopenia, Calicivirose, Rinotraqueíte, Clamidiose e FeLV.',
+    },
     dateAdministered: '2025-02-10',
     nextDueDate: '2026-02-10',
     vetName: 'Dra. Amanda Silva - VetCare',
@@ -182,7 +190,15 @@ export const SEED_HEALTH_RECORDS: HealthRecord[] = [
     catId: 'seed-cat-kiara',
     recordType: 'vaccine',
     title: 'Vacina Antirrábica',
+    titleLocalized: {
+      en: 'Rabies Vaccine',
+      'pt-BR': 'Vacina Antirrábica',
+    },
     description: 'Reforço anual obrigatório contra Raiva.',
+    descriptionLocalized: {
+      en: 'Mandatory annual booster against Rabies.',
+      'pt-BR': 'Reforço anual obrigatório contra Raiva.',
+    },
     dateAdministered: '2025-02-10',
     nextDueDate: '2026-02-10',
     vetName: 'Dra. Amanda Silva - VetCare',
@@ -192,7 +208,15 @@ export const SEED_HEALTH_RECORDS: HealthRecord[] = [
     catId: 'seed-cat-meias',
     recordType: 'allergy',
     title: 'Alergia a Dipirona',
+    titleLocalized: {
+      en: 'Dipyrone Allergy',
+      'pt-BR': 'Alergia a Dipirona',
+    },
     description: 'Sensibilidade medicamentosa. Usar analgesia alternativa se necessário.',
+    descriptionLocalized: {
+      en: 'Drug sensitivity. Use alternative pain management if needed.',
+      'pt-BR': 'Sensibilidade medicamentosa. Usar analgesia alternativa se necessário.',
+    },
     dateAdministered: '2023-08-01',
     vetName: 'Dr. Roberto Rocha',
   },
