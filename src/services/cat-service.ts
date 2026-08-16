@@ -110,7 +110,29 @@ export const catService = {
         logClientError({ error: err, context: 'catService.getCats' })
       }
     }
-    return getLocalCats()
+
+    const allLocal = getLocalCats()
+    const mockUserStr = typeof window !== 'undefined' ? localStorage.getItem('cat_guardian_mock_user_v1') : null
+
+    if (mockUserStr) {
+      try {
+        const user = JSON.parse(mockUserStr)
+        if (user && user.email) {
+          return allLocal.filter(
+            (c) =>
+              c.ownerEmail === user.email ||
+              (user.email === 'demo@catguardian.dev' &&
+                (c.ownerEmail === 'demo@catguardian.dev' ||
+                  c.ownerId === 'd3000000-0000-4000-a000-000000000001' ||
+                  c.id.startsWith('seed-cat-') ||
+                  c.id.startsWith('d300ca')))
+          )
+        }
+      } catch {
+        // Fallback
+      }
+    }
+    return allLocal
   },
 
   /**
@@ -347,9 +369,14 @@ export const catService = {
   async deleteCat(id: string): Promise<void> {
     if (isSupabaseConfigured()) {
       try {
-        await (supabase.from('cats') as any).delete().eq('id', id)
+        const { error } = await (supabase.from('cats') as any).delete().eq('id', id)
+        if (error) {
+          logClientError({ error, context: 'catService.deleteCat', metadata: { id } })
+        }
+        return
       } catch (err) {
         logClientError({ error: err, context: 'catService.deleteCat', metadata: { id } })
+        return
       }
     }
 

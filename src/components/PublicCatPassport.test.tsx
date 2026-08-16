@@ -16,7 +16,7 @@ describe('PublicCatPassport UI Component', () => {
   })
 
   it('renders public safety CTA button for missing cat', async () => {
-    render(<PublicCatPassport catId="seed-cat-meias" />)
+    render(<PublicCatPassport catId="seed-cat-golia" />)
     const ctaButton = await screen.findByText(/I Found This Cat/i)
     expect(ctaButton).toBeInTheDocument()
   })
