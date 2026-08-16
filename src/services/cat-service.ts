@@ -45,6 +45,7 @@ function getLocalCats(): Cat[] {
         return {
           ...cat,
           aiProfileLocalized: cat.aiProfileLocalized || seed.aiProfileLocalized,
+          colorPatternLocalized: cat.colorPatternLocalized || seed.colorPatternLocalized,
         }
       }
       return cat

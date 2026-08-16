@@ -15,6 +15,7 @@ export interface Cat {
   ownerId?: string
   aiProfileSummary?: string
   aiProfileLocalized?: Record<string, string>
+  colorPatternLocalized?: Record<string, string>
   createdAt?: string
   updatedAt?: string
 }
@@ -31,4 +32,15 @@ export function getLocalizedCatProfile(cat: Cat, currentLang = 'en'): string {
     if (locText) return locText
   }
   return cat.aiProfileSummary || ''
+}
+
+/**
+ * Utility helper to extract localized color pattern description based on current i18n locale ('en' | 'pt-BR')
+ */
+export function getLocalizedColorPattern(cat: Cat, currentLang = 'en'): string {
+  if (cat.colorPatternLocalized) {
+    const locText = cat.colorPatternLocalized[currentLang] || cat.colorPatternLocalized['en'] || cat.colorPatternLocalized['pt-BR']
+    if (locText) return locText
+  }
+  return cat.colorPattern || ''
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cat, getLocalizedCatProfile } from '@/types/cat'
+import { Cat, getLocalizedCatProfile, getLocalizedColorPattern } from '@/types/cat'
 import { ShieldCheck, AlertTriangle, QrCode, Sparkles, HeartPulse, Lock } from 'lucide-react'
 
 interface CatCardProps {
@@ -86,7 +86,7 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect
         <div>
           <h3 style={{ fontSize: '1.3rem', fontWeight: '700', margin: 0, color: 'var(--color-text)' }}>{cat.name}</h3>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-            {cat.breed} • {cat.gender === 'fêmea' ? 'Fêmea' : 'Macho'}
+            {cat.breed} • {cat.gender === 'fêmea' ? t('catList.female') : t('catList.male')}
           </p>
           {cat.microchipNumber && (
             <p style={{ color: 'var(--color-primary)', fontSize: '0.75rem', margin: '0.2rem 0 0 0', fontWeight: '600' }}>
@@ -98,7 +98,7 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect
 
       {/* Color Pattern */}
       <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1rem', flexGrow: 1 }}>
-        {cat.colorPattern}
+        {getLocalizedColorPattern(cat, i18n.language)}
       </p>
 
       {/* AI Summary Banner */}
