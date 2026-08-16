@@ -25,8 +25,16 @@ function mapRowToCat(row: Record<string, any>): Cat {
     ownerEmail: row.owner_email || '',
     aiProfileSummary: row.ai_profile_summary,
     aiProfileLocalized: row.ai_profile_localized,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+  }
+}
+
+export function sanitizeCatForPublicRescue(cat: Cat): Cat {
+  return {
+    ...cat,
+    ownerEmail: undefined,
+    ownerPhone: undefined,
+    ownerName: undefined,
+    microchipNumber: undefined,
   }
 }
 
@@ -95,8 +103,7 @@ export const catService = {
           .select('*')
           .order('name', { ascending: true })
 
-        if (error) throw error
-        if (data && data.length > 0) {
+        if (!error && data && data.length > 0) {
           return data.map(mapRowToCat)
         }
       } catch (err) {
@@ -132,7 +139,7 @@ export const catService = {
             .single()
 
           if (!publicError && publicData) {
-            return mapRowToCat(publicData)
+            return sanitizeCatForPublicRescue(mapRowToCat(publicData))
           }
         } catch {
           // Public view query fallback for dev/test mock instances
@@ -142,7 +149,14 @@ export const catService = {
       }
     }
     const cats = getLocalCats()
-    return cats.find((c) => c.id === id) || null
+    const found = cats.find((c) => c.id === id) || null
+    if (found) {
+      const mockUser = typeof window !== 'undefined' ? localStorage.getItem('cat_guardian_mock_user_v1') : null
+      if (!mockUser) {
+        return sanitizeCatForPublicRescue(found)
+      }
+    }
+    return found
   },
 
   /**

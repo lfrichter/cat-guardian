@@ -9,9 +9,9 @@ export interface Cat {
   isLost: boolean
   lostNotes?: string
   photoUrl?: string
-  ownerName: string
-  ownerPhone: string
-  ownerEmail: string
+  ownerName?: string
+  ownerPhone?: string
+  ownerEmail?: string
   ownerId?: string
   aiProfileSummary?: string
   aiProfileLocalized?: Record<string, string>

@@ -156,11 +156,6 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
             <p style={{ color: 'var(--color-text)', fontWeight: '600', fontSize: '0.95rem', margin: 0 }}>
               {t('catList.coatLabel')}: {getLocalizedColorPattern(cat, i18n.language)}
             </p>
-            {cat.microchipNumber && (
-              <p style={{ color: 'var(--color-primary)', fontSize: '0.85rem', marginTop: '0.3rem', fontWeight: '600' }}>
-                Microchip ID: {cat.microchipNumber}
-              </p>
-            )}
           </div>
         </div>
 

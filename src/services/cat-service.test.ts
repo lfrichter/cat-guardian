@@ -14,6 +14,7 @@ describe('catService Repository & Service', () => {
   })
 
   it('retrieves a single cat profile by ID', async () => {
+    localStorage.setItem('cat_guardian_mock_user_v1', JSON.stringify({ id: 'owner-1', email: 'lucas@catguardian.dev' }))
     const kiara = await catService.getCatById('seed-cat-kiara')
     expect(kiara).not.toBeNull()
     expect(kiara?.name).toBe('Kiara')
