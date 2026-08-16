@@ -4,7 +4,7 @@ import { OwnerProfile } from '@/types/owner'
 import { HealthRecord, HealthRecordType, computeHealthStatus } from '@/types/health'
 import { catService } from '@/services/cat-service'
 import { QRCodeTag } from './QRCodeTag'
-import { X, ShieldCheck, AlertTriangle, HeartPulse, Plus, Sparkles, QrCode, Edit3, Trash2, Lock, User, Phone, Mail } from 'lucide-react'
+import { X, ShieldCheck, AlertTriangle, HeartPulse, Plus, Sparkles, QrCode, Edit3, Trash2, Lock, User, Phone, Mail, MessageSquare } from 'lucide-react'
 
 interface CatDetailModalProps {
   cat: Cat | null
@@ -13,6 +13,7 @@ interface CatDetailModalProps {
   onToggleLost: (cat: Cat) => void
   onEditCat?: (cat: Cat) => void
   onRequireAuth: () => void
+  onOpenPublicPassport: (catId: string) => void
 }
 
 export const CatDetailModal: React.FC<CatDetailModalProps> = ({
@@ -22,6 +23,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
   onToggleLost,
   onEditCat,
   onRequireAuth,
+  onOpenPublicPassport,
 }) => {
   const [healthRecords, setHealthRecords] = React.useState<HealthRecord[]>([])
   const [showAddRecord, setShowAddRecord] = React.useState(false)
@@ -44,14 +46,6 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
   if (!cat) return null
 
   const healthSummary = computeHealthStatus(healthRecords)
-
-  const handleAction = (actionFn: () => void) => {
-    if (!currentUser) {
-      onRequireAuth()
-      return
-    }
-    actionFn()
-  }
 
   const handleAddHealthRecord = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -157,27 +151,44 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
             )}
           </div>
 
-          {/* Action Buttons with Strict Auth Protection */}
+          {/* Action Buttons: Strict Auth Separation */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {onEditCat && (
+            {currentUser ? (
+              <>
+                {onEditCat && (
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => { onClose(); onEditCat(cat); }}
+                    style={{ fontSize: '0.85rem' }}
+                  >
+                    <Edit3 size={16} /> Editar Perfil
+                  </button>
+                )}
+                <button
+                  className={cat.isLost ? 'btn btn-secondary' : 'btn btn-danger'}
+                  onClick={() => onToggleLost(cat)}
+                >
+                  {cat.isLost ? 'Desativar Modo Perdido' : '⚠️ Declarar Desaparecido'}
+                </button>
+              </>
+            ) : (
               <button
-                className="btn btn-secondary"
-                onClick={() => handleAction(() => { onClose(); onEditCat(cat); })}
-                style={{ fontSize: '0.85rem' }}
+                className={cat.isLost ? 'btn btn-danger' : 'btn btn-primary'}
+                onClick={() => { onClose(); onOpenPublicPassport(cat.id); }}
+                style={{ fontSize: '0.9rem', fontWeight: '700' }}
               >
-                {currentUser ? <Edit3 size={16} /> : <Lock size={16} color="var(--color-warning)" />} Editar Perfil
+                {cat.isLost ? (
+                  <>
+                    <AlertTriangle size={16} /> Encontrei Este Felino (Notificar Tutor)
+                  </>
+                ) : (
+                  <>
+                    <MessageSquare size={16} /> Enviar Mensagem ao Tutor
+                  </>
+                )}
               </button>
             )}
-            <button
-              className={cat.isLost ? 'btn btn-secondary' : 'btn btn-danger'}
-              onClick={() => handleAction(() => onToggleLost(cat))}
-            >
-              {currentUser ? (
-                cat.isLost ? 'Desativar Modo Perdido' : '⚠️ Declarar Desaparecido'
-              ) : (
-                '🔒 Entrar para Declarar Perdido'
-              )}
-            </button>
+
             <button
               className="btn btn-secondary"
               onClick={() => setShowQRTag(!showQRTag)}
@@ -235,16 +246,23 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
             style={{
               background: 'rgba(255, 255, 255, 0.03)',
               border: '1px dashed var(--glass-border)',
-              padding: '1rem',
+              padding: '1.25rem',
               borderRadius: '12px',
               marginBottom: '2rem',
               textAlign: 'center',
             }}
           >
             <Lock size={18} color="var(--color-warning)" style={{ marginBottom: '0.3rem' }} />
-            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-              Dados de contato do tutor protegidos. Faça login para gerenciar este passaporte.
+            <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+              Dados de contato do tutor protegidos. Utilize o Blind Contact Relay para notificar o tutor de forma anônima.
             </p>
+            <button
+              className="btn btn-secondary"
+              onClick={() => { onClose(); onOpenPublicPassport(cat.id); }}
+              style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}
+            >
+              <MessageSquare size={14} /> Abrir Formulário de Contato Cego (Blind Relay)
+            </button>
           </div>
         )}
 

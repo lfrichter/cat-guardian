@@ -7,9 +7,14 @@ import { ShieldCheck, AlertTriangle, Cat as CatIcon, HeartPulse, Bell } from 'lu
 interface DashboardSummaryProps {
   cats: Cat[]
   onSelectCat: (cat: Cat) => void
+  onOpenPublicPassport?: (catId: string) => void
 }
 
-export const DashboardSummary: React.FC<DashboardSummaryProps> = ({ cats, onSelectCat }) => {
+export const DashboardSummary: React.FC<DashboardSummaryProps> = ({
+  cats,
+  onSelectCat,
+  onOpenPublicPassport,
+}) => {
   const [allHealthRecords, setAllHealthRecords] = React.useState<Record<string, HealthRecord[]>>({})
 
   React.useEffect(() => {
@@ -28,6 +33,14 @@ export const DashboardSummary: React.FC<DashboardSummaryProps> = ({ cats, onSele
     const records = allHealthRecords[cat.id] || []
     return computeHealthStatus(records).level === 'NEEDS_ATTENTION'
   }).length
+
+  const handleAlertClick = (lostCat: Cat) => {
+    if (onOpenPublicPassport) {
+      onOpenPublicPassport(lostCat.id)
+    } else {
+      onSelectCat(lostCat)
+    }
+  }
 
   return (
     <div style={{ marginBottom: '2.5rem' }}>
@@ -55,13 +68,13 @@ export const DashboardSummary: React.FC<DashboardSummaryProps> = ({ cats, onSele
                 🚨 {lostCats.length} {lostCats.length === 1 ? 'FELINO DECLARADO DESAPARECIDO' : 'FELINOS DESAPARECIDOS'}
               </h3>
               <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.85rem', opacity: 0.9 }}>
-                {lostCats.map((c) => c.name).join(', ')} — Tag QR e alertas públicos ativos.
+                {lostCats.map((c) => c.name).join(', ')} — Tag QR e alertas públicos de resgate ativos.
               </p>
             </div>
           </div>
           <button
             className="btn btn-secondary"
-            onClick={() => onSelectCat(lostCats[0])}
+            onClick={() => handleAlertClick(lostCats[0])}
             style={{ background: '#ffffff', color: 'var(--color-danger)', fontWeight: '700', border: 'none' }}
           >
             Ver Alerta de {lostCats[0].name}

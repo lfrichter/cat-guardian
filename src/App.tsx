@@ -26,8 +26,9 @@ export const App: React.FC = () => {
   const [loading, setLoading] = React.useState(true)
 
   // Public Passport URL Route Handler
-  const urlParams = new URLSearchParams(window.location.search)
-  const publicCatId = urlParams.get('catId')
+  const [activePublicCatId, setActivePublicCatId] = React.useState<string | null>(
+    new URLSearchParams(window.location.search).get('catId')
+  )
 
   const loadCats = React.useCallback(async () => {
     setLoading(true)
@@ -108,14 +109,19 @@ export const App: React.FC = () => {
     setIsProfileOpen(false)
   }
 
-  // If public Cat Passport URL parameter is active (QR code scan mode)
-  if (publicCatId) {
+  const handleOpenPublicPassport = (catId: string) => {
+    setSelectedCat(null)
+    setActivePublicCatId(catId)
+  }
+
+  // If public Cat Passport URL parameter or state is active (QR code scan or public alert view mode)
+  if (activePublicCatId) {
     return (
       <PublicCatPassport
-        catId={publicCatId}
+        catId={activePublicCatId}
         onBackToApp={() => {
           window.history.pushState({}, '', window.location.pathname)
-          window.location.reload()
+          setActivePublicCatId(null)
         }}
       />
     )
@@ -191,7 +197,11 @@ export const App: React.FC = () => {
           </div>
         ) : (
           <>
-            <DashboardSummary cats={cats} onSelectCat={(cat) => setSelectedCat(cat)} />
+            <DashboardSummary
+              cats={cats}
+              onSelectCat={(cat) => setSelectedCat(cat)}
+              onOpenPublicPassport={handleOpenPublicPassport}
+            />
             <CatList
               cats={cats}
               isAuthenticated={Boolean(currentUser)}
@@ -220,6 +230,7 @@ export const App: React.FC = () => {
             setIsFormOpen(true)
           }}
           onRequireAuth={() => setIsAuthOpen(true)}
+          onOpenPublicPassport={handleOpenPublicPassport}
         />
       )}
 
