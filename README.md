@@ -91,7 +91,7 @@ AI is used selectively where it provides meaningful, practical value:
 
 ## 🚀 Try the Demo
 
-👉 **[🌐 Open Live Demo](https://cat-guardian.vercel.app)**
+👉 **[🌐 Open Live Demo](https://cat-guardian-two.vercel.app/)**
 
 Explore Cat Guardian directly without registering:
 
