@@ -38,7 +38,17 @@ function getLocalCats(): Cat[] {
     return SEED_CATS
   }
   try {
-    return JSON.parse(stored)
+    const parsed: Cat[] = JSON.parse(stored)
+    return parsed.map((cat) => {
+      const seed = SEED_CATS.find((s) => s.id === cat.id)
+      if (seed) {
+        return {
+          ...cat,
+          aiProfileLocalized: cat.aiProfileLocalized || seed.aiProfileLocalized,
+        }
+      }
+      return cat
+    })
   } catch {
     return SEED_CATS
   }
