@@ -24,6 +24,7 @@ function mapRowToCat(row: Record<string, any>): Cat {
     ownerPhone: row.owner_phone || '',
     ownerEmail: row.owner_email || '',
     aiProfileSummary: row.ai_profile_summary,
+    aiProfileLocalized: row.ai_profile_localized,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }
@@ -136,6 +137,7 @@ export const catService = {
             owner_phone: input.ownerPhone,
             owner_email: input.ownerEmail,
             ai_profile_summary: input.aiProfileSummary,
+            ai_profile_localized: input.aiProfileLocalized,
           })
           .select()
           .single()
@@ -173,6 +175,7 @@ export const catService = {
         if (updates.ownerPhone !== undefined) payload.owner_phone = updates.ownerPhone
         if (updates.ownerEmail !== undefined) payload.owner_email = updates.ownerEmail
         if (updates.aiProfileSummary !== undefined) payload.ai_profile_summary = updates.aiProfileSummary
+        if (updates.aiProfileLocalized !== undefined) payload.ai_profile_localized = updates.aiProfileLocalized
 
         const { data, error } = await (supabase.from('cats') as any)
           .update(payload)

@@ -26,6 +26,7 @@ export interface Database {
           owner_email: string
           owner_id: string | null
           ai_profile_summary: string | null
+          ai_profile_localized: Json | null
           created_at: string
           updated_at: string
         }

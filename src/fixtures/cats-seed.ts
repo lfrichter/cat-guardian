@@ -16,6 +16,10 @@ export const SEED_CATS: Cat[] = [
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'lucas@catguardian.dev',
     aiProfileSummary: 'Gata curiosa e dócil. Pelagem tricolor vibrante com queixo branco salpicado. Costuma miar suavemente ao ouvir seu nome.',
+    aiProfileLocalized: {
+      en: 'Curious and gentle cat. Vibrant tricolor coat with speckled white chin. Meows softly when hearing her name.',
+      'pt-BR': 'Gata curiosa e dócil. Pelagem tricolor vibrante com queixo branco salpicado. Costuma miar suavemente ao ouvir seu nome.',
+    },
   },
   {
     id: 'seed-cat-golia',
@@ -31,6 +35,10 @@ export const SEED_CATS: Cat[] = [
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'lucas@catguardian.dev',
     aiProfileSummary: 'Felino de grande porte com tufo de pelos nas orelhas e cauda pomposa. Olhos verde-amarelados marcantes.',
+    aiProfileLocalized: {
+      en: 'Large feline with silver tabby markings, distinctive ear tufts and fluffy tail. Striking greenish-yellow eyes.',
+      'pt-BR': 'Felino de grande porte com tufo de pelos nas orelhas e cauda pomposa. Olhos verde-amarelados marcantes.',
+    },
   },
   {
     id: 'seed-cat-meias',
@@ -47,6 +55,10 @@ export const SEED_CATS: Cat[] = [
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'lucas@catguardian.dev',
     aiProfileSummary: 'Gato tuxedo preto e branco. Destaque para as 4 patinhas inteiramente brancas parecendo meias e um pequeno bigode preto.',
+    aiProfileLocalized: {
+      en: 'Black and white tuxedo cat. Features 4 entirely white paws resembling socks and a small black mustache mark.',
+      'pt-BR': 'Gato tuxedo preto e branco. Destaque para as 4 patinhas inteiramente brancas parecendo meias e um pequeno bigode preto.',
+    },
   },
   {
     id: 'seed-cat-vaquinha',
@@ -62,6 +74,10 @@ export const SEED_CATS: Cat[] = [
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'lucas@catguardian.dev',
     aiProfileSummary: 'Manchas padrão pele de vaca no dorso e focinho rosado. Muito tranquila e manhosa.',
+    aiProfileLocalized: {
+      en: 'Cow-print pattern with large rounded black spots on back and pink nose. Very calm and affectionate.',
+      'pt-BR': 'Manchas padrão pele de vaca no dorso e focinho rosado. Muito tranquila e manhosa.',
+    },
   },
   {
     id: 'seed-cat-tigrinha',
@@ -77,6 +93,10 @@ export const SEED_CATS: Cat[] = [
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'lucas@catguardian.dev',
     aiProfileSummary: 'Gata agilíssima com padrão clássico tigrado em tons de âmbar. Desenho de "M" bem definido na testa.',
+    aiProfileLocalized: {
+      en: 'Agile tabby cat with classic amber-gold stripes and a distinct black "M" marking on forehead.',
+      'pt-BR': 'Gata agilíssima com padrão clássico tigrado em tons de âmbar. Desenho de "M" bem definido na testa.',
+    },
   },
   {
     id: 'seed-cat-peluda',
@@ -92,6 +112,10 @@ export const SEED_CATS: Cat[] = [
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'lucas@catguardian.dev',
     aiProfileSummary: 'Pelagem extremamente longa e sedosa. Exige escovação frequente. Olhos azuis cristalinos.',
+    aiProfileLocalized: {
+      en: 'Snow white cat with extremely long silky fur and crystal blue eyes. Requires frequent grooming.',
+      'pt-BR': 'Pelagem extremamente longa e sedosa. Exige escovação frequente. Olhos azuis cristalinos.',
+    },
   },
   {
     id: 'seed-cat-gamora',
@@ -107,6 +131,10 @@ export const SEED_CATS: Cat[] = [
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'lucas@catguardian.dev',
     aiProfileSummary: 'Panterinha preta sem nenhuma mancha branca. Olhos tom amarelo âmbar inconfundíveis.',
+    aiProfileLocalized: {
+      en: 'Sleek solid black cat without any white markings. Unmistakable bright amber-yellow eyes.',
+      'pt-BR': 'Panterinha preta sem nenhuma mancha branca. Olhos tom amarelo âmbar inconfundíveis.',
+    },
   },
 ]
 

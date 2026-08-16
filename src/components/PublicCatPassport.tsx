@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cat } from '@/types/cat'
+import { Cat, getLocalizedCatProfile } from '@/types/cat'
 import { catService } from '@/services/cat-service'
 import { lostService } from '@/services/lost-service'
 import { AlertTriangle, ShieldCheck, Send, CheckCircle2, Sparkles, MessageSquare, MapPin, Loader2 } from 'lucide-react'
@@ -11,7 +11,7 @@ interface PublicCatPassportProps {
 }
 
 export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onBackToApp }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [cat, setCat] = React.useState<Cat | null>(null)
   const [loading, setLoading] = React.useState(true)
   const [showForm, setShowForm] = React.useState(false)
@@ -165,14 +165,14 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
         </div>
 
         {/* AI Safety Passport Summary */}
-        {cat.aiProfileSummary && (
+        {getLocalizedCatProfile(cat, i18n.language) && (
           <div className="ai-highlight-box" style={{ padding: '1.25rem', marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem', color: 'var(--color-primary)' }}>
               <Sparkles size={18} />
               <strong style={{ fontSize: '0.95rem' }}>{t('passport.aiPassportSummary')}</strong>
             </div>
             <p style={{ color: 'var(--color-text)', margin: 0, fontSize: '0.95rem', lineHeight: 1.5 }}>
-              {cat.aiProfileSummary}
+              {getLocalizedCatProfile(cat, i18n.language)}
             </p>
           </div>
         )}

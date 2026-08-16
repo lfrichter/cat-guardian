@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cat } from '@/types/cat'
+import { Cat, getLocalizedCatProfile } from '@/types/cat'
 import { ShieldCheck, AlertTriangle, QrCode, Sparkles, HeartPulse, Lock } from 'lucide-react'
 
 interface CatCardProps {
@@ -12,7 +12,7 @@ interface CatCardProps {
 }
 
 export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect, onToggleLost, onRequireAuth }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <div
@@ -102,7 +102,7 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect
       </p>
 
       {/* AI Summary Banner */}
-      {cat.aiProfileSummary && (
+      {getLocalizedCatProfile(cat, i18n.language) && (
         <div
           className="ai-highlight-box"
           style={{
@@ -115,7 +115,7 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect
         >
           <Sparkles size={16} color="var(--color-primary)" style={{ flexShrink: 0, marginTop: '2px' }} />
           <p style={{ fontSize: '0.78rem', color: 'var(--color-text)', margin: 0, lineHeight: 1.4 }}>
-            {cat.aiProfileSummary}
+            {getLocalizedCatProfile(cat, i18n.language)}
           </p>
         </div>
       )}

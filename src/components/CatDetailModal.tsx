@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cat } from '@/types/cat'
+import { Cat, getLocalizedCatProfile } from '@/types/cat'
 import { OwnerProfile } from '@/types/owner'
 import { HealthRecord, HealthRecordType, computeHealthStatus } from '@/types/health'
 import { catService } from '@/services/cat-service'
@@ -26,7 +26,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
   onRequireAuth,
   onOpenPublicPassport,
 }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [healthRecords, setHealthRecords] = React.useState<HealthRecord[]>([])
   const [showAddRecord, setShowAddRecord] = React.useState(false)
   const [showQRTag, setShowQRTag] = React.useState(false)
@@ -209,14 +209,14 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
         )}
 
         {/* AI Profile Section */}
-        {cat.aiProfileSummary && (
+        {getLocalizedCatProfile(cat, i18n.language) && (
           <div className="ai-highlight-box" style={{ padding: '1.25rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: 'var(--color-primary)' }}>
               <Sparkles size={18} />
               <strong style={{ fontSize: '0.95rem' }}>{t('passport.aiPassportSummary')}</strong>
             </div>
             <p style={{ color: 'var(--color-text)', margin: 0, fontSize: '0.95rem', lineHeight: 1.5 }}>
-              {cat.aiProfileSummary}
+              {getLocalizedCatProfile(cat, i18n.language)}
             </p>
           </div>
         )}
