@@ -169,6 +169,13 @@ describe('Security & Authorization Boundary Test Suite', () => {
     const demoProfile = await authService.loginAsDemoUser()
     expect(demoProfile.id).toBe('d3000000-0000-4000-a000-000000000001')
 
+    // Local / App service level isolation test
+    const demoCats = await catService.getCats()
+    expect(demoCats.every((c) => c.ownerEmail === 'demo@catguardian.dev')).toBe(true)
+    expect(demoCats.some((c) => c.ownerEmail === 'macacoharmonico@gmail.com')).toBe(false)
+    expect(demoCats.some((c) => c.name === 'Vaquinha')).toBe(false)
+    expect(demoCats.some((c) => c.name === 'Tigrinha')).toBe(false)
+
     if (isSupabaseConfigured()) {
       // 1. Demo Guardian attempts to SELECT cats owned by macacoharmonico@gmail.com
       const { data: macacoCats } = await (supabase.from('cats') as any)
@@ -192,8 +199,6 @@ describe('Security & Authorization Boundary Test Suite', () => {
         .select()
 
       expect(deleteRes === null || deleteRes.length === 0).toBe(true)
-    } else {
-      expect(true).toBe(true)
     }
   })
 

@@ -52,6 +52,9 @@ function getLocalCats(): Cat[] {
       if (seed) {
         return {
           ...cat,
+          ownerEmail: seed.ownerEmail,
+          ownerName: seed.ownerName,
+          ownerId: seed.ownerId,
           aiProfileLocalized: cat.aiProfileLocalized || seed.aiProfileLocalized,
           colorPatternLocalized: cat.colorPatternLocalized || seed.colorPatternLocalized,
         }
@@ -104,7 +107,19 @@ export const catService = {
           .order('name', { ascending: true })
 
         if (!error && data && data.length > 0) {
-          return data.map(mapRowToCat)
+          const mapped = data.map(mapRowToCat)
+          const mockUserStr = typeof window !== 'undefined' ? localStorage.getItem('cat_guardian_mock_user_v1') : null
+          if (mockUserStr) {
+            try {
+              const u = JSON.parse(mockUserStr)
+              if (u && u.email) {
+                return mapped.filter((c) => c.ownerEmail === u.email)
+              }
+            } catch {
+              // Fallback to mapped
+            }
+          }
+          return mapped
         }
       } catch (err) {
         logClientError({ error: err, context: 'catService.getCats' })
@@ -118,15 +133,7 @@ export const catService = {
       try {
         const user = JSON.parse(mockUserStr)
         if (user && user.email) {
-          return allLocal.filter(
-            (c) =>
-              c.ownerEmail === user.email ||
-              (user.email === 'demo@catguardian.dev' &&
-                (c.ownerEmail === 'demo@catguardian.dev' ||
-                  c.ownerId === 'd3000000-0000-4000-a000-000000000001' ||
-                  c.id.startsWith('seed-cat-') ||
-                  c.id.startsWith('d300ca')))
-          )
+          return allLocal.filter((c) => c.ownerEmail === user.email)
         }
       } catch {
         // Fallback

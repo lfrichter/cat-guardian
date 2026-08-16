@@ -2,6 +2,9 @@ import { Cat } from '@/types/cat'
 import { HealthRecord } from '@/types/health'
 
 export const SEED_CATS: Cat[] = [
+  // --------------------------------------------------------------------------
+  // USER 1: Demo Guardian Tutor (demo@catguardian.dev) — 3 Dedicated Demo Cats
+  // --------------------------------------------------------------------------
   {
     id: 'seed-cat-kiara',
     name: 'Kiara',
@@ -38,7 +41,7 @@ export const SEED_CATS: Cat[] = [
       'pt-BR': 'Cinza prateado / Tabby maciço',
     },
     microchipNumber: '982000341829013',
-    isLost: true,
+    isLost: true, // Lost Mode ON for emergency QR demo
     lostNotes: 'Visto pela última vez perto da praça central com coleira azul.',
     photoUrl: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=600&q=80',
     ownerName: 'Demo Guardian Tutor',
@@ -75,6 +78,10 @@ export const SEED_CATS: Cat[] = [
       'pt-BR': 'Gato tuxedo preto e branco. Destaque para as 4 patinhas inteiramente brancas parecendo meias e um pequeno bigode preto.',
     },
   },
+
+  // --------------------------------------------------------------------------
+  // USER 2: Luis Richter (macacoharmonico@gmail.com) — Private Account Cats
+  // --------------------------------------------------------------------------
   {
     id: 'seed-cat-vaquinha',
     name: 'Vaquinha',
@@ -89,9 +96,10 @@ export const SEED_CATS: Cat[] = [
     microchipNumber: '982000341829015',
     isLost: false,
     photoUrl: 'https://images.unsplash.com/photo-1561948955-570b270e7c36?auto=format&fit=crop&w=600&q=80',
-    ownerName: 'Lucas Richter',
+    ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
-    ownerEmail: 'lucas@catguardian.dev',
+    ownerEmail: 'macacoharmonico@gmail.com',
+    ownerId: 'a1000000-0000-4000-a000-000000000001',
     aiProfileSummary: 'Manchas padrão pele de vaca no dorso e focinho rosado. Muito tranquila e manhosa.',
     aiProfileLocalized: {
       en: 'Cow-print pattern with large rounded black spots on back and pink nose. Very calm and affectionate.',
@@ -112,9 +120,10 @@ export const SEED_CATS: Cat[] = [
     microchipNumber: '982000341829016',
     isLost: false,
     photoUrl: 'https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=600&q=80',
-    ownerName: 'Lucas Richter',
+    ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
-    ownerEmail: 'lucas@catguardian.dev',
+    ownerEmail: 'macacoharmonico@gmail.com',
+    ownerId: 'a1000000-0000-4000-a000-000000000001',
     aiProfileSummary: 'Gata agilíssima com padrão clássico tigrado em tons de âmbar. Desenho de "M" bem definido na testa.',
     aiProfileLocalized: {
       en: 'Agile tabby cat with classic amber-gold stripes and a distinct black "M" marking on forehead.',
@@ -135,36 +144,38 @@ export const SEED_CATS: Cat[] = [
     microchipNumber: '982000341829017',
     isLost: false,
     photoUrl: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=600&q=80',
-    ownerName: 'Lucas Richter',
+    ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
-    ownerEmail: 'lucas@catguardian.dev',
-    aiProfileSummary: 'Pelagem extremamente longa e sedosa. Exige escovação frequente. Olhos azuis cristalinos.',
+    ownerEmail: 'macacoharmonico@gmail.com',
+    ownerId: 'a1000000-0000-4000-a000-000000000001',
+    aiProfileSummary: 'Pelagem extremamente longa e sedosa, olhos azuis intensos. Requer escovação diária.',
     aiProfileLocalized: {
-      en: 'Snow white cat with extremely long silky fur and crystal blue eyes. Requires frequent grooming.',
-      'pt-BR': 'Pelagem extremamente longa e sedosa. Exige escovação frequente. Olhos azuis cristalinos.',
+      en: 'Extremely long, silky white coat with deep blue eyes. Requires daily grooming.',
+      'pt-BR': 'Pelagem extremamente longa e sedosa, olhos azuis intensos. Requer escovação diária.',
     },
   },
   {
     id: 'seed-cat-gamora',
     name: 'Gamora',
-    breed: 'Bombay / Preto Puro',
-    birthDate: '2022-05-10',
+    breed: 'Bombaim / Preto',
+    birthDate: '2023-02-10',
     gender: 'fêmea',
-    colorPattern: 'Preto melânico reluzente com olhos amarelos brilhantes',
+    colorPattern: 'Pelagem preta reluzente com olhos amarelo-cobre',
     colorPatternLocalized: {
-      en: 'Glossy solid black with bright yellow eyes',
-      'pt-BR': 'Preto melânico reluzente com olhos amarelos brilhantes',
+      en: 'Sleek black coat with copper-yellow eyes',
+      'pt-BR': 'Pelagem preta reluzente com olhos amarelo-cobre',
     },
     microchipNumber: '982000341829018',
     isLost: false,
-    photoUrl: 'https://images.unsplash.com/photo-1513245543132-31f507417b26?auto=format&fit=crop&w=600&q=80',
-    ownerName: 'Lucas Richter',
+    photoUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80',
+    ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
-    ownerEmail: 'lucas@catguardian.dev',
-    aiProfileSummary: 'Panterinha preta sem nenhuma mancha branca. Olhos tom amarelo âmbar inconfundíveis.',
+    ownerEmail: 'macacoharmonico@gmail.com',
+    ownerId: 'a1000000-0000-4000-a000-000000000001',
+    aiProfileSummary: 'Gatinha jovem com pelagem preta brilhante semelhante a uma pantera em miniatura.',
     aiProfileLocalized: {
-      en: 'Sleek solid black cat without any white markings. Unmistakable bright amber-yellow eyes.',
-      'pt-BR': 'Panterinha preta sem nenhuma mancha branca. Olhos tom amarelo âmbar inconfundíveis.',
+      en: 'Young cat with sleek black fur resembling a miniature panther. Bright copper eyes.',
+      'pt-BR': 'Gatinha jovem com pelagem preta brilhante semelhante a uma pantera em miniatura.',
     },
   },
 ]
@@ -174,53 +185,38 @@ export const SEED_HEALTH_RECORDS: HealthRecord[] = [
     id: 'hr-1',
     catId: 'seed-cat-kiara',
     recordType: 'vaccine',
-    title: 'Vacina V5 (Quíntupla Felina)',
+    title: 'Vacina V4 Felina (Quádrupla)',
     titleLocalized: {
-      en: 'Feline V5 Vaccine (5-in-1 Combo)',
-      'pt-BR': 'Vacina V5 (Quíntupla Felina)',
-    },
-    description: 'Imunização contra Panleucopenia, Calicivirose, Rinotraqueíte, Clamidiose e FeLV.',
-    descriptionLocalized: {
-      en: 'Immunization against Panleukopenia, Calicivirus, Rhinotracheitis, Chlamydia, and FeLV.',
-      'pt-BR': 'Imunização contra Panleucopenia, Calicivirose, Rinotraqueíte, Clamidiose e FeLV.',
+      en: 'Feline V4 Vaccine (Quadruple)',
+      'pt-BR': 'Vacina V4 Felina (Quádrupla)',
     },
     dateAdministered: '2025-02-10',
     nextDueDate: '2026-02-10',
-    vetName: 'Dra. Amanda Silva - VetCare',
+    vetName: 'Dra. Camila Nogueira',
+    description: 'Imunização contra rinotraqueíte, calicivirose, panleucopenia e clamidiose.',
+    descriptionLocalized: {
+      en: 'Immunization against rhinotracheitis, calicivirus, panleukopenia and chlamydiosis.',
+      'pt-BR': 'Imunização contra rinotraqueíte, calicivirose, panleucopenia e clamidiose.',
+    },
+    createdAt: '2025-02-10T10:00:00Z',
   },
   {
     id: 'hr-2',
-    catId: 'seed-cat-kiara',
+    catId: 'seed-cat-golia',
     recordType: 'vaccine',
-    title: 'Vacina Antirrábica',
+    title: 'Vacine Antirrábica Felina',
     titleLocalized: {
-      en: 'Rabies Vaccine',
-      'pt-BR': 'Vacina Antirrábica',
+      en: 'Feline Rabies Vaccine',
+      'pt-BR': 'Vacine Antirrábica Felina',
     },
-    description: 'Reforço anual obrigatório contra Raiva.',
+    dateAdministered: '2024-11-15',
+    nextDueDate: '2025-11-15',
+    vetName: 'Dr. Roberto Alves',
+    description: 'Vacina obrigatória contra raiva animal.',
     descriptionLocalized: {
-      en: 'Mandatory annual booster against Rabies.',
-      'pt-BR': 'Reforço anual obrigatório contra Raiva.',
+      en: 'Mandatory animal rabies vaccine.',
+      'pt-BR': 'Vacina obrigatória contra raiva animal.',
     },
-    dateAdministered: '2025-02-10',
-    nextDueDate: '2026-02-10',
-    vetName: 'Dra. Amanda Silva - VetCare',
-  },
-  {
-    id: 'hr-3',
-    catId: 'seed-cat-meias',
-    recordType: 'allergy',
-    title: 'Alergia a Dipirona',
-    titleLocalized: {
-      en: 'Dipyrone Allergy',
-      'pt-BR': 'Alergia a Dipirona',
-    },
-    description: 'Sensibilidade medicamentosa. Usar analgesia alternativa se necessário.',
-    descriptionLocalized: {
-      en: 'Drug sensitivity. Use alternative pain management if needed.',
-      'pt-BR': 'Sensibilidade medicamentosa. Usar analgesia alternativa se necessário.',
-    },
-    dateAdministered: '2023-08-01',
-    vetName: 'Dr. Roberto Rocha',
+    createdAt: '2024-11-15T14:30:00Z',
   },
 ]
