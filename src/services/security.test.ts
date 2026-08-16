@@ -21,7 +21,7 @@ describe('Security & Authorization Boundary Test Suite', () => {
   // --------------------------------------------------------------------------
   it('TEST 9: Anonymous finder can submit an allowed sighting via public flow', async () => {
     const sighting = await lostService.reportSighting({
-      catId: 'seed-cat-meias', // Meias (Lost Mode Active)
+      catId: 'a100ca73-0000-4000-a000-000000000003', // Meias
       location: 'Parque Central - Proximo ao lago',
       message: 'Visto perto do banco de madeira',
       finderName: 'Maria Silva',
@@ -29,16 +29,16 @@ describe('Security & Authorization Boundary Test Suite', () => {
     })
 
     expect(sighting).toBeDefined()
-    expect(sighting.catId).toBe('seed-cat-meias')
+    expect(sighting.catId).toBe('a100ca73-0000-4000-a000-000000000003')
     expect(sighting.location).toContain('Parque Central')
   })
 
   it('TEST 14: Public cat/rescue endpoint does NOT return owner_email, owner_phone, owner_id, microchip_number or private health data', async () => {
-    const publicCat = await catService.getCatById('seed-cat-kiara')
+    const publicCat = await catService.getCatById('a100ca71-0000-4000-a000-000000000001')
 
     expect(publicCat).toBeDefined()
     if (publicCat) {
-      expect(publicCat.id).toBe('seed-cat-kiara')
+      expect(publicCat.id).toBe('a100ca71-0000-4000-a000-000000000001')
       expect(publicCat.name).toBe('Kiara')
       expect(publicCat.breed).toBeDefined()
       expect(publicCat.colorPattern).toBeDefined()
@@ -73,7 +73,7 @@ describe('Security & Authorization Boundary Test Suite', () => {
     if (isSupabaseConfigured()) {
       const { data, error } = await (supabase.from('cats') as any)
         .update({ name: 'Hacked Cat Name' })
-        .eq('id', 'seed-cat-kiara')
+        .eq('id', 'a100ca71-0000-4000-a000-000000000001')
         .select()
 
       expect(data === null || data.length === 0 || error !== null).toBe(true)
@@ -86,7 +86,7 @@ describe('Security & Authorization Boundary Test Suite', () => {
     if (isSupabaseConfigured()) {
       const { data, error } = await (supabase.from('cats') as any)
         .delete()
-        .eq('id', 'seed-cat-kiara')
+        .eq('id', 'a100ca71-0000-4000-a000-000000000001')
         .select()
 
       expect(data === null || data.length === 0 || error !== null).toBe(true)
@@ -98,7 +98,7 @@ describe('Security & Authorization Boundary Test Suite', () => {
   it('TEST 3 & TEST 4 & TEST 5: Anonymous user cannot insert, update, or delete health records', async () => {
     if (isSupabaseConfigured()) {
       const { error: insertErr } = await (supabase.from('health_records') as any).insert({
-        cat_id: 'seed-cat-kiara',
+        cat_id: 'a100ca71-0000-4000-a000-000000000001',
         record_type: 'vaccine',
         title: 'Hacked Vaccine',
       })
@@ -106,13 +106,13 @@ describe('Security & Authorization Boundary Test Suite', () => {
 
       const { data: updateData } = await (supabase.from('health_records') as any)
         .update({ title: 'Corrupted Title' })
-        .eq('cat_id', 'seed-cat-kiara')
+        .eq('cat_id', 'a100ca71-0000-4000-a000-000000000001')
         .select()
       expect(updateData === null || updateData.length === 0).toBe(true)
 
       const { data: deleteData } = await (supabase.from('health_records') as any)
         .delete()
-        .eq('cat_id', 'seed-cat-kiara')
+        .eq('cat_id', 'a100ca71-0000-4000-a000-000000000001')
         .select()
       expect(deleteData === null || deleteData.length === 0).toBe(true)
     } else {
@@ -135,14 +135,14 @@ describe('Security & Authorization Boundary Test Suite', () => {
   it('TEST 7: Anonymous user cannot create, update, or delete lost incidents', async () => {
     if (isSupabaseConfigured()) {
       const { error: insertErr } = await (supabase.from('lost_incidents') as any).insert({
-        cat_id: 'seed-cat-kiara',
+        cat_id: 'a100ca71-0000-4000-a000-000000000001',
         notes: 'Malicious incident activation',
       })
       expect(insertErr).not.toBeNull()
 
       const { data: updateData } = await (supabase.from('lost_incidents') as any)
         .update({ status: 'RESOLVED' })
-        .eq('cat_id', 'seed-cat-meias')
+        .eq('cat_id', 'a100ca73-0000-4000-a000-000000000003')
         .select()
       expect(updateData === null || updateData.length === 0).toBe(true)
     } else {

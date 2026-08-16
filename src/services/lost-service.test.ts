@@ -9,20 +9,20 @@ describe('lostService (Sightings & Blind Contact Relay)', () => {
 
   it('reports a sighting by a finder and stores in repository', async () => {
     const sighting = await lostService.reportSighting({
-      catId: 'seed-cat-meias',
-      location: 'Rua Oscar Freire, 1200',
-      message: 'Gato escondido sob um carro preto',
-      finderName: 'Ana',
-      finderPhone: '11999998888',
+      catId: 'a100ca73-0000-4000-a000-000000000003',
+      finderName: 'Maria Silva',
+      finderPhone: '+55 11 99999-8888',
+      location: 'Rua Augusta, 1000 - São Paulo',
+      message: 'Gato visto perto da padaria.',
     })
 
     expect(sighting).toBeDefined()
-    expect(sighting.catId).toBe('seed-cat-meias')
-    expect(sighting.location).toBe('Rua Oscar Freire, 1200')
+    expect(sighting.catId).toBe('a100ca73-0000-4000-a000-000000000003')
+    expect(sighting.finderName).toBe('Maria Silva')
 
-    const fetched = await lostService.getSightingsForCat('seed-cat-meias')
+    const fetched = await lostService.getSightingsForCat('a100ca73-0000-4000-a000-000000000003')
     expect(fetched.length).toBeGreaterThanOrEqual(1)
-    expect(fetched[0].finderName).toBe('Ana')
+    expect(fetched[0].finderName).toBe('Maria Silva')
   })
 
   it('triggers blind contact relay email notification via emailService', async () => {

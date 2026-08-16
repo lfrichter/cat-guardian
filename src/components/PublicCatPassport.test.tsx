@@ -22,7 +22,7 @@ describe('PublicCatPassport UI Component', () => {
   })
 
   it('renders public safety CTA button for protected cat', async () => {
-    render(<PublicCatPassport catId="seed-cat-kiara" />)
+    render(<PublicCatPassport catId="a100ca71-0000-4000-a000-000000000001" />)
     const ctaButton = await screen.findByText(/Send Message to Owner/i)
     expect(ctaButton).toBeInTheDocument()
   })

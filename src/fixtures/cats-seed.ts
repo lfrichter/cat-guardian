@@ -7,7 +7,7 @@ export const SEED_CATS: Cat[] = [
   // ID: 43e0057d-7a22-4734-9a44-005ea42bf00f
   // --------------------------------------------------------------------------
   {
-    id: 'seed-cat-kiara',
+    id: 'a100ca71-0000-4000-a000-000000000001',
     name: 'Kiara',
     breed: 'SRD / Vira-lata',
     birthDate: '2021-04-12',
@@ -31,7 +31,7 @@ export const SEED_CATS: Cat[] = [
     },
   },
   {
-    id: 'seed-cat-golia',
+    id: 'a100ca72-0000-4000-a000-000000000002',
     name: 'Golia',
     breed: 'Maine Coon Mix',
     birthDate: '2020-08-20',
@@ -55,7 +55,7 @@ export const SEED_CATS: Cat[] = [
     },
   },
   {
-    id: 'seed-cat-meias',
+    id: 'a100ca73-0000-4000-a000-000000000003',
     name: 'Meias (Socks)',
     breed: 'Tuxedo / SRD',
     birthDate: '2022-01-15',
@@ -79,7 +79,7 @@ export const SEED_CATS: Cat[] = [
     },
   },
   {
-    id: 'seed-cat-vaquinha',
+    id: 'a100ca74-0000-4000-a000-000000000004',
     name: 'Vaquinha',
     breed: 'SRD',
     birthDate: '2019-11-03',
@@ -103,7 +103,7 @@ export const SEED_CATS: Cat[] = [
     },
   },
   {
-    id: 'seed-cat-tigrinha',
+    id: 'a100ca75-0000-4000-a000-000000000005',
     name: 'Tigrinha',
     breed: 'Tabby / Tigrado',
     birthDate: '2021-09-28',
@@ -127,7 +127,7 @@ export const SEED_CATS: Cat[] = [
     },
   },
   {
-    id: 'seed-cat-peluda',
+    id: 'a100ca76-0000-4000-a000-000000000006',
     name: 'Peluda',
     breed: 'Persa / Angorá Mix',
     birthDate: '2018-06-14',
@@ -151,7 +151,7 @@ export const SEED_CATS: Cat[] = [
     },
   },
   {
-    id: 'seed-cat-gamora',
+    id: 'a100ca77-0000-4000-a000-000000000007',
     name: 'Gamora',
     breed: 'Bombaim / Preto',
     birthDate: '2023-02-10',
@@ -257,7 +257,7 @@ export const SEED_CATS: Cat[] = [
 export const SEED_HEALTH_RECORDS: HealthRecord[] = [
   {
     id: 'hr-1',
-    catId: 'seed-cat-kiara',
+    catId: 'a100ca71-0000-4000-a000-000000000001',
     recordType: 'vaccine',
     title: 'Vacina V4 Felina (Quádrupla)',
     titleLocalized: {

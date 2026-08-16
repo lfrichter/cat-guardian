@@ -1,6 +1,6 @@
 -- Migration: Associate 7 Original Cats to User Account and Seed 3 Demo Cats
--- Problem: User 43e0057d-7a22-4734-9a44-005ea42bf00f (macacoharmonico@gmail.com) needs ownership of the 7 original cats. Demo account (d3000000-0000-4000-a000-000000000001) needs 3 dedicated generic demo cats (1 with Lost Mode = ON).
--- Solution: Re-assign owner_id for the 7 original cats to 43e0057d-7a22-4734-9a44-005ea42bf00f, and insert 3 distinct generic demo cats for Demo account.
+-- Problem: public.cats.id column requires strictly valid hexadecimal 36-character UUIDs.
+-- Solution: Use valid hex UUIDs (a100ca71-0000-4000-a000-000000000001 through a100ca77-0000-4000-a000-000000000007) for user cats and d300ca71-... to d300ca73-... for demo cats.
 
 DO $$
 DECLARE
@@ -28,43 +28,43 @@ BEGIN
     ai_profile_summary
   ) VALUES
   (
-    'seed-cat-kiara', v_user_id, 'Kiara', 'SRD / Vira-lata', '2021-04-12', 'fêmea',
+    'a100ca71-0000-4000-a000-000000000001', v_user_id, 'Kiara', 'SRD / Vira-lata', '2021-04-12', 'fêmea',
     'Tricolor / Calico com manchas alaranjadas e pretas', '982000341829012', false, NULL,
     'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80',
     'Luis Richter', '+55 11 98888-7771', 'macacoharmonico@gmail.com', 'Gata curiosa e dócil. Pelagem tricolor vibrante com queixo branco salpicado.'
   ),
   (
-    'seed-cat-golia', v_user_id, 'Golia', 'Maine Coon Mix', '2020-08-20', 'macho',
+    'a100ca72-0000-4000-a000-000000000002', v_user_id, 'Golia', 'Maine Coon Mix', '2020-08-20', 'macho',
     'Cinza prateado / Tabby maciço', '982000341829013', false, NULL,
     'https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=600&q=80',
     'Luis Richter', '+55 11 98888-7771', 'macacoharmonico@gmail.com', 'Felino de grande porte com tufo de pelos nas orelhas e cauda pomposa.'
   ),
   (
-    'seed-cat-meias', v_user_id, 'Meias (Socks)', 'Tuxedo / SRD', '2022-01-15', 'macho',
+    'a100ca73-0000-4000-a000-000000000003', v_user_id, 'Meias (Socks)', 'Tuxedo / SRD', '2022-01-15', 'macho',
     'Preto com peito e patinhas brancas ("Meias")', '982000341829014', false, NULL,
     'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=600&q=80',
     'Luis Richter', '+55 11 98888-7771', 'macacoharmonico@gmail.com', 'Gato tuxedo preto e branco com 4 patinhas brancas.'
   ),
   (
-    'seed-cat-vaquinha', v_user_id, 'Vaquinha', 'SRD', '2019-11-03', 'fêmea',
+    'a100ca74-0000-4000-a000-000000000004', v_user_id, 'Vaquinha', 'SRD', '2019-11-03', 'fêmea',
     'Branco com grandes manchas pretas arredondadas', '982000341829015', false, NULL,
     'https://images.unsplash.com/photo-1561948955-570b270e7c36?auto=format&fit=crop&w=600&q=80',
     'Luis Richter', '+55 11 98888-7771', 'macacoharmonico@gmail.com', 'Manchas padrão pele de vaca no dorso e focinho rosado.'
   ),
   (
-    'seed-cat-tigrinha', v_user_id, 'Tigrinha', 'Tabby / Tigrado', '2021-09-28', 'fêmea',
+    'a100ca75-0000-4000-a000-000000000005', v_user_id, 'Tigrinha', 'Tabby / Tigrado', '2021-09-28', 'fêmea',
     'Tigrado dourado e marrom com riscos pretos em M na testa', '982000341829016', false, NULL,
     'https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=600&q=80',
     'Luis Richter', '+55 11 98888-7771', 'macacoharmonico@gmail.com', 'Gata agilíssima com padrão clássico tigrado em tons de âmbar.'
   ),
   (
-    'seed-cat-peluda', v_user_id, 'Peluda', 'Persa / Angorá Mix', '2018-06-14', 'fêmea',
+    'a100ca76-0000-4000-a000-000000000006', v_user_id, 'Peluda', 'Persa / Angorá Mix', '2018-06-14', 'fêmea',
     'Branco neve com pelagem longa e densa', '982000341829017', false, NULL,
     'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=600&q=80',
     'Luis Richter', '+55 11 98888-7771', 'macacoharmonico@gmail.com', 'Pelagem extremamente longa e sedosa, olhos azuis intensos.'
   ),
   (
-    'seed-cat-gamora', v_user_id, 'Gamora', 'Bombaim / Preto', '2023-02-10', 'fêmea',
+    'a100ca77-0000-4000-a000-000000000007', v_user_id, 'Gamora', 'Bombaim / Preto', '2023-02-10', 'fêmea',
     'Pelagem preta reluzente com olhos amarelo-cobre', '982000341829018', false, NULL,
     'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80',
     'Luis Richter', '+55 11 98888-7771', 'macacoharmonico@gmail.com', 'Gatinha jovem com pelagem preta brilhante semelhante a uma pantera em miniatura.'
