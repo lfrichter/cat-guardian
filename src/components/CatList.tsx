@@ -6,6 +6,7 @@ import { Search, Plus, Cat as CatIcon } from 'lucide-react'
 
 interface CatListProps {
   cats: Cat[]
+  titleHeading?: string
   isAuthenticated?: boolean
   onSelectCat: (cat: Cat) => void
   onToggleLost: (cat: Cat) => void
@@ -15,6 +16,7 @@ interface CatListProps {
 
 export const CatList: React.FC<CatListProps> = ({
   cats,
+  titleHeading,
   isAuthenticated,
   onSelectCat,
   onToggleLost,
@@ -37,6 +39,13 @@ export const CatList: React.FC<CatListProps> = ({
 
   return (
     <div>
+      {titleHeading && (
+        <div style={{ marginBottom: '1.25rem' }}>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: '800', margin: 0, color: 'var(--color-text)' }}>
+            {titleHeading}
+          </h3>
+        </div>
+      )}
       {/* Controls Bar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div style={{ display: 'flex', gap: '1rem', flex: 1, minWidth: '280px', flexWrap: 'wrap' }}>

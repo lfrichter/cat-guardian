@@ -27,6 +27,17 @@ export const App: React.FC = () => {
   const [currentUser, setCurrentUser] = React.useState<OwnerProfile | null>(null)
   const [loading, setLoading] = React.useState(true)
 
+  const [activeTab, setActiveTab] = React.useState<'all' | 'my'>('all')
+
+  const myCats = React.useMemo(() => {
+    if (!currentUser) return []
+    return cats.filter(
+      (c) => c.ownerEmail === currentUser.email || (c.ownerId && c.ownerId === currentUser.id)
+    )
+  }, [cats, currentUser])
+
+  const displayedCats = activeTab === 'my' ? myCats : cats
+
   // Public Passport URL Route Handler
   const [activePublicCatId, setActivePublicCatId] = React.useState<string | null>(
     new URLSearchParams(window.location.search).get('catId')
@@ -86,6 +97,7 @@ export const App: React.FC = () => {
         ownerPhone: currentUser.phone,
       })
       setCats((prev) => [created, ...prev])
+      setActiveTab('my')
     }
     setCatToEdit(null)
   }
@@ -113,6 +125,7 @@ export const App: React.FC = () => {
   const handleSignOut = async () => {
     await authService.signOut()
     setCurrentUser(null)
+    setActiveTab('all')
     setIsProfileOpen(false)
   }
 
@@ -184,6 +197,7 @@ export const App: React.FC = () => {
               onClick={async () => {
                 const demo = await authService.loginAsDemoUser()
                 setCurrentUser(demo)
+                setActiveTab('my')
               }}
               style={{ padding: '0.5rem 0.8rem', fontSize: '0.85rem', borderColor: 'var(--color-primary)' }}
             >
@@ -231,13 +245,61 @@ export const App: React.FC = () => {
           </div>
         ) : (
           <>
+            {/* View Mode Navigation Tabs: Todos os Gatos vs Meus Gatos */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '0.5rem',
+                marginBottom: '1.5rem',
+                background: 'var(--color-surface)',
+                padding: '0.4rem',
+                borderRadius: '16px',
+                border: '1px solid var(--glass-border)',
+                width: 'fit-content',
+              }}
+            >
+              <button
+                className={`btn ${activeTab === 'all' ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => setActiveTab('all')}
+                style={{
+                  fontSize: '0.88rem',
+                  fontWeight: '700',
+                  padding: '0.55rem 1.25rem',
+                  borderRadius: '12px',
+                  border: activeTab === 'all' ? undefined : 'none',
+                }}
+              >
+                <Globe size={16} /> {t('app.allCats')} ({cats.length})
+              </button>
+              <button
+                className={`btn ${activeTab === 'my' ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => {
+                  if (!currentUser) {
+                    setIsAuthOpen(true)
+                    return
+                  }
+                  setActiveTab('my')
+                }}
+                style={{
+                  fontSize: '0.88rem',
+                  fontWeight: '700',
+                  padding: '0.55rem 1.25rem',
+                  borderRadius: '12px',
+                  border: activeTab === 'my' ? undefined : 'none',
+                }}
+              >
+                <User size={16} /> {t('app.myCats')} {currentUser ? `(${myCats.length})` : ''}
+              </button>
+            </div>
+
             <DashboardSummary
-              cats={cats}
+              cats={displayedCats}
               onSelectCat={(cat) => setSelectedCat(cat)}
               onOpenPublicPassport={handleOpenPublicPassport}
             />
             <CatList
-              cats={cats}
+              cats={displayedCats}
+              titleHeading={activeTab === 'my' ? t('catList.myCatsHeading') : t('catList.allCatsHeading')}
               isAuthenticated={Boolean(currentUser)}
               onSelectCat={(cat) => setSelectedCat(cat)}
               onToggleLost={handleToggleLost}

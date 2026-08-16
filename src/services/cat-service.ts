@@ -104,9 +104,22 @@ function getLocalHealthRecords(): HealthRecord[] {
 
 export const catService = {
   /**
-   * Fetch all registered cat profiles.
+   * Fetch all registered cat profiles across the platform.
    */
   async getCats(): Promise<Cat[]> {
+    const mockUserStr = typeof window !== 'undefined' ? localStorage.getItem('cat_guardian_mock_user_v1') : null
+    let currentUserEmail = ''
+    let currentUserId = ''
+    if (mockUserStr) {
+      try {
+        const u = JSON.parse(mockUserStr)
+        currentUserEmail = u.email || ''
+        currentUserId = u.id || ''
+      } catch {
+        // ignore
+      }
+    }
+
     if (isSupabaseConfigured()) {
       try {
         const { data, error } = await supabase
@@ -115,19 +128,13 @@ export const catService = {
           .order('name', { ascending: true })
 
         if (!error && data && data.length > 0) {
-          const mapped = data.map(mapRowToCat)
-          const mockUserStr = typeof window !== 'undefined' ? localStorage.getItem('cat_guardian_mock_user_v1') : null
-          if (mockUserStr) {
-            try {
-              const u = JSON.parse(mockUserStr)
-              if (u && u.email) {
-                return mapped.filter((c) => c.ownerEmail === u.email)
-              }
-            } catch {
-              // Fallback to mapped
-            }
-          }
-          return mapped
+          return data.map(mapRowToCat).map((c) => {
+            const isOwner = Boolean(
+              (currentUserEmail && c.ownerEmail === currentUserEmail) ||
+              (currentUserId && c.ownerId === currentUserId)
+            )
+            return isOwner ? c : sanitizeCatForPublicRescue(c)
+          })
         }
       } catch (err) {
         logClientError({ error: err, context: 'catService.getCats' })
@@ -135,19 +142,24 @@ export const catService = {
     }
 
     const allLocal = getLocalCats()
-    const mockUserStr = typeof window !== 'undefined' ? localStorage.getItem('cat_guardian_mock_user_v1') : null
+    return allLocal.map((c) => {
+      const isOwner = Boolean(
+        (currentUserEmail && c.ownerEmail === currentUserEmail) ||
+        (currentUserId && c.ownerId === currentUserId)
+      )
+      return isOwner ? c : sanitizeCatForPublicRescue(c)
+    })
+  },
 
-    if (mockUserStr) {
-      try {
-        const user = JSON.parse(mockUserStr)
-        if (user && user.email) {
-          return allLocal.filter((c) => c.ownerEmail === user.email)
-        }
-      } catch {
-        // Fallback
-      }
-    }
-    return allLocal
+  /**
+   * Fetch only the cats belonging to a specific owner.
+   */
+  async getMyCats(ownerEmail?: string, ownerId?: string): Promise<Cat[]> {
+    const all = await this.getCats()
+    if (!ownerEmail && !ownerId) return []
+    return all.filter(
+      (c) => (ownerEmail && c.ownerEmail === ownerEmail) || (ownerId && c.ownerId === ownerId)
+    )
   },
 
   /**

@@ -170,7 +170,7 @@ describe('Security & Authorization Boundary Test Suite', () => {
     expect(demoProfile.id).toBe('d3000000-0000-4000-a000-000000000001')
 
     // Local / App service level isolation test
-    const demoCats = await catService.getCats()
+    const demoCats = await catService.getMyCats(demoProfile.email, demoProfile.id)
     expect(demoCats.every((c) => c.ownerEmail === 'demo@catguardian.dev')).toBe(true)
     expect(demoCats.some((c) => c.ownerEmail === 'macacoharmonico@gmail.com')).toBe(false)
     expect(demoCats.some((c) => c.name === 'Vaquinha')).toBe(false)
