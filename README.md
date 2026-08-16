@@ -16,19 +16,23 @@
 
 ## 📌 Executive Summary & Problem Statement
 
-Millions of indoor and domestic cats go missing every year. Traditional paper health records get misplaced, physical collar tags often expose private owner details (phone numbers and home addresses) to anyone in public, and emergency rescue response is fragmented during critical hours.
+> **Losing a pet is stressful. Finding one quickly can depend on having the right information available at the right time.**
 
-**Cat Guardian** is a digital pet safety platform designed to solve this crisis. It provides:
+Cat Guardian was created around a simple idea: give every cat a digital identity that can help protect, identify, and reunite them with their owners.
+
+Traditional paper health records get misplaced, physical collar tags often expose private owner details (phone numbers and home addresses) to anyone in public, and emergency rescue response is fragmented during critical hours.
+
+**Cat Guardian** provides:
 1. **Digital Safety Passport**: Centralized health records, vaccination tracking, and microchip registry.
-2. **AI Visual Identification**: Gemini API analyzes feline physical traits (coat pattern, eye color, distinctive markings) to generate precise identification summaries.
+2. **AI Visual Identification**: Gemini API generate descriptive identification profiles based on visible traits such as coat pattern, eye color and distinctive markings.
 3. **Public QR Code Collar Tag**: A scannable medal attached to the collar linking to a public rescue card.
-4. **Blind Contact Relay**: When a missing cat is found, the finder reports a sighting without revealing the owner's phone or email on screen. The system intermediates communication securely and dispatches instant email alerts via **Resend API**.
+4. **Blind Contact Relay**: When a missing cat is found, the finder reports a sighting without revealing the owner's phone or email on screen. The system sends email notifications to the owner securely via **Resend API**.
 
 ---
 
 ## 🎨 Design System: Midnight Guardian
 
-The application interface operates strictly under the **Midnight Guardian Design System** ([`docs/Design-System.md`](file:///Users/master/projects/hackaton/cat-guardian/docs/Design-System.md)):
+The application interface operates strictly under the **Midnight Guardian Design System** ([docs/Design-System.md](docs/Design-System.md)):
 
 | CSS Variable / Token | Color Hex | Role / Application |
 | :--- | :--- | :--- |
@@ -45,9 +49,9 @@ The application interface operates strictly under the **Midnight Guardian Design
 
 ---
 
-## 🏗️ AI Software Engineering Framework 2.0 Architecture
+## 🏗️ AI-Assisted Engineering Workflow (Framework 2.0)
 
-The project was engineered autonomously using the **AI Software Engineering Framework 2.0**, featuring a **Risk Router**, multi-agent task execution, and automated **Jidoka Quality Gates**.
+The project was developed using an AI-assisted engineering workflow based on my **AI Software Engineering Framework 2.0**, featuring a **Risk Router**, multi-agent task execution, and automated **Jidoka Quality Gates**.
 
 ```mermaid
 ---
@@ -67,7 +71,8 @@ flowchart TD
     WorkerOpenCoder --> Jidoka
     WorkerGemini --> Jidoka
 
-    Jidoka -->|Lint / Typecheck / Vitest / Build PASS| Approval["✅ Automated Branch Merge"]
+    Jidoka -->|Lint / Typecheck / Vitest / Build PASS| HumanApprove{"👤 Human Approval"}
+    HumanApprove -->|Authorized| Merge["✅ Branch Merge"]
     Jidoka -->|Validation FAIL| AndonCord["🚨 Andon Cord Triggered (Halt & Fix)"]
 ```
 
@@ -88,17 +93,19 @@ flowchart TD
 
 ## 📋 Master Backlog & Project Status (100% Completed)
 
-### Phase 1 & 2: MVP Foundation & Safety Core
+### Phase 1 — Foundation & Safety Core
 - [x] **EPIC-001: FOUNDATION** — Scaffold Vite 6 + React 19 + TypeScript + Supabase Client + Logging.
 - [x] **EPIC-002: CATS** — Seed Data for 7 Cats (Kiara, Golia, Meias, Vaquinha, Tigrinha, Peluda, Gamora) + Cat Management.
 - [x] **EPIC-003: AI** — Gemini API Integration + AI Profile Generator + Preventive Health Assistant.
 - [x] **EPIC-004: SAFETY** — Lost Mode Toggle + Dynamic QR Code Collar Tag + Public Rescue Passport.
 
-### Phase 2 & 3: Release Candidate Refinements
-- [x] **WAVE 1: AUTH & SECURITY** — Supabase Auth, Owner Model, Cat Ownership Association, RLS Policies ([`20260815000001_add_auth_and_rls.sql`](file:///Users/master/projects/hackaton/cat-guardian/supabase/migrations/20260815000001_add_auth_and_rls.sql)).
+### Phase 2 — Product Refinement
+- [x] **WAVE 1: AUTH & SECURITY** — Supabase Auth, Owner Model, Cat Ownership Association, RLS Policies ([supabase/migrations/20260815000001_add_auth_and_rls.sql](supabase/migrations/20260815000001_add_auth_and_rls.sql)).
 - [x] **WAVE 2: CAT & HEALTH MANAGEMENT** — Reusable `CatForm` (Create/Edit/Delete), Health Records CRUD, Vaccination Status indicators (🟢 Up to Date, 🟡 Needs Attention, ⚪ Unknown).
-- [x] **WAVE 3: LOST & FOUND FLOW** — Sighting Reports Schema ([`20260815000002_add_lost_and_found_tables.sql`](file:///Users/master/projects/hackaton/cat-guardian/supabase/migrations/20260815000002_add_lost_and_found_tables.sql)), Public QR Page Architecture, Blind Contact Relay with Resend Email API.
-- [x] **WAVE 4: I18N, DEMO MODE & UX POLISH** — Internationalization (EN / pt-BR), "Explore Demo" Golden Path, AI Language Awareness, Medical Disclaimer, Mobile Polish.
+- [x] **WAVE 3: LOST & FOUND FLOW** — Sighting Reports Schema ([supabase/migrations/20260815000002_add_lost_and_found_tables.sql](supabase/migrations/20260815000002_add_lost_and_found_tables.sql)), Public QR Page Architecture, Blind Contact Relay with Resend Email API.
+
+### Phase 3 — Release Candidate
+- [x] **WAVE 4: I18N, DEMO MODE & UX POLISH** — Internationalization (EN / pt-BR), JSONB Multilingual Schema ([supabase/migrations/20260815000003_add_jsonb_localization.sql](supabase/migrations/20260815000003_add_jsonb_localization.sql)), "Explore Demo" Golden Path, AI Language Awareness, Medical Disclaimer, Mobile Polish.
 - [x] **WAVE 5: DOCUMENTATION & SUBMISSION** — Final README, Architecture Diagram, Jidoka Certification.
 
 ---
@@ -109,30 +116,26 @@ flowchart TD
 | :--- | :--- | :--- | :--- |
 | 1️⃣ **Lint** | `npm run lint` | ✅ **PASS** | ESLint 9 clean verification (0 errors) |
 | 2️⃣ **Typecheck** | `npm run typecheck` | ✅ **PASS** | `tsc --noEmit` zero type errors |
-| 3️⃣ **Tests** | `npm run test` | ✅ **PASS** | 21/21 Unit & E2E Tests passing in Vitest |
+| 3️⃣ **Tests** | `npm run test` | ✅ **PASS** | 21 automated tests passing |
 | 4️⃣ **Build** | `npm run build` | ✅ **PASS** | Production bundle compiled in Vite 6 |
 
 ---
 
-## 🖼️ Application Screenshots (Production Placeholders)
-
-*Note: Production screenshots will be added below prior to submission.*
+## 🖼️ Application Screenshots
 
 ### 1. Operational Safety Dashboard
-> *Placeholder: Overview of safety status, registered cats grid, and emergency lost incident alerts.*
-> `![Dashboard Screenshot](docs/screenshots/dashboard.png)`
+![Cat Guardian Dashboard](docs/screenshots/Cat-Guardian--Dashboard.png)
 
 ### 2. Digital Health Passport & Medical Records
-> *Placeholder: Detailed cat modal showing vaccination status indicators, health records history, and medical disclaimer.*
-> `![Health Passport Screenshot](docs/screenshots/health-passport.png)`
+![Digital Health Passport](docs/screenshots/Cat-Guardian--DigitalHealthPassport.png)
 
 ### 3. QR Code Collar Tag Generator
-> *Placeholder: Printable 400x480 PNG medal preview encoded for cat collar tags.*
-> `![QR Tag Screenshot](docs/screenshots/qr-tag.png)`
+![Collar Tag](docs/screenshots/Cat-Guardian--Collar-Tag.png)
 
 ### 4. Public Rescue Passport & Blind Contact Relay
-> *Placeholder: Public QR scan view displaying lost cat alert, descriptive AI traits, and the secure sighting submission form.*
-> `![Public Rescue Passport Screenshot](docs/screenshots/public-passport.png)`
+![Public Rescue Passport](docs/screenshots/Cat-Guardian--PublicRescuePassport.png)
+
+![Blind Contact Relay](docs/screenshots/Cat-Guardian--Blind-Contact-Relay.png)
 
 ---
 
