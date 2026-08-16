@@ -120,6 +120,11 @@ const resources = {
         placeholderColorPattern: 'e.g. Black with white chest and paws',
         placeholderAiNotes: 'e.g. Small pink spot on nose, easily scared by thunder...',
       },
+      healthModal: {
+        subtitle: 'Feline Preventive Care Assistant',
+        placeholder: 'e.g. How often should I brush long fur? How to encourage water intake?',
+        loading: 'Consulting preventive care guidelines...',
+      },
     },
   },
   'pt-BR': {
@@ -239,6 +244,11 @@ const resources = {
         placeholderMicrochip: 'Ex: 982000341...',
         placeholderColorPattern: 'Ex: Branco com manchas pretas estilo Tuxedo',
         placeholderAiNotes: 'Ex: Manchinha rosa na ponta do focinho, assustado com trovoada...',
+      },
+      healthModal: {
+        subtitle: 'Assistente Preventivo de Cuidados Felinos',
+        placeholder: 'Ex: Qual a frequência correta para escovar o pelo? Como estimular hidratação?',
+        loading: 'Consultando diretrizes de cuidados preventivos...',
       },
     },
   },

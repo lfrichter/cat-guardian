@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cat } from '@/types/cat'
 import { aiService, AIHealthAssistantResponse } from '@/services/ai-service'
 import { X, HeartPulse, Send, AlertCircle } from 'lucide-react'
@@ -9,6 +10,7 @@ interface AIHealthAssistantModalProps {
 }
 
 export const AIHealthAssistantModal: React.FC<AIHealthAssistantModalProps> = ({ cat, onClose }) => {
+  const { t, i18n } = useTranslation()
   const [question, setQuestion] = React.useState('')
   const [loading, setLoading] = React.useState(false)
   const [response, setResponse] = React.useState<AIHealthAssistantResponse | null>(null)
@@ -19,7 +21,11 @@ export const AIHealthAssistantModal: React.FC<AIHealthAssistantModalProps> = ({ 
 
     setLoading(true)
     try {
-      const res = await aiService.getHealthAdvice(question, cat ? { name: cat.name, breed: cat.breed } : undefined)
+      const res = await aiService.getHealthAdvice(
+        question,
+        cat ? { name: cat.name, breed: cat.breed } : undefined,
+        i18n.language
+      )
       setResponse(res)
     } finally {
       setLoading(false)
@@ -74,7 +80,7 @@ export const AIHealthAssistantModal: React.FC<AIHealthAssistantModalProps> = ({ 
           <div>
             <h2 style={{ fontSize: '1.5rem', margin: 0, color: 'var(--color-text)' }}>Guardian AI Health</h2>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              Assistente Preventivo de Cuidados Felinos {cat ? `• ${cat.name}` : ''}
+              {t('healthModal.subtitle')} {cat ? `• ${cat.name}` : ''}
             </p>
           </div>
         </div>
@@ -87,7 +93,7 @@ export const AIHealthAssistantModal: React.FC<AIHealthAssistantModalProps> = ({ 
               required
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ex: Qual a frequência correta para escovar o pelo? Como estimular hidratação?"
+              placeholder={t('healthModal.placeholder')}
               style={{
                 width: '100%',
                 padding: '0.85rem 3.25rem 0.85rem 1rem',
@@ -123,7 +129,7 @@ export const AIHealthAssistantModal: React.FC<AIHealthAssistantModalProps> = ({ 
         {/* Loading */}
         {loading && (
           <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-text-muted)' }}>
-            Consultando diretrizes de cuidados preventivos...
+            {t('healthModal.loading')}
           </div>
         )}
 
