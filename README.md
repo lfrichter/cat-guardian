@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a href="https://cat-guardian.vercel.app"><strong>🌐 Open Live Demo »</strong></a>&nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="https://cat-guardian-two.vercel.app/"><strong>🌐 Open Live Demo »</strong></a>&nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://github.com/lfrichter/cat-guardian"><strong>Explore GitHub Repository »</strong></a>
 </p>
 
