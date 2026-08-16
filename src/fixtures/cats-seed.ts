@@ -3,7 +3,8 @@ import { HealthRecord } from '@/types/health'
 
 export const SEED_CATS: Cat[] = [
   // --------------------------------------------------------------------------
-  // USER 1: Demo Guardian Tutor (demo@catguardian.dev) — 3 Dedicated Demo Cats
+  // USER ACCOUNT: Luis Richter (macacoharmonico@gmail.com) — 7 Original Cats
+  // ID: 43e0057d-7a22-4734-9a44-005ea42bf00f
   // --------------------------------------------------------------------------
   {
     id: 'seed-cat-kiara',
@@ -19,10 +20,10 @@ export const SEED_CATS: Cat[] = [
     microchipNumber: '982000341829012',
     isLost: false,
     photoUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80',
-    ownerName: 'Demo Guardian Tutor',
+    ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
-    ownerEmail: 'demo@catguardian.dev',
-    ownerId: 'd3000000-0000-4000-a000-000000000001',
+    ownerEmail: 'macacoharmonico@gmail.com',
+    ownerId: '43e0057d-7a22-4734-9a44-005ea42bf00f',
     aiProfileSummary: 'Gata curiosa e dócil. Pelagem tricolor vibrante com queixo branco salpicado. Costuma miar suavemente ao ouvir seu nome.',
     aiProfileLocalized: {
       en: 'Curious and gentle cat. Vibrant tricolor coat with speckled white chin. Meows softly when hearing her name.',
@@ -41,13 +42,12 @@ export const SEED_CATS: Cat[] = [
       'pt-BR': 'Cinza prateado / Tabby maciço',
     },
     microchipNumber: '982000341829013',
-    isLost: true, // Lost Mode ON for emergency QR demo
-    lostNotes: 'Visto pela última vez perto da praça central com coleira azul.',
+    isLost: false,
     photoUrl: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=600&q=80',
-    ownerName: 'Demo Guardian Tutor',
+    ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
-    ownerEmail: 'demo@catguardian.dev',
-    ownerId: 'd3000000-0000-4000-a000-000000000001',
+    ownerEmail: 'macacoharmonico@gmail.com',
+    ownerId: '43e0057d-7a22-4734-9a44-005ea42bf00f',
     aiProfileSummary: 'Felino de grande porte com tufo de pelos nas orelhas e cauda pomposa. Olhos verde-amarelados marcantes.',
     aiProfileLocalized: {
       en: 'Large feline with silver tabby markings, distinctive ear tufts and fluffy tail. Striking greenish-yellow eyes.',
@@ -68,20 +68,16 @@ export const SEED_CATS: Cat[] = [
     microchipNumber: '982000341829014',
     isLost: false,
     photoUrl: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=600&q=80',
-    ownerName: 'Demo Guardian Tutor',
+    ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
-    ownerEmail: 'demo@catguardian.dev',
-    ownerId: 'd3000000-0000-4000-a000-000000000001',
+    ownerEmail: 'macacoharmonico@gmail.com',
+    ownerId: '43e0057d-7a22-4734-9a44-005ea42bf00f',
     aiProfileSummary: 'Gato tuxedo preto e branco. Destaque para as 4 patinhas inteiramente brancas parecendo meias e um pequeno bigode preto.',
     aiProfileLocalized: {
       en: 'Black and white tuxedo cat. Features 4 entirely white paws resembling socks and a small black mustache mark.',
       'pt-BR': 'Gato tuxedo preto e branco. Destaque para as 4 patinhas inteiramente brancas parecendo meias e um pequeno bigode preto.',
     },
   },
-
-  // --------------------------------------------------------------------------
-  // USER 2: Luis Richter (macacoharmonico@gmail.com) — Private Account Cats
-  // --------------------------------------------------------------------------
   {
     id: 'seed-cat-vaquinha',
     name: 'Vaquinha',
@@ -99,7 +95,7 @@ export const SEED_CATS: Cat[] = [
     ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'macacoharmonico@gmail.com',
-    ownerId: 'a1000000-0000-4000-a000-000000000001',
+    ownerId: '43e0057d-7a22-4734-9a44-005ea42bf00f',
     aiProfileSummary: 'Manchas padrão pele de vaca no dorso e focinho rosado. Muito tranquila e manhosa.',
     aiProfileLocalized: {
       en: 'Cow-print pattern with large rounded black spots on back and pink nose. Very calm and affectionate.',
@@ -123,7 +119,7 @@ export const SEED_CATS: Cat[] = [
     ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'macacoharmonico@gmail.com',
-    ownerId: 'a1000000-0000-4000-a000-000000000001',
+    ownerId: '43e0057d-7a22-4734-9a44-005ea42bf00f',
     aiProfileSummary: 'Gata agilíssima com padrão clássico tigrado em tons de âmbar. Desenho de "M" bem definido na testa.',
     aiProfileLocalized: {
       en: 'Agile tabby cat with classic amber-gold stripes and a distinct black "M" marking on forehead.',
@@ -147,7 +143,7 @@ export const SEED_CATS: Cat[] = [
     ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'macacoharmonico@gmail.com',
-    ownerId: 'a1000000-0000-4000-a000-000000000001',
+    ownerId: '43e0057d-7a22-4734-9a44-005ea42bf00f',
     aiProfileSummary: 'Pelagem extremamente longa e sedosa, olhos azuis intensos. Requer escovação diária.',
     aiProfileLocalized: {
       en: 'Extremely long, silky white coat with deep blue eyes. Requires daily grooming.',
@@ -171,11 +167,89 @@ export const SEED_CATS: Cat[] = [
     ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'macacoharmonico@gmail.com',
-    ownerId: 'a1000000-0000-4000-a000-000000000001',
+    ownerId: '43e0057d-7a22-4734-9a44-005ea42bf00f',
     aiProfileSummary: 'Gatinha jovem com pelagem preta brilhante semelhante a uma pantera em miniatura.',
     aiProfileLocalized: {
       en: 'Young cat with sleek black fur resembling a miniature panther. Bright copper eyes.',
       'pt-BR': 'Gatinha jovem com pelagem preta brilhante semelhante a uma pantera em miniatura.',
+    },
+  },
+
+  // --------------------------------------------------------------------------
+  // DEMO ACCOUNT: Demo Guardian Tutor (demo@catguardian.dev) — 3 Generic Demo Cats
+  // ID: d3000000-0000-4000-a000-000000000001
+  // --------------------------------------------------------------------------
+  {
+    id: 'd300ca71-0000-4000-a000-000000000001',
+    name: 'Oliver (Demo)',
+    breed: 'Siamês Mix',
+    birthDate: '2022-03-10',
+    gender: 'macho',
+    colorPattern: 'Bege com extremidades marrom-escuras e olhos azuis',
+    colorPatternLocalized: {
+      en: 'Beige with dark brown extremities and blue eyes',
+      'pt-BR': 'Bege com extremidades marrom-escuras e olhos azuis',
+    },
+    microchipNumber: '982000999000001',
+    isLost: false,
+    photoUrl: 'https://images.unsplash.com/photo-1513245543132-31f507417b26?auto=format&fit=crop&w=600&q=80',
+    ownerName: 'Demo Guardian Tutor',
+    ownerPhone: '+55 11 98888-7771',
+    ownerEmail: 'demo@catguardian.dev',
+    ownerId: 'd3000000-0000-4000-a000-000000000001',
+    aiProfileSummary: 'Gato siamês dócil e miau característico de demonstração.',
+    aiProfileLocalized: {
+      en: 'Gentle Siamese mix cat for demonstration purposes.',
+      'pt-BR': 'Gato siamês dócil e miau característico de demonstração.',
+    },
+  },
+  {
+    id: 'd300ca72-0000-4000-a000-000000000002',
+    name: 'Simba (Demo)',
+    breed: 'SRD / Amarelo Tigrado',
+    birthDate: '2021-07-15',
+    gender: 'macho',
+    colorPattern: 'Laranja tigrado com listras brancas no peito',
+    colorPatternLocalized: {
+      en: 'Orange tabby with white chest stripes',
+      'pt-BR': 'Laranja tigrado com listras brancas no peito',
+    },
+    microchipNumber: '982000999000002',
+    isLost: true, // Lost Mode ON for emergency QR demo
+    lostNotes: 'Visto perto do parque municipal usando coleira vermelha.',
+    photoUrl: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=600&q=80',
+    ownerName: 'Demo Guardian Tutor',
+    ownerPhone: '+55 11 98888-7771',
+    ownerEmail: 'demo@catguardian.dev',
+    ownerId: 'd3000000-0000-4000-a000-000000000001',
+    aiProfileSummary: 'Felino laranja tigrado ativo em modo de resgate emergencial.',
+    aiProfileLocalized: {
+      en: 'Orange tabby cat currently active in emergency rescue mode.',
+      'pt-BR': 'Felino laranja tigrado ativo em modo de resgate emergencial.',
+    },
+  },
+  {
+    id: 'd300ca73-0000-4000-a000-000000000003',
+    name: 'Luna (Demo)',
+    breed: 'Escama de Tartaruga (Tortoiseshell)',
+    birthDate: '2023-01-20',
+    gender: 'fêmea',
+    colorPattern: 'Preto e alaranjado mesclado estilo tartaruga',
+    colorPatternLocalized: {
+      en: 'Black and orange tortoiseshell coat',
+      'pt-BR': 'Preto e alaranjado mesclado estilo tartaruga',
+    },
+    microchipNumber: '982000999000003',
+    isLost: false,
+    photoUrl: 'https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&fit=crop&w=600&q=80',
+    ownerName: 'Demo Guardian Tutor',
+    ownerPhone: '+55 11 98888-7771',
+    ownerEmail: 'demo@catguardian.dev',
+    ownerId: 'd3000000-0000-4000-a000-000000000001',
+    aiProfileSummary: 'Gata carinhosa e quieta para ambiente de teste.',
+    aiProfileLocalized: {
+      en: 'Quiet and affectionate tortoiseshell cat for test environment.',
+      'pt-BR': 'Gata carinhosa e quieta para ambiente de teste.',
     },
   },
 ]
@@ -202,12 +276,12 @@ export const SEED_HEALTH_RECORDS: HealthRecord[] = [
   },
   {
     id: 'hr-2',
-    catId: 'seed-cat-golia',
+    catId: 'd300ca72-0000-4000-a000-000000000002',
     recordType: 'vaccine',
-    title: 'Vacine Antirrábica Felina',
+    title: 'Vacina Antirrábica Felina',
     titleLocalized: {
       en: 'Feline Rabies Vaccine',
-      'pt-BR': 'Vacine Antirrábica Felina',
+      'pt-BR': 'Vacina Antirrábica Felina',
     },
     dateAdministered: '2024-11-15',
     nextDueDate: '2025-11-15',
