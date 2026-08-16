@@ -44,10 +44,15 @@ export const App: React.FC = () => {
 
   React.useEffect(() => {
     authService.getCurrentUser().then(setCurrentUser)
-    const unsubscribe = authService.onAuthStateChange(setCurrentUser)
-    loadCats()
+    const unsubscribe = authService.onAuthStateChange((user) => {
+      setCurrentUser(user)
+    })
     return () => unsubscribe()
-  }, [loadCats])
+  }, [])
+
+  React.useEffect(() => {
+    loadCats()
+  }, [currentUser, loadCats])
 
   const handleToggleLost = async (cat: Cat) => {
     if (!currentUser) {

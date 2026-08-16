@@ -149,6 +149,11 @@ export const authService = {
     const demoEmail = 'demo@catguardian.dev'
     const demoPassword = 'DemoGuardian2026!'
 
+    // Clear stale cached local cats so dashboard reloads fresh user cats
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('cat_guardian_cats_v1')
+    }
+
     if (isSupabaseConfigured()) {
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -166,10 +171,14 @@ export const authService = {
             },
           })
           if (!signUpRes.error && signUpRes.data.user) {
-            return mapSupabaseUserToOwner(signUpRes.data.user, 'Demo Guardian Tutor', '+55 11 98888-7771')
+            const owner = mapSupabaseUserToOwner(signUpRes.data.user, 'Demo Guardian Tutor', '+55 11 98888-7771')
+            localStorage.setItem(LOCAL_STORAGE_MOCK_USER_KEY, JSON.stringify(owner))
+            return owner
           }
         } else if (data.user) {
-          return mapSupabaseUserToOwner(data.user, 'Demo Guardian Tutor', '+55 11 98888-7771')
+          const owner = mapSupabaseUserToOwner(data.user, 'Demo Guardian Tutor', '+55 11 98888-7771')
+          localStorage.setItem(LOCAL_STORAGE_MOCK_USER_KEY, JSON.stringify(owner))
+          return owner
         }
       } catch {
         // Fallback to local sandbox if Supabase Auth is unavailable
@@ -198,6 +207,7 @@ export const authService = {
       }
     }
     localStorage.removeItem(LOCAL_STORAGE_MOCK_USER_KEY)
+    localStorage.removeItem('cat_guardian_cats_v1')
   },
 
   /**

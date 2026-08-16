@@ -23,6 +23,7 @@ function mapRowToCat(row: Record<string, any>): Cat {
     ownerName: row.owner_name || 'Tutor',
     ownerPhone: row.owner_phone || '',
     ownerEmail: row.owner_email || '',
+    ownerId: row.owner_id,
     aiProfileSummary: row.ai_profile_summary,
     aiProfileLocalized: row.ai_profile_localized,
   }
@@ -47,11 +48,18 @@ function getLocalCats(): Cat[] {
   }
   try {
     const parsed: Cat[] = JSON.parse(stored)
+    // If local storage has obsolete seed IDs ('seed-cat-...') or missing owner email updates, force refresh from SEED_CATS
+    const hasObsoleteIds = parsed.some((c) => c.id.startsWith('seed-cat-'))
+    if (hasObsoleteIds) {
+      localStorage.setItem(LOCAL_STORAGE_CATS_KEY, JSON.stringify(SEED_CATS))
+      return SEED_CATS
+    }
     return parsed.map((cat) => {
-      const seed = SEED_CATS.find((s) => s.id === cat.id)
+      const seed = SEED_CATS.find((s) => s.id === cat.id || s.name === cat.name)
       if (seed) {
         return {
           ...cat,
+          id: seed.id,
           ownerEmail: seed.ownerEmail,
           ownerName: seed.ownerName,
           ownerId: seed.ownerId,
@@ -181,8 +189,16 @@ export const catService = {
     const found = cats.find((c) => c.id === id) || null
 
     if (found) {
-      const mockUser = typeof window !== 'undefined' ? localStorage.getItem('cat_guardian_mock_user_v1') : null
-      if (!mockUser) {
+      const mockUserStr = typeof window !== 'undefined' ? localStorage.getItem('cat_guardian_mock_user_v1') : null
+      if (!mockUserStr) {
+        return sanitizeCatForPublicRescue(found)
+      }
+      try {
+        const u = JSON.parse(mockUserStr)
+        if (found.ownerEmail && u.email && found.ownerEmail !== u.email && found.ownerId !== u.id) {
+          return sanitizeCatForPublicRescue(found)
+        }
+      } catch {
         return sanitizeCatForPublicRescue(found)
       }
     }

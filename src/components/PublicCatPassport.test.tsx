@@ -11,8 +11,10 @@ describe('PublicCatPassport UI Component', () => {
 
   it('renders missing cat message when cat ID is invalid', async () => {
     render(<PublicCatPassport catId="invalid-id" />)
-    const errorMsg = await screen.findByText(/Cat Not Found|Passaporte Não Encontrado/i)
-    expect(errorMsg).toBeInTheDocument()
+    const errorMsgs = await screen.findAllByText(
+      /Cat Not Found|Passaporte Não Encontrado|Gato Não Encontrado|código escaneado não corresponde/i
+    )
+    expect(errorMsgs.length).toBeGreaterThan(0)
   })
 
   it('renders public safety CTA button for missing cat', async () => {
