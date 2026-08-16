@@ -1,6 +1,6 @@
 -- Migration: Isolate Demo Guardian Sandbox and Mask Public Microchip
 -- Problem: Demo Guardian must own ONLY its 3 dedicated demo cats and MUST NOT have access to real users' cats (e.g. macacoharmonico@gmail.com).
--- Solution: Seed 3 dedicated demo cats with valid UUIDs and owner_id = 'd3m00000-0000-0000-0000-000000000001', verifying strict owner RLS policies.
+-- Solution: Seed 3 dedicated demo cats with valid Hex UUIDs and owner_id = 'd3000000-0000-4000-a000-000000000001', verifying strict owner RLS policies.
 
 -- ============================================================================
 -- 1. RE-VERIFY PUBLIC RESCUE VIEW (Zero Microchip, Zero Owner PII)
@@ -23,7 +23,7 @@ CREATE OR REPLACE VIEW public.public_cat_profiles WITH (security_barrier = true)
 GRANT SELECT ON public.public_cat_profiles TO anon, authenticated;
 
 -- ============================================================================
--- 2. SEED 3 DEDICATED DEMO CATS FOR DEMO GUARDIAN ('d3m00000-0000-0000-0000-000000000001')
+-- 2. SEED 3 DEDICATED DEMO CATS FOR DEMO GUARDIAN ('d3000000-0000-4000-a000-000000000001')
 -- ============================================================================
 INSERT INTO public.cats (
   id,
@@ -43,8 +43,8 @@ INSERT INTO public.cats (
   ai_profile_summary
 ) VALUES
 (
-  'd3m0ca71-0000-0000-0000-000000000001',
-  'd3m00000-0000-0000-0000-000000000001',
+  'd300ca71-0000-4000-a000-000000000001',
+  'd3000000-0000-4000-a000-000000000001',
   'Kiara (Demo)',
   'SRD / Vira-lata',
   '2021-04-12',
@@ -60,8 +60,8 @@ INSERT INTO public.cats (
   'Gata curiosa e dócil em ambiente de demonstração.'
 ),
 (
-  'd3m0ca72-0000-0000-0000-000000000002',
-  'd3m00000-0000-0000-0000-000000000001',
+  'd300ca72-0000-4000-a000-000000000002',
+  'd3000000-0000-4000-a000-000000000001',
   'Golia (Demo)',
   'Maine Coon Mix',
   '2020-08-20',
@@ -77,8 +77,8 @@ INSERT INTO public.cats (
   'Felino de grande porte em modo de resgate ativo.'
 ),
 (
-  'd3m0ca73-0000-0000-0000-000000000003',
-  'd3m00000-0000-0000-0000-000000000001',
+  'd300ca73-0000-4000-a000-000000000003',
+  'd3000000-0000-4000-a000-000000000001',
   'Meias (Demo)',
   'Tuxedo / SRD',
   '2022-01-15',
@@ -94,6 +94,6 @@ INSERT INTO public.cats (
   'Gato tuxedo dócil e protetor.'
 )
 ON CONFLICT (id) DO UPDATE SET
-  owner_id = 'd3m00000-0000-0000-0000-000000000001',
+  owner_id = 'd3000000-0000-4000-a000-000000000001',
   is_lost = EXCLUDED.is_lost,
   lost_notes = EXCLUDED.lost_notes;

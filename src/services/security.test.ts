@@ -167,7 +167,7 @@ describe('Security & Authorization Boundary Test Suite', () => {
   it('DEMO ISOLATION TEST: Demo Guardian cannot access or modify macacoharmonico@gmail.com cats', async () => {
     // Authenticate as Demo Guardian Tutor
     const demoProfile = await authService.loginAsDemoUser()
-    expect(demoProfile.id).toBe('d3m00000-0000-0000-0000-000000000001')
+    expect(demoProfile.id).toBe('d3000000-0000-4000-a000-000000000001')
 
     if (isSupabaseConfigured()) {
       // 1. Demo Guardian attempts to SELECT cats owned by macacoharmonico@gmail.com

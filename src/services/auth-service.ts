@@ -127,7 +127,7 @@ export const authService = {
     }
 
     const demoUser: OwnerProfile = {
-      id: 'd3m00000-0000-0000-0000-000000000001',
+      id: 'd3000000-0000-4000-a000-000000000001',
       email: demoEmail,
       name: 'Demo Guardian Tutor',
       phone: '+55 11 98888-7771',

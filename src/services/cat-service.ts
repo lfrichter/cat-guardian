@@ -153,9 +153,9 @@ export const catService = {
       cats.find(
         (c) =>
           c.id === id ||
-          (id === 'd3m0ca71-0000-0000-0000-000000000001' && c.id === 'seed-cat-kiara') ||
-          (id === 'd3m0ca72-0000-0000-0000-000000000002' && c.id === 'seed-cat-golia') ||
-          (id === 'd3m0ca73-0000-0000-0000-000000000003' && c.id === 'seed-cat-meias')
+          (id === 'd300ca71-0000-4000-a000-000000000001' && c.id === 'seed-cat-kiara') ||
+          (id === 'd300ca72-0000-4000-a000-000000000002' && c.id === 'seed-cat-golia') ||
+          (id === 'd300ca73-0000-4000-a000-000000000003' && c.id === 'seed-cat-meias')
       ) || null
 
     if (found) {
