@@ -66,7 +66,18 @@ function getLocalHealthRecords(): HealthRecord[] {
     return SEED_HEALTH_RECORDS
   }
   try {
-    return JSON.parse(stored)
+    const parsed: HealthRecord[] = JSON.parse(stored)
+    return parsed.map((record) => {
+      const seed = SEED_HEALTH_RECORDS.find((s) => s.id === record.id)
+      if (seed) {
+        return {
+          ...record,
+          titleLocalized: record.titleLocalized || seed.titleLocalized,
+          descriptionLocalized: record.descriptionLocalized || seed.descriptionLocalized,
+        }
+      }
+      return record
+    })
   } catch {
     return SEED_HEALTH_RECORDS
   }
@@ -226,7 +237,9 @@ export const catService = {
             catId: hr.cat_id,
             recordType: hr.record_type,
             title: hr.title,
+            titleLocalized: hr.title_localized,
             description: hr.description,
+            descriptionLocalized: hr.description_localized,
             dateAdministered: hr.date_administered,
             nextDueDate: hr.next_due_date,
             vetName: hr.vet_name,
