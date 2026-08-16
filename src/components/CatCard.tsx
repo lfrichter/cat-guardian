@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cat } from '@/types/cat'
 import { ShieldCheck, AlertTriangle, QrCode, Sparkles, HeartPulse, Lock } from 'lucide-react'
 
@@ -11,6 +12,8 @@ interface CatCardProps {
 }
 
 export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect, onToggleLost, onRequireAuth }) => {
+  const { t } = useTranslation()
+
   return (
     <div
       className="glass-panel"
@@ -31,11 +34,11 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect
         <span className={cat.isLost ? 'badge badge-lost' : 'badge badge-safe'}>
           {cat.isLost ? (
             <>
-              <AlertTriangle size={13} /> MODO PERDIDO
+              <AlertTriangle size={13} /> {t('catList.lostMode')}
             </>
           ) : (
             <>
-              <ShieldCheck size={13} /> PROTEGIDO
+              <ShieldCheck size={13} /> {t('catList.protected')}
             </>
           )}
         </span>
@@ -58,10 +61,10 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect
           }}
         >
           {isAuthenticated ? (
-            cat.isLost ? 'Desativar Alerta' : 'Declarar Perdido'
+            cat.isLost ? t('catList.deactivateAlert') : t('catList.declareLost')
           ) : (
             <>
-              <Lock size={12} /> Alterar Status
+              <Lock size={12} /> {t('catList.changeStatus')}
             </>
           )}
         </button>
@@ -128,7 +131,7 @@ export const CatCard: React.FC<CatCardProps> = ({ cat, isAuthenticated, onSelect
         }}
       >
         <span style={{ fontSize: '0.8rem', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: '600' }}>
-          <HeartPulse size={15} color="var(--color-success)" /> Ver Passaporte
+          <HeartPulse size={15} color="var(--color-success)" /> {t('catList.viewPassport')}
         </span>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <span style={{ color: 'var(--color-info)', display: 'flex', alignItems: 'center' }}>

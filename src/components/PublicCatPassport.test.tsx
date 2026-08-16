@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
+import '@/lib/i18n'
 import { PublicCatPassport } from './PublicCatPassport'
 
 describe('PublicCatPassport UI Component', () => {
@@ -10,7 +11,7 @@ describe('PublicCatPassport UI Component', () => {
 
   it('renders missing cat message when cat ID is invalid', async () => {
     render(<PublicCatPassport catId="invalid-id" />)
-    const errorMsg = await screen.findByText(/Gato Não Encontrado/i)
+    const errorMsg = await screen.findByText(/Cat Not Found|Gato Não Encontrado/i)
     expect(errorMsg).toBeInTheDocument()
   })
 

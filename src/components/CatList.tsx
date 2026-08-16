@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cat } from '@/types/cat'
 import { CatCard } from './CatCard'
 import { Search, Plus, Cat as CatIcon } from 'lucide-react'
@@ -20,6 +21,7 @@ export const CatList: React.FC<CatListProps> = ({
   onAddCat,
   onRequireAuth,
 }) => {
+  const { t } = useTranslation()
   const [searchTerm, setSearchTerm] = React.useState('')
   const [filterLostOnly, setFilterLostOnly] = React.useState(false)
 
@@ -46,7 +48,7 @@ export const CatList: React.FC<CatListProps> = ({
             />
             <input
               type="text"
-              placeholder="Buscar por nome, raça ou cor..."
+              placeholder={t('catList.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
@@ -70,7 +72,7 @@ export const CatList: React.FC<CatListProps> = ({
               color: filterLostOnly ? 'var(--color-danger)' : undefined,
             }}
           >
-            {filterLostOnly ? 'Exibindo: Apenas Perdidos' : 'Filtrar Perdidos'}
+            {filterLostOnly ? t('catList.showingLostOnly') : t('catList.filterLostOnly')}
           </button>
         </div>
 
@@ -85,7 +87,7 @@ export const CatList: React.FC<CatListProps> = ({
             onAddCat()
           }}
         >
-          <Plus size={18} /> Cadastrar Felino
+          <Plus size={18} /> {t('catList.addCat')}
         </button>
       </div>
 
@@ -100,8 +102,8 @@ export const CatList: React.FC<CatListProps> = ({
           }}
         >
           <CatIcon size={48} style={{ opacity: 0.4, marginBottom: '1rem' }} />
-          <h3>Nenhum passaporte felino encontrado</h3>
-          <p>Tente ajustar a busca ou cadastre um novo felino.</p>
+          <h3>{t('catList.noCatsFound')}</h3>
+          <p>{t('catList.adjustSearch')}</p>
         </div>
       ) : (
         <div

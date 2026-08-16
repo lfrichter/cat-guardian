@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cat } from '@/types/cat'
 import { catService } from '@/services/cat-service'
 import { lostService } from '@/services/lost-service'
@@ -10,6 +11,7 @@ interface PublicCatPassportProps {
 }
 
 export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onBackToApp }) => {
+  const { t } = useTranslation()
   const [cat, setCat] = React.useState<Cat | null>(null)
   const [loading, setLoading] = React.useState(true)
   const [showForm, setShowForm] = React.useState(false)
@@ -71,11 +73,11 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
   if (!cat) {
     return (
       <div style={{ maxWidth: '600px', margin: '4rem auto', padding: '2rem', textAlign: 'center' }} className="glass-panel">
-        <h2 style={{ color: 'var(--color-danger)', marginBottom: '1rem' }}>Gato Não Encontrado</h2>
+        <h2 style={{ color: 'var(--color-danger)', marginBottom: '1rem' }}>{t('publicPassport.catNotFound')}</h2>
         <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>O código escaneado não corresponde a um passaporte ativo.</p>
         {onBackToApp && (
           <button className="btn btn-primary" onClick={onBackToApp}>
-            Ir para o Painel Cat Guardian
+            {t('publicPassport.backToDashboard')}
           </button>
         )}
       </div>
@@ -98,10 +100,10 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
             <AlertTriangle size={28} />
-            <h2 style={{ fontSize: '1.6rem', fontWeight: '800', margin: 0 }}>GATO DECLARADO DESAPARECIDO</h2>
+            <h2 style={{ fontSize: '1.6rem', fontWeight: '800', margin: 0 }}>{t('publicPassport.missingTitle')}</h2>
           </div>
           <p style={{ margin: 0, fontSize: '0.95rem', opacity: 0.95, lineHeight: 1.5 }}>
-            Por favor, ajude este felino a voltar para casa! Notifique o tutor com segurança caso o tenha avistado.
+            {t('publicPassport.missingSubtitle')}
           </p>
           {cat.lostNotes && (
             <div style={{ marginTop: '0.85rem', padding: '0.75rem', background: 'rgba(0, 0, 0, 0.25)', borderRadius: '8px', fontSize: '0.9rem' }}>
@@ -124,9 +126,9 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
         >
           <ShieldCheck size={24} color="var(--color-success)" />
           <div>
-            <strong style={{ color: 'var(--color-success)', display: 'block' }}>Passaporte de Segurança Público</strong>
+            <strong style={{ color: 'var(--color-success)', display: 'block' }}>{t('publicPassport.publicCardTitle')}</strong>
             <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-              Perfil verificado na rede de proteção Cat Guardian.
+              {t('publicPassport.publicCardSubtitle')}
             </span>
           </div>
         </div>
@@ -167,7 +169,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
           <div className="ai-highlight-box" style={{ padding: '1.25rem', marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem', color: 'var(--color-primary)' }}>
               <Sparkles size={18} />
-              <strong style={{ fontSize: '0.95rem' }}>Identificação Descritiva de Segurança (IA)</strong>
+              <strong style={{ fontSize: '0.95rem' }}>{t('passport.aiPassportSummary')}</strong>
             </div>
             <p style={{ color: 'var(--color-text)', margin: 0, fontSize: '0.95rem', lineHeight: 1.5 }}>
               {cat.aiProfileSummary}
@@ -179,10 +181,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
         {sightingSent ? (
           <div style={{ background: 'rgba(52, 211, 153, 0.15)', border: '1px solid rgba(52, 211, 153, 0.4)', padding: '1.5rem', borderRadius: '14px', textAlign: 'center', color: 'var(--color-success)' }}>
             <CheckCircle2 size={42} style={{ marginBottom: '0.5rem' }} />
-            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem' }}>Mensagem enviada com sucesso!</h3>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', margin: 0 }}>
-              Message sent! The owner has been notified securely.
-            </p>
+            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem' }}>{t('publicPassport.messageSent')}</h3>
           </div>
         ) : (
           <div>
@@ -202,11 +201,11 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
               >
                 {cat.isLost ? (
                   <>
-                    <AlertTriangle size={22} /> [ 🚨 Encontrei Este Felino / I Found This Cat ]
+                    <AlertTriangle size={22} /> {t('publicPassport.foundCatCta')}
                   </>
                 ) : (
                   <>
-                    <MessageSquare size={22} /> [ ✉️ Enviar Mensagem ao Tutor / Send Message to Owner ]
+                    <MessageSquare size={22} /> {t('publicPassport.sendMessageCta')}
                   </>
                 )}
               </button>
@@ -226,26 +225,26 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <MessageSquare size={18} color={cat.isLost ? 'var(--color-danger)' : 'var(--color-primary)'} />
-                    Blind Contact Relay — Notificar Tutor
+                    {t('publicPassport.blindRelayTitle')}
                   </h3>
                   <button
                     type="button"
                     onClick={() => setShowForm(false)}
                     style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: '0.85rem' }}
                   >
-                    Cancelar
+                    {t('passport.cancel')}
                   </button>
                 </div>
 
                 <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
-                  Preencha seus dados abaixo. O tutor receberá uma notificação instantânea por e-mail sem expor os contatos de ambas as partes.
+                  {t('publicPassport.blindRelaySubtitle')}
                 </p>
 
                 <form onSubmit={handleReportSighting}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                     <div>
                       <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>
-                        Seu Nome / Your Name
+                        {t('publicPassport.yourName')}
                       </label>
                       <input
                         type="text"
@@ -257,14 +256,14 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
                     </div>
                     <div>
                       <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>
-                        Seu Contato (Telefone ou E-mail) *
+                        {t('publicPassport.yourContact')}
                       </label>
                       <input
                         type="text"
                         required
                         value={finderPhone}
                         onChange={(e) => setFinderPhone(e.target.value)}
-                        placeholder="(11) 99999-9999 ou seu@email.com"
+                        placeholder="(11) 99999-9999 / email"
                         style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
                       />
                     </div>
@@ -273,14 +272,14 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
                   <div style={{ marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                       <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
-                        Onde você viu o gato? / Where did you see the cat? *
+                        {t('publicPassport.whereSeen')}
                       </label>
                       <button
                         type="button"
                         onClick={handleGetLocation}
                         style={{ background: 'none', border: 'none', color: 'var(--color-info)', fontSize: '0.75rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.2rem' }}
                       >
-                        <MapPin size={12} /> Capturar GPS Atual
+                        <MapPin size={12} /> {t('publicPassport.captureGps')}
                       </button>
                     </div>
                     <input
@@ -288,25 +287,24 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
                       required
                       value={locationText}
                       onChange={(e) => setLocationText(e.target.value)}
-                      placeholder="Ex: Rua Oscar Freire, próximo à padaria..."
+                      placeholder="Ex: Rua Oscar Freire..."
                       style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
                     />
                   </div>
 
                   <div style={{ marginBottom: '1.25rem' }}>
                     <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>
-                      Mensagem / Observações / Notes
+                      {t('publicPassport.notesMessage')}
                     </label>
                     <textarea
                       rows={3}
                       value={finderNotes}
                       onChange={(e) => setFinderNotes(e.target.value)}
-                      placeholder="Ex: Está calmo, dei água e coloquei em um local seguro..."
+                      placeholder="Ex: Está calmo..."
                       style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px', fontSize: '0.85rem' }}
                     />
                   </div>
 
-                  {/* STEP 3: Submit Button with Loading State */}
                   <button
                     type="submit"
                     className={cat.isLost ? 'btn btn-danger' : 'btn btn-primary'}
@@ -315,11 +313,11 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
                   >
                     {submitting ? (
                       <>
-                        <Loader2 size={18} className="spin" /> Enviando Notificação ao Tutor...
+                        <Loader2 size={18} className="spin" /> {t('publicPassport.sending')}
                       </>
                     ) : (
                       <>
-                        <Send size={18} /> [ Send to Owner / Notificar Tutor ]
+                        <Send size={18} /> {t('publicPassport.sendToOwner')}
                       </>
                     )}
                   </button>
@@ -333,7 +331,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
       {onBackToApp && (
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <button className="btn btn-secondary" onClick={onBackToApp}>
-            Ir para o Painel Cat Guardian
+            {t('publicPassport.backToDashboard')}
           </button>
         </div>
       )}

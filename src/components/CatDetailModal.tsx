@@ -1,10 +1,11 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cat } from '@/types/cat'
 import { OwnerProfile } from '@/types/owner'
 import { HealthRecord, HealthRecordType, computeHealthStatus } from '@/types/health'
 import { catService } from '@/services/cat-service'
 import { QRCodeTag } from './QRCodeTag'
-import { X, ShieldCheck, AlertTriangle, HeartPulse, Plus, Sparkles, QrCode, Edit3, Trash2, Lock, User, Phone, Mail, MessageSquare } from 'lucide-react'
+import { X, ShieldCheck, AlertTriangle, HeartPulse, Plus, Sparkles, QrCode, Edit3, Trash2, Lock, User, Phone, Mail, MessageSquare, AlertCircle } from 'lucide-react'
 
 interface CatDetailModalProps {
   cat: Cat | null
@@ -25,6 +26,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
   onRequireAuth,
   onOpenPublicPassport,
 }) => {
+  const { t } = useTranslation()
   const [healthRecords, setHealthRecords] = React.useState<HealthRecord[]>([])
   const [showAddRecord, setShowAddRecord] = React.useState(false)
   const [showQRTag, setShowQRTag] = React.useState(false)
@@ -135,7 +137,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
               <h2 style={{ fontSize: '2rem', margin: 0, color: 'var(--color-text)' }}>{cat.name}</h2>
               <span className={cat.isLost ? 'badge badge-lost' : 'badge badge-safe'}>
                 {cat.isLost ? <AlertTriangle size={13} /> : <ShieldCheck size={13} />}
-                {cat.isLost ? 'MODO PERDIDO ATIVO' : 'PROTEGIDO'}
+                {cat.isLost ? t('catList.lostMode') : t('catList.protected')}
               </span>
               <span style={{ fontSize: '0.8rem', fontWeight: '700', color: healthSummary.colorToken }}>
                 {healthSummary.label}
@@ -146,7 +148,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
             </p>
             {cat.microchipNumber && (
               <p style={{ color: 'var(--color-primary)', fontSize: '0.85rem', marginTop: '0.25rem', fontWeight: '600' }}>
-                Microchip ID: {cat.microchipNumber}
+                {t('passport.microchip')}: {cat.microchipNumber}
               </p>
             )}
           </div>
@@ -161,14 +163,14 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
                     onClick={() => { onClose(); onEditCat(cat); }}
                     style={{ fontSize: '0.85rem' }}
                   >
-                    <Edit3 size={16} /> Editar Perfil
+                    <Edit3 size={16} /> {t('passport.editProfile')}
                   </button>
                 )}
                 <button
                   className={cat.isLost ? 'btn btn-secondary' : 'btn btn-danger'}
                   onClick={() => onToggleLost(cat)}
                 >
-                  {cat.isLost ? 'Desativar Modo Perdido' : '⚠️ Declarar Desaparecido'}
+                  {cat.isLost ? t('catList.deactivateAlert') : `⚠️ ${t('catList.declareLost')}`}
                 </button>
               </>
             ) : (
@@ -211,7 +213,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
           <div className="ai-highlight-box" style={{ padding: '1.25rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: 'var(--color-primary)' }}>
               <Sparkles size={18} />
-              <strong style={{ fontSize: '0.95rem' }}>Passaporte de Identificação IA</strong>
+              <strong style={{ fontSize: '0.95rem' }}>{t('passport.aiPassportSummary')}</strong>
             </div>
             <p style={{ color: 'var(--color-text)', margin: 0, fontSize: '0.95rem', lineHeight: 1.5 }}>
               {cat.aiProfileSummary}
@@ -224,19 +226,19 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
             <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
-                <User size={15} /> Tutor Responsável
+                <User size={15} /> {t('passport.tutor')}
               </div>
               <strong style={{ color: 'var(--color-text)' }}>{cat.ownerName}</strong>
             </div>
             <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
-                <Phone size={15} /> Telefone de Contato
+                <Phone size={15} /> {t('passport.contactPhone')}
               </div>
               <strong style={{ color: 'var(--color-text)' }}>{cat.ownerPhone}</strong>
             </div>
             <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
-                <Mail size={15} /> E-mail
+                <Mail size={15} /> {t('passport.contactEmail')}
               </div>
               <strong style={{ color: 'var(--color-text)' }}>{cat.ownerEmail}</strong>
             </div>
@@ -267,14 +269,14 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
         )}
 
         {/* Health Passport Section */}
-        <div style={{ marginBottom: '2rem' }}>
+        <div style={{ marginBottom: '1.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
             <h3 style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: 'var(--color-text)' }}>
-              <HeartPulse size={20} color="var(--color-success)" /> Passaporte de Saúde & Vacinas
+              <HeartPulse size={20} color="var(--color-success)" /> {t('passport.healthRecords')}
             </h3>
             {currentUser && (
               <button className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }} onClick={() => setShowAddRecord(!showAddRecord)}>
-                <Plus size={16} /> Adicionar Registro
+                <Plus size={16} /> {t('passport.addRecord')}
               </button>
             )}
           </div>
@@ -348,7 +350,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
 
           {/* List of Health Records */}
           {healthRecords.length === 0 ? (
-            <p style={{ color: 'var(--color-text-muted)', fontStyle: 'italic' }}>Nenhum registro de vacina ou saúde cadastrado ainda.</p>
+            <p style={{ color: 'var(--color-text-muted)', fontStyle: 'italic' }}>{t('passport.noRecords')}</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {healthRecords.map((hr) => (
@@ -392,6 +394,24 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
               ))}
             </div>
           )}
+        </div>
+
+        {/* TASK-203 Medical Disclaimer */}
+        <div
+          style={{
+            background: 'rgba(251, 191, 36, 0.06)',
+            border: '1px solid rgba(251, 191, 36, 0.2)',
+            borderRadius: 'var(--radius-md)',
+            padding: '0.85rem 1rem',
+            display: 'flex',
+            gap: '0.65rem',
+            alignItems: 'flex-start',
+          }}
+        >
+          <AlertCircle size={18} color="var(--color-warning)" style={{ flexShrink: 0, marginTop: '2px' }} />
+          <p style={{ fontSize: '0.78rem', color: 'var(--color-warning)', margin: 0, lineHeight: 1.4 }}>
+            {t('passport.disclaimer')}
+          </p>
         </div>
       </div>
     </div>

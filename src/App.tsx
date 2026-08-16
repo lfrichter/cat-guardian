@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cat, CreateCatInput, UpdateCatInput } from '@/types/cat'
 import { catService } from '@/services/cat-service'
 import { authService } from '@/services/auth-service'
@@ -11,9 +12,10 @@ import { AIGeneratorModal } from '@/components/AIGeneratorModal'
 import { AIHealthAssistantModal } from '@/components/AIHealthAssistantModal'
 import { PublicCatPassport } from '@/components/PublicCatPassport'
 import { AuthModal, OwnerProfileDrawer } from '@/components/AuthModal'
-import { ShieldCheck, Cat as CatIcon, Sparkles, HeartPulse, User } from 'lucide-react'
+import { ShieldCheck, Cat as CatIcon, Sparkles, HeartPulse, User, Globe } from 'lucide-react'
 
 export const App: React.FC = () => {
+  const { t, i18n } = useTranslation()
   const [cats, setCats] = React.useState<Cat[]>([])
   const [selectedCat, setSelectedCat] = React.useState<Cat | null>(null)
   const [isFormOpen, setIsFormOpen] = React.useState(false)
@@ -109,6 +111,11 @@ export const App: React.FC = () => {
     setIsProfileOpen(false)
   }
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'pt-BR' : 'en'
+    i18n.changeLanguage(newLang)
+  }
+
   const handleOpenPublicPassport = (catId: string) => {
     setSelectedCat(null)
     setActivePublicCatId(catId)
@@ -146,20 +153,45 @@ export const App: React.FC = () => {
             <CatIcon size={30} color="#0B1020" />
           </div>
           <div>
-            <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0, color: 'var(--color-text)' }}>Cat Guardian</h1>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              Passaporte de Segurança Felino • Midnight Guardian System
+            <h1 style={{ fontSize: '1.85rem', fontWeight: '800', lineHeight: 1.1, margin: 0, color: 'var(--color-text)' }}>
+              {t('app.title')}
+            </h1>
+            <p style={{ color: 'var(--color-primary-light)', fontSize: '0.85rem', margin: 0, fontWeight: '700', letterSpacing: '0.5px' }}>
+              {t('app.tagline')}
             </p>
           </div>
         </div>
 
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          {/* Language Switcher */}
+          <button
+            className="btn btn-secondary"
+            onClick={toggleLanguage}
+            style={{ padding: '0.5rem 0.8rem', fontSize: '0.85rem' }}
+          >
+            <Globe size={16} color="var(--color-info)" /> {i18n.language === 'en' ? 'EN' : 'PT-BR'}
+          </button>
+
+          {/* Explore Demo Golden Path Button */}
+          {!currentUser && (
+            <button
+              className="btn btn-secondary"
+              onClick={async () => {
+                const demo = await authService.loginAsDemoUser()
+                setCurrentUser(demo)
+              }}
+              style={{ padding: '0.5rem 0.8rem', fontSize: '0.85rem', borderColor: 'var(--color-primary)' }}
+            >
+              <Sparkles size={16} color="var(--color-primary)" /> {t('app.exploreDemo')}
+            </button>
+          )}
+
           <button
             className="btn btn-secondary"
             onClick={() => setIsHealthAssistantOpen(true)}
             style={{ padding: '0.5rem 0.9rem', fontSize: '0.85rem' }}
           >
-            <HeartPulse size={16} color="var(--color-success)" /> Consultar IA de Saúde
+            <HeartPulse size={16} color="var(--color-success)" /> {t('app.healthAssistant')}
           </button>
 
           {currentUser ? (
@@ -176,15 +208,12 @@ export const App: React.FC = () => {
               onClick={() => setIsAuthOpen(true)}
               style={{ padding: '0.5rem 0.9rem', fontSize: '0.85rem' }}
             >
-              <User size={16} /> Entrar / Cadastrar
+              <User size={16} /> {t('app.signIn')}
             </button>
           )}
 
           <span className="badge badge-safe">
-            <ShieldCheck size={14} /> Jidoka Verified
-          </span>
-          <span style={{ color: 'var(--color-primary-light)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', fontWeight: '600' }}>
-            <Sparkles size={16} color="var(--color-primary)" /> Gemini Active
+            <ShieldCheck size={14} /> {t('app.jidokaVerified')}
           </span>
         </div>
       </header>
@@ -193,7 +222,7 @@ export const App: React.FC = () => {
       <main>
         {loading ? (
           <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--color-text-muted)' }}>
-            Carregando passaportes felinos...
+            {t('app.loadingCats')}
           </div>
         ) : (
           <>

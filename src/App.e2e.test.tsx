@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
+import '@/lib/i18n'
 import { App } from './App'
 import { catService } from './services/cat-service'
 import { lostService } from './services/lost-service'

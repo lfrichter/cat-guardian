@@ -1,7 +1,8 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { authService } from '@/services/auth-service'
 import { OwnerProfile } from '@/types/owner'
-import { X, LogIn, UserPlus, Shield, User } from 'lucide-react'
+import { X, LogIn, UserPlus, Shield, User, Sparkles } from 'lucide-react'
 
 interface AuthModalProps {
   onClose: () => void
@@ -9,6 +10,7 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess }) => {
+  const { t } = useTranslation()
   const [isSignUp, setIsSignUp] = React.useState(false)
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -82,10 +84,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess }) 
           </div>
           <div>
             <h2 style={{ fontSize: '1.4rem', margin: 0, color: 'var(--color-text)' }}>
-              {isSignUp ? 'Criar Conta de Tutor' : 'Entrar no Cat Guardian'}
+              {isSignUp ? t('auth.signUpTitle') : t('auth.signInTitle')}
             </h2>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              {isSignUp ? 'Gerencie o passaporte dos seus gatos com segurança' : 'Acesse seus felinos cadastrados'}
+              Cat Guardian Safety Passport
             </p>
           </div>
         </div>
@@ -111,7 +113,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess }) 
             <>
               <div style={{ marginBottom: '1rem' }}>
                 <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-                  Nome Completo
+                  {t('auth.nameLabel')}
                 </label>
                 <input
                   type="text"
@@ -125,7 +127,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess }) 
 
               <div style={{ marginBottom: '1rem' }}>
                 <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-                  Telefone de Contato
+                  {t('auth.phoneLabel')}
                 </label>
                 <input
                   type="tel"
@@ -141,7 +143,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess }) 
 
           <div style={{ marginBottom: '1rem' }}>
             <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-              E-mail
+              {t('auth.emailLabel')}
             </label>
             <input
               type="email"
@@ -155,7 +157,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess }) 
 
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-              Senha
+              {t('auth.passwordLabel')}
             </label>
             <input
               type="password"
@@ -167,16 +169,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess }) 
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center', marginBottom: '1rem' }}>
+          <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', justifyContent: 'center', marginBottom: '0.75rem' }}>
             {isSignUp ? (
               <>
-                <UserPlus size={18} /> Cadastrar Conta
+                <UserPlus size={18} /> {t('auth.signUpBtn')}
               </>
             ) : (
               <>
-                <LogIn size={18} /> Entrar
+                <LogIn size={18} /> {t('auth.signInBtn')}
               </>
             )}
+          </button>
+
+          <button
+            type="button"
+            className="btn btn-secondary"
+            disabled={loading}
+            onClick={async () => {
+              const demo = await authService.loginAsDemoUser()
+              onAuthSuccess(demo)
+              onClose()
+            }}
+            style={{ width: '100%', justifyContent: 'center', marginBottom: '1rem', borderColor: 'var(--color-primary)' }}
+          >
+            <Sparkles size={16} color="var(--color-primary)" /> {t('app.exploreDemo')} (7 Cats)
           </button>
         </form>
 
@@ -186,7 +202,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose, onAuthSuccess }) 
             onClick={() => { setIsSignUp(!isSignUp); setErrorMsg(''); }}
             style={{ background: 'none', border: 'none', color: 'var(--color-primary-light)', fontSize: '0.85rem', cursor: 'pointer' }}
           >
-            {isSignUp ? 'Já possui conta? Faça Login' : 'Não tem conta? Cadastre-se gratuitamente'}
+            {isSignUp ? t('auth.toggleSignIn') : t('auth.toggleSignUp')}
           </button>
         </div>
       </div>
@@ -199,6 +215,8 @@ export const OwnerProfileDrawer: React.FC<{ owner: OwnerProfile; onSignOut: () =
   onSignOut,
   onClose,
 }) => {
+  const { t } = useTranslation()
+
   return (
     <div
       style={{
@@ -231,7 +249,7 @@ export const OwnerProfileDrawer: React.FC<{ owner: OwnerProfile; onSignOut: () =
         </div>
 
         <button className="btn btn-danger" onClick={onSignOut} style={{ width: '100%', justifyContent: 'center' }}>
-          Sair da Conta (Logout)
+          {t('auth.signOut')}
         </button>
       </div>
     </div>

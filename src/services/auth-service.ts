@@ -93,6 +93,20 @@ export const authService = {
   },
 
   /**
+   * TASK-202: Explore Demo Golden Path silent login for demonstration mode.
+   */
+  async loginAsDemoUser(): Promise<OwnerProfile> {
+    const demoUser: OwnerProfile = {
+      id: 'owner-demo-golden-path',
+      email: 'demo@catguardian.dev',
+      name: 'Demo Guardian Tutor',
+      phone: '+55 11 98888-7771',
+    }
+    localStorage.setItem(LOCAL_STORAGE_MOCK_USER_KEY, JSON.stringify(demoUser))
+    return demoUser
+  },
+
+  /**
    * Sign Out.
    */
   async signOut(): Promise<void> {

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cat } from '@/types/cat'
 import { HealthRecord, computeHealthStatus } from '@/types/health'
 import { catService } from '@/services/cat-service'
@@ -15,6 +16,7 @@ export const DashboardSummary: React.FC<DashboardSummaryProps> = ({
   onSelectCat,
   onOpenPublicPassport,
 }) => {
+  const { t } = useTranslation()
   const [allHealthRecords, setAllHealthRecords] = React.useState<Record<string, HealthRecord[]>>({})
 
   React.useEffect(() => {
@@ -65,10 +67,10 @@ export const DashboardSummary: React.FC<DashboardSummaryProps> = ({
             <AlertTriangle size={28} />
             <div>
               <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: '800' }}>
-                🚨 {lostCats.length} {lostCats.length === 1 ? 'FELINO DECLARADO DESAPARECIDO' : 'FELINOS DESAPARECIDOS'}
+                🚨 {lostCats.length} {t('dashboard.missingBannerTitle')}
               </h3>
               <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.85rem', opacity: 0.9 }}>
-                {lostCats.map((c) => c.name).join(', ')} — Tag QR e alertas públicos de resgate ativos.
+                {lostCats.map((c) => c.name).join(', ')} — {t('dashboard.missingBannerSubtitle')}
               </p>
             </div>
           </div>
@@ -77,7 +79,7 @@ export const DashboardSummary: React.FC<DashboardSummaryProps> = ({
             onClick={() => handleAlertClick(lostCats[0])}
             style={{ background: '#ffffff', color: 'var(--color-danger)', fontWeight: '700', border: 'none' }}
           >
-            Ver Alerta de {lostCats[0].name}
+            {t('dashboard.viewAlert')} {lostCats[0].name}
           </button>
         </div>
       )}
@@ -90,7 +92,7 @@ export const DashboardSummary: React.FC<DashboardSummaryProps> = ({
           </div>
           <div>
             <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '600' }}>
-              Total de Felinos
+              {t('dashboard.totalCats')}
             </span>
             <div style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--color-text)', lineHeight: 1.1 }}>
               {totalCats}
@@ -104,7 +106,7 @@ export const DashboardSummary: React.FC<DashboardSummaryProps> = ({
           </div>
           <div>
             <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '600' }}>
-              Protegidos em Casa
+              {t('dashboard.protectedAtHome')}
             </span>
             <div style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--color-success)', lineHeight: 1.1 }}>
               {safeCats.length}
@@ -118,7 +120,7 @@ export const DashboardSummary: React.FC<DashboardSummaryProps> = ({
           </div>
           <div>
             <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '600' }}>
-              Reforço Vacinal Pendente
+              {t('dashboard.needsAttention')}
             </span>
             <div style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--color-warning)', lineHeight: 1.1 }}>
               {attentionCatsCount}
@@ -132,7 +134,7 @@ export const DashboardSummary: React.FC<DashboardSummaryProps> = ({
           </div>
           <div>
             <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '600' }}>
-              Modo Perdido Ativo
+              {t('dashboard.activeLostIncidents')}
             </span>
             <div style={{ fontSize: '1.8rem', fontWeight: '800', color: lostCats.length > 0 ? 'var(--color-danger)' : 'var(--color-text)', lineHeight: 1.1 }}>
               {lostCats.length}

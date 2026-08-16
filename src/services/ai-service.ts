@@ -15,6 +15,7 @@ export interface AIProfileGeneratorInput {
   colorPattern: string
   gender: string
   rawNotes?: string
+  language?: string
 }
 
 export interface AIHealthAssistantResponse {
@@ -33,15 +34,19 @@ export const aiService = {
   },
 
   /**
-   * TASK-013: Generate descriptive AI Safety Passport profile for a cat.
+   * TASK-013 & TASK-201: Generate descriptive AI Safety Passport profile for a cat with language awareness.
    */
   async generateCatProfile(input: AIProfileGeneratorInput): Promise<string> {
+    const lang = input.language || 'en'
+    const langInstruction = lang === 'pt-BR' ? 'Responda estritamente em português do Brasil (pt-BR).' : 'Respond strictly in English.'
+
     const promptPayload = `
-Gato: ${input.name}
-Raça: ${input.breed}
-Gênero: ${input.gender}
-Pelagem/Padrão: ${input.colorPattern}
-Anotações adicionais do tutor: ${input.rawNotes || 'Nenhuma nota adicional'}
+Language Instruction: ${langInstruction}
+Cat Name: ${input.name}
+Breed: ${input.breed}
+Gender: ${input.gender}
+Color/Pattern: ${input.colorPattern}
+Additional Owner Notes: ${input.rawNotes || 'None'}
 `
 
     if (genAI) {
@@ -49,7 +54,7 @@ Anotações adicionais do tutor: ${input.rawNotes || 'Nenhuma nota adicional'}
         try {
           const model = genAI.getGenerativeModel({
             model: modelName,
-            systemInstruction: SYSTEM_PROMPTS.CAT_PROFILE_GENERATOR,
+            systemInstruction: SYSTEM_PROMPTS.CAT_PROFILE_GENERATOR + ' ' + langInstruction,
           })
 
           const result = await model.generateContent(promptPayload)
@@ -63,23 +68,31 @@ Anotações adicionais do tutor: ${input.rawNotes || 'Nenhuma nota adicional'}
 
     // Local Fallback Generator for offline/hackathon mode
     const notesSummary = input.rawNotes ? ` ${input.rawNotes}` : ''
-    return `Felino da raça ${input.breed} com pelagem ${input.colorPattern}. Apresenta padrão visual característico.${notesSummary}`
+    if (lang === 'pt-BR') {
+      return `Felino da raça ${input.breed} com pelagem ${input.colorPattern}. Apresenta padrão visual característico.${notesSummary}`
+    }
+    return `Cat of breed ${input.breed} with coat pattern ${input.colorPattern}. Features distinctive visual appearance.${notesSummary}`
   },
 
   /**
-   * TASK-014: AI Health & Preventive Care Assistant (Non-diagnostic).
+   * TASK-014 & TASK-201: AI Health & Preventive Care Assistant (Non-diagnostic).
    */
-  async getHealthAdvice(question: string, catContext?: { name: string; breed: string; age?: string }): Promise<AIHealthAssistantResponse> {
+  async getHealthAdvice(
+    question: string,
+    catContext?: { name: string; breed: string; age?: string },
+    language = 'en'
+  ): Promise<AIHealthAssistantResponse> {
+    const langInstruction = language === 'pt-BR' ? 'Responda em português do Brasil.' : 'Respond in English.'
     const contextPrompt = catContext
-      ? `Pergunta sobre o felino ${catContext.name} (${catContext.breed}): ${question}`
-      : `Dúvida de cuidados felinos: ${question}`
+      ? `(${langInstruction}) Question regarding cat ${catContext.name} (${catContext.breed}): ${question}`
+      : `(${langInstruction}) Preventive cat care question: ${question}`
 
     if (genAI) {
       for (const modelName of CANDIDATE_MODELS) {
         try {
           const model = genAI.getGenerativeModel({
             model: modelName,
-            systemInstruction: SYSTEM_PROMPTS.HEALTH_ASSISTANT,
+            systemInstruction: SYSTEM_PROMPTS.HEALTH_ASSISTANT + ' ' + langInstruction,
           })
 
           const result = await model.generateContent(contextPrompt)
@@ -97,8 +110,15 @@ Anotações adicionais do tutor: ${input.rawNotes || 'Nenhuma nota adicional'}
     }
 
     // Local Fallback response
+    if (language === 'pt-BR') {
+      return {
+        advice: `Para dúvidas preventivas sobre ${catContext ? catContext.name : 'seu gato'}, mantenha a vacinação em dia, água fresca em fontes circulantes e enriquecimento ambiental. Para qualquer alteração de comportamento ou apetite, consulte um veterinário.`,
+        disclaimer: AI_SAFETY_DISCLAIMER,
+      }
+    }
+
     return {
-      advice: `Para dúvidas preventivas sobre ${catContext ? catContext.name : 'seu gato'}, mantenha a vacinação em dia, água fresca em fontes circulantes e enriquecimento ambiental. Para qualquer alteração de comportamento ou apetite, consulte um veterinário.`,
+      advice: `For preventive wellness questions about ${catContext ? catContext.name : 'your cat'}, keep vaccinations updated, provide fresh circulating water, and environmental enrichment. Consult a licensed veterinarian for behavioral changes.`,
       disclaimer: AI_SAFETY_DISCLAIMER,
     }
   },
