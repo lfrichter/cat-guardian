@@ -198,7 +198,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
               onClick={() => setShowQRTag(!showQRTag)}
               style={{ fontSize: '0.85rem' }}
             >
-              <QrCode size={16} color="var(--color-info)" /> {showQRTag ? 'Ocultar Tag QR' : 'Ver Tag de Coleira'}
+              <QrCode size={16} color="var(--color-info)" /> {showQRTag ? t('passport.hideQRTag') : t('passport.viewCollarTag')}
             </button>
           </div>
         </div>

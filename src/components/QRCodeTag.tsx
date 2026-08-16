@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { QRCodeSVG } from 'qrcode.react'
 import { Cat } from '@/types/cat'
 import { Download, QrCode, AlertTriangle, ShieldCheck } from 'lucide-react'
@@ -9,6 +10,7 @@ interface QRCodeTagProps {
 }
 
 export const QRCodeTag: React.FC<QRCodeTagProps> = ({ cat }) => {
+  const { t } = useTranslation()
   const publicUrl = `${window.location.origin}/?catId=${cat.id}&mode=public`
 
   const handleDownload = () => {
@@ -38,7 +40,7 @@ export const QRCodeTag: React.FC<QRCodeTagProps> = ({ cat }) => {
         // Draw Subtitle / Status
         ctx.fillStyle = cat.isLost ? '#FB7185' : '#34D399'
         ctx.font = '600 14px sans-serif'
-        ctx.fillText(cat.isLost ? '⚠️ MODO PERDIDO ATIVO' : '🛡️ PASSAPORTE DIGITAL', 200, 75)
+        ctx.fillText(cat.isLost ? '⚠️ LOST MODE ACTIVE' : `🛡️ ${t('qrTag.protectedTag')}`, 200, 75)
 
         // Draw QR Image
         ctx.drawImage(img, 60, 100, 280, 280)
@@ -46,8 +48,8 @@ export const QRCodeTag: React.FC<QRCodeTagProps> = ({ cat }) => {
         // Draw Footer
         ctx.fillStyle = '#A8B3C7'
         ctx.font = '12px sans-serif'
-        ctx.fillText('Escaneie para acessar a Ficha de Segurança', 200, 420)
-        ctx.fillText(`Tutor: ${cat.ownerName} • ${cat.ownerPhone}`, 200, 445)
+        ctx.fillText(t('qrTag.scanInstruction'), 200, 420)
+        ctx.fillText(`${t('qrTag.tutorLabel')}: ${cat.ownerName} • ${cat.ownerPhone}`, 200, 445)
       }
 
       const pngUrl = canvas.toDataURL('image/png')
@@ -75,10 +77,12 @@ export const QRCodeTag: React.FC<QRCodeTagProps> = ({ cat }) => {
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
         <QrCode size={20} color="var(--color-info)" />
-        <h3 style={{ fontSize: '1.25rem', margin: 0, color: 'var(--color-text)' }}>Tag de Coleira de {cat.name}</h3>
+        <h3 style={{ fontSize: '1.25rem', margin: 0, color: 'var(--color-text)' }}>
+          {t('qrTag.collarTagTitle')} {cat.name}
+        </h3>
       </div>
       <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
-        QR Code dinâmico para colar na medalha da coleira. Em caso de perda, a leitura abre o cartão de segurança.
+        {t('qrTag.subtitle')}
       </p>
 
       {/* SVG QR Code Container */}
@@ -106,12 +110,12 @@ export const QRCodeTag: React.FC<QRCodeTagProps> = ({ cat }) => {
       <div style={{ marginBottom: '1.25rem' }}>
         <span className={cat.isLost ? 'badge badge-lost' : 'badge badge-safe'}>
           {cat.isLost ? <AlertTriangle size={13} /> : <ShieldCheck size={13} />}
-          {cat.isLost ? 'MODO PERDIDO ATIVO' : 'PASSAPORTE PROTEGIDO'}
+          {cat.isLost ? t('catList.lostMode') : t('qrTag.protectedTag')}
         </span>
       </div>
 
       <button className="btn btn-primary" onClick={handleDownload} style={{ width: '100%', justifyContent: 'center' }}>
-        <Download size={18} /> Baixar Imagem da Tag para Medalha
+        <Download size={18} /> {t('qrTag.downloadBtn')}
       </button>
     </div>
   )
