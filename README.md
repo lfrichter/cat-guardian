@@ -165,6 +165,18 @@ Under strict privacy enforcement:
 - Finder-to-owner messages are sent via backend relay (**Resend API**) into the database `sightings` table.
 - No `mailto:` or `tel:` links are exposed to unauthenticated public visitors.
 
+> ⚠️ **Medical Disclaimer**: Cat Guardian provides informational preventive wellness guidance and health record tracking. It does **not** replace professional veterinary diagnosis, treatment, or medical advice. Always consult a licensed veterinarian for medical emergencies or clinical diagnosis.
+
+---
+
+## ⚠️ Current Limitations
+
+Cat Guardian is a hackathon prototype focused on digital identification, health records, dynamic QR collar tags, privacy-preserving contact, and lost-pet communication. It does **not** provide:
+- Real-time GPS location tracking or geofencing.
+- Hardware / IoT integration with active GPS collars.
+- Veterinary diagnosis or clinical medical decision-making.
+- Guaranteed recovery of a missing pet.
+
 ---
 
 ## 🧪 Quality & Jidoka Gate Status
