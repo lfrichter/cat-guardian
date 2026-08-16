@@ -98,6 +98,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
           maxWidth: '780px',
           maxHeight: '90vh',
           overflowY: 'auto',
+          overflowX: 'hidden',
           padding: '2rem',
           position: 'relative',
           borderColor: cat.isLost ? 'rgba(251, 113, 133, 0.4)' : undefined,
@@ -132,9 +133,9 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
               border: `2px solid ${cat.isLost ? 'var(--color-danger)' : 'var(--glass-border)'}`,
             }}
           />
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '2rem', margin: 0, color: 'var(--color-text)' }}>{cat.name}</h2>
+              <h2 style={{ fontSize: '2rem', margin: 0, color: 'var(--color-text)', wordBreak: 'break-word' }}>{cat.name}</h2>
               <span className={cat.isLost ? 'badge badge-lost' : 'badge badge-safe'}>
                 {cat.isLost ? <AlertTriangle size={13} /> : <ShieldCheck size={13} />}
                 {cat.isLost ? t('catList.lostMode') : t('catList.protected')}
@@ -226,23 +227,23 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
         {/* Tutor & Contact Info - Rendered ONLY if Tutor is Logged In */}
         {isOwner ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-            <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+            <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)', minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
                 <User size={15} /> {t('passport.tutor')}
               </div>
-              <strong style={{ color: 'var(--color-text)' }}>{cat.ownerName}</strong>
+              <strong style={{ color: 'var(--color-text)', display: 'block', wordBreak: 'break-word', overflowWrap: 'anywhere' }}>{cat.ownerName}</strong>
             </div>
-            <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+            <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)', minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
                 <Phone size={15} /> {t('passport.contactPhone')}
               </div>
-              <strong style={{ color: 'var(--color-text)' }}>{cat.ownerPhone}</strong>
+              <strong style={{ color: 'var(--color-text)', display: 'block', wordBreak: 'break-word', overflowWrap: 'anywhere' }}>{cat.ownerPhone}</strong>
             </div>
-            <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+            <div style={{ background: 'var(--color-surface)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)', minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
                 <Mail size={15} /> {t('passport.contactEmail')}
               </div>
-              <strong style={{ color: 'var(--color-text)' }}>{cat.ownerEmail}</strong>
+              <strong style={{ color: 'var(--color-text)', display: 'block', wordBreak: 'break-word', overflowWrap: 'anywhere' }}>{cat.ownerEmail}</strong>
             </div>
           </div>
         ) : (
