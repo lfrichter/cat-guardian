@@ -65,6 +65,7 @@ const resources = {
       publicPassport: {
         missingTitle: 'CAT REPORTED MISSING',
         missingSubtitle: 'Please help this cat return home! Notify the owner securely below.',
+        lastSeenNotes: 'Last Seen Location / Notes',
         publicCardTitle: 'Public Safety Passport',
         publicCardSubtitle: 'Verified profile on Cat Guardian protection network.',
         foundCatCta: '[ 🚨 I Found This Cat ]',
@@ -184,6 +185,7 @@ const resources = {
       publicPassport: {
         missingTitle: 'GATO DECLARADO DESAPARECIDO',
         missingSubtitle: 'Por favor, ajude este felino a voltar para casa! Notifique o tutor com segurança abaixo.',
+        lastSeenNotes: 'Último Local Visto / Nota',
         publicCardTitle: 'Passaporte de Segurança Público',
         publicCardSubtitle: 'Perfil verificado na rede de proteção Cat Guardian.',
         foundCatCta: '[ 🚨 Encontrei Este Felino / I Found This Cat ]',

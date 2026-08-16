@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cat, getLocalizedCatProfile } from '@/types/cat'
+import { Cat, getLocalizedCatProfile, getLocalizedColorPattern } from '@/types/cat'
 import { catService } from '@/services/cat-service'
 import { lostService } from '@/services/lost-service'
 import { AlertTriangle, ShieldCheck, Send, CheckCircle2, Sparkles, MessageSquare, MapPin, Loader2 } from 'lucide-react'
@@ -107,7 +107,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
           </p>
           {cat.lostNotes && (
             <div style={{ marginTop: '0.85rem', padding: '0.75rem', background: 'rgba(0, 0, 0, 0.25)', borderRadius: '8px', fontSize: '0.9rem' }}>
-              <strong>Último Local Visto / Nota:</strong> {cat.lostNotes}
+              <strong>{t('publicPassport.lastSeenNotes')}:</strong> {cat.lostNotes}
             </div>
           )}
         </div>
@@ -151,10 +151,10 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
           <div>
             <h1 style={{ fontSize: '2.2rem', margin: 0, color: 'var(--color-text)' }}>{cat.name}</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '1rem', margin: '0.2rem 0' }}>
-              {cat.breed} • {cat.gender === 'fêmea' ? 'Fêmea' : 'Macho'}
+              {cat.breed} • {cat.gender === 'fêmea' ? t('catList.female') : t('catList.male')}
             </p>
             <p style={{ color: 'var(--color-text)', fontWeight: '600', fontSize: '0.95rem', margin: 0 }}>
-              Pelagem: {cat.colorPattern}
+              {t('catList.coatLabel')}: {getLocalizedColorPattern(cat, i18n.language)}
             </p>
             {cat.microchipNumber && (
               <p style={{ color: 'var(--color-primary)', fontSize: '0.85rem', marginTop: '0.3rem', fontWeight: '600' }}>
