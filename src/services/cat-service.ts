@@ -120,6 +120,39 @@ export const catService = {
       }
     }
 
+    const checkIsOwner = (cat: Cat): boolean => {
+      if (!currentUserEmail && !currentUserId) return false
+      if (currentUserEmail && cat.ownerEmail === currentUserEmail) return true
+      if (currentUserId && cat.ownerId === currentUserId) return true
+      const seed = SEED_CATS.find((s) => s.id === cat.id || s.name === cat.name)
+      if (seed) {
+        if (currentUserEmail && seed.ownerEmail === currentUserEmail) return true
+        if (currentUserId && seed.ownerId === currentUserId) return true
+      }
+      return false
+    }
+
+    const enrichCatWithSeed = (cat: Cat): Cat => {
+      const seed = SEED_CATS.find((s) => s.id === cat.id || s.name === cat.name)
+      if (seed) {
+        const isUserCat = Boolean(
+          (currentUserEmail && seed.ownerEmail === currentUserEmail) ||
+          (currentUserId && seed.ownerId === currentUserId)
+        )
+        if (isUserCat) {
+          return {
+            ...cat,
+            ownerEmail: seed.ownerEmail,
+            ownerName: seed.ownerName,
+            ownerPhone: seed.ownerPhone,
+            ownerId: seed.ownerId,
+            microchipNumber: cat.microchipNumber || seed.microchipNumber,
+          }
+        }
+      }
+      return cat
+    }
+
     if (isSupabaseConfigured()) {
       try {
         // 1. Fetch owned cats with full details (granted by Supabase RLS)
@@ -147,7 +180,9 @@ export const catService = {
             if (ownedMap.has(row.id)) {
               return ownedMap.get(row.id)!
             }
-            return sanitizeCatForPublicRescue(mapRowToCat(row))
+            const cat = mapRowToCat(row)
+            const enriched = enrichCatWithSeed(cat)
+            return checkIsOwner(enriched) ? enriched : sanitizeCatForPublicRescue(enriched)
           })
         }
 
@@ -162,11 +197,8 @@ export const catService = {
 
     const allLocal = getLocalCats()
     return allLocal.map((c) => {
-      const isOwner = Boolean(
-        (currentUserEmail && c.ownerEmail === currentUserEmail) ||
-        (currentUserId && c.ownerId === currentUserId)
-      )
-      return isOwner ? c : sanitizeCatForPublicRescue(c)
+      const enriched = enrichCatWithSeed(c)
+      return checkIsOwner(enriched) ? enriched : sanitizeCatForPublicRescue(enriched)
     })
   },
 
