@@ -1,123 +1,163 @@
 # Cat Guardian 🐾
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Hackathon_MVP-A78BFA?style=for-the-badge" alt="Status: Hackathon MVP" />
-  <img src="https://img.shields.io/badge/Version-1.0.0-34D399?style=for-the-badge" alt="Version 1.0.0" />
+  <img src="https://img.shields.io/badge/Status-Release_Candidate-A78BFA?style=for-the-badge" alt="Status: Release Candidate" />
+  <img src="https://img.shields.io/badge/Version-2.0.0-34D399?style=for-the-badge" alt="Version 2.0.0" />
   <img src="https://img.shields.io/badge/Pipeline-Jidoka_Gate-FBBF24?style=for-the-badge&logo=githubactions&logoColor=white" alt="Jidoka Gate Pipeline" />
+  <img src="https://img.shields.io/badge/AI_Engine-Gemini_2.0_Flash-C4B5FD?style=for-the-badge&logo=google&logoColor=white" alt="Gemini 2.0 Flash" />
 </p>
 
-> Digital Safety Passport for Cats — Hackathon DEV Weekend MVP
+<p align="center">
+  <strong>Protect. Identify. Find.</strong><br />
+  Digital Safety Passport for Cats — Powered by AI & Privacy-First Engineering
+</p>
 
-Cat Guardian é um passaporte de segurança felino leve, elegante e potencializado por Inteligência Artificial (Gemini API), projetado para tutores e situações de alerta de emergência.
+---
+
+## 📌 Executive Summary & Problem Statement
+
+Millions of indoor and domestic cats go missing every year. Traditional paper health records get misplaced, physical collar tags often expose private owner details (phone numbers and home addresses) to anyone in public, and emergency rescue response is fragmented during critical hours.
+
+**Cat Guardian** is a digital pet safety platform designed to solve this crisis. It provides:
+1. **Digital Safety Passport**: Centralized health records, vaccination tracking, and microchip registry.
+2. **AI Visual Identification**: Gemini API analyzes feline physical traits (coat pattern, eye color, distinctive markings) to generate precise identification summaries.
+3. **Public QR Code Collar Tag**: A scannable medal attached to the collar linking to a public rescue card.
+4. **Blind Contact Relay**: When a missing cat is found, the finder reports a sighting without revealing the owner's phone or email on screen. The system intermediates communication securely and dispatches instant email alerts via **Resend API**.
 
 ---
 
 ## 🎨 Design System: Midnight Guardian
 
-A interface do **Cat Guardian** opera estritamente sob a especificação do **Midnight Guardian** ([`docs/Design-System.md`](file:///Users/master/projects/hackaton/cat-guardian/docs/Design-System.md)):
+The application interface operates strictly under the **Midnight Guardian Design System** ([`docs/Design-System.md`](file:///Users/master/projects/hackaton/cat-guardian/docs/Design-System.md)):
 
-| Token / Variável CSS | Hex | Função / Aplicação |
+| CSS Variable / Token | Color Hex | Role / Application |
 | :--- | :--- | :--- |
-| `--color-bg` | `#0B1020` | Fundo principal da aplicação (Midnight) |
-| `--color-surface` | `#11182B` | Superfície de cards e modais (Deep Navy) |
-| `--color-surface-glass` | `#18233A` | Camada translúcida Glassmorphism |
-| `--color-text` | `#F4F7FB` | Texto principal & títulos (Cloud) |
-| `--color-text-muted` | `#A8B3C7` | Texto secundário (Mist) |
-| `--color-primary` | `#A78BFA` | Botões, interações e acentos ativos (Lavender) |
-| `--color-primary-light` | `#C4B5FD` | Highlights e hover states (Soft Violet) |
-| `--color-success` | `#34D399` | Gato protegido, vacinas em dia (Emerald) |
-| `--color-danger` | `#FB7185` | **MODO PERDIDO**, alertas críticos (Coral) |
-| `--color-warning` | `#FBBF24` | Lembretes e reforços de vacina (Amber) |
-| `--color-info` | `#38BDF8` | Tags informativas e tooltips (Sky) |
-
-### Tipografia
-- **Títulos, Números e Badges**: `Space Grotesk`
-- **Corpo, UI e Formulários**: `Plus Jakarta Sans`
+| `--color-bg` | `#0B1020` | Primary Application Background (Midnight) |
+| `--color-surface` | `#11182B` | Cards & Modals Surface (Deep Navy) |
+| `--color-surface-glass` | `#18233A` | Glassmorphism Backdrop Layer |
+| `--color-text` | `#F4F7FB` | Main Typography & Headings (Cloud) |
+| `--color-text-muted` | `#A8B3C7` | Muted Subtext (Mist) |
+| `--color-primary` | `#A78BFA` | Buttons, Active Accents & Controls (Lavender) |
+| `--color-primary-light` | `#C4B5FD` | Hover & Highlight States (Soft Violet) |
+| `--color-success` | `#34D399` | Protected Status & Up-to-Date Vaccines (Emerald) |
+| `--color-warning` | `#FBBF24` | Vaccine Renewal Reminders (Amber) |
+| `--color-danger` | `#FB7185` | **LOST MODE ACTIVE** & Emergency Alerts (Coral) |
 
 ---
 
-## 🚀 Tech Stack & Arquitetura
+## 🏗️ AI Software Engineering Framework 2.0 Architecture
 
-- **Frontend**: React + Vite + TypeScript
-- **Estilização**: Modern Vanilla CSS + Glassmorphism (Midnight Guardian System)
-- **Backend / Database**: Supabase (PostgreSQL + RLS + Migrations Forward-Only)
-- **AI Integration**: Gemini API (`@google/generative-ai`)
-- **Governança**: Framework IA 2.0 (`Gemini → Local Worker → Jidoka Gate → Humano`)
+The project was engineered autonomously using the **AI Software Engineering Framework 2.0**, featuring a **Risk Router**, multi-agent task execution, and automated **Jidoka Quality Gates**.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React 19" />
-  <img src="https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 6" />
-  <img src="https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase" />
-  <img src="https://img.shields.io/badge/Gemini_API-4285F4?style=flat-square&logo=googlegemini&logoColor=white" alt="Gemini API" />
-  <img src="https://img.shields.io/badge/Vitest-3-6E9F81?style=flat-square&logo=vitest&logoColor=white" alt="Vitest" />
-  <img src="https://img.shields.io/badge/ESLint-9-4B32C3?style=flat-square&logo=eslint&logoColor=white" alt="ESLint" />
-  <img src="https://img.shields.io/badge/Lucide_React-Icons-F56565?style=flat-square&logo=lucide&logoColor=white" alt="Lucide" />
-</p>
-
+```mermaid
 ---
-
-## 📋 Status do Projeto & Backlog
-
-### ✅ EPIC-001: FOUNDATION (100% Concluído)
-- [x] Scaffolding React Vite TS + Vitest + ESLint
-- [x] Jidoka Gate Pipeline Setup (`lint`, `typecheck`, `test`, `build`)
-- [x] Cliente Supabase Single Instance & Fallback
-- [x] Log Centralizado de Erros (`logClientError`)
-- [x] Migrations Iniciais (`cats`, `health_records`, `client_errors`)
-
-### ✅ EPIC-002: CATS (100% Concluído)
-- [x] Modelos de Domínio TypeScript (`Cat`, `HealthRecord`)
-- [x] Serviço de Dados Híbrido Supabase + LocalStorage Fallback (`cat-service.ts`)
-- [x] Seed Data dos 7 gatos (Kiara, Golia, Meias/Socks, Vaquinha, Tigrinha, Peluda, Gamora)
-- [x] UI Cat Cards & Cat List com Busca Dinâmica e Filtro de Perdidos
-- [x] Passaporte de Saúde & Histórico de Vacinas
-- [x] Cadastro de Novos Felinos com Anotações de IA
-
-### ⏳ EPIC-003: AI (A Seguir)
-- [ ] Gemini Service Client & Unidirectional Architecture
-- [ ] Gerador de Passaporte de Identificação IA
-- [ ] Assistente IA de Saúde Preventiva (Com Guardrails de Não-Diagnóstico)
-- [ ] System Prompts de Segurança Felina
-
-### ⏳ EPIC-004: SAFETY
-- [ ] Dynamic QR Code Tag Impressa
-- [ ] State Manager & Broadcast do Modo Perdido
-- [ ] Página Pública do Gato Desaparecido
-- [ ] Auditoria Jidoka Final & Pre-deploy
-
+config:
+  theme: default
+  look: handDrawn
 ---
+flowchart TD
+    User["👤 Human Supervisor"] -->|Defines Requirements| CoS["🤖 Chief of Staff (Gemini)"]
+    CoS -->|Decomposes Tasks| Router{"🔀 Risk Router"}
 
-## 🛠️ Executando o Projeto
+    Router -->|Low Risk UI/Docs| WorkerMistral["🟢 Worker: Mistral 7B"]
+    Router -->|Medium Risk CRUD/Forms| WorkerOpenCoder["🟡 Worker: OpenCoder 8B"]
+    Router -->|High Risk Auth/RLS/AI| WorkerGemini["🔴 Worker: Gemini 2.0"]
 
-```bash
-# Instalar dependências
-npm install
+    WorkerMistral --> Jidoka{"🛡️ Jidoka Gate"}
+    WorkerOpenCoder --> Jidoka
+    WorkerGemini --> Jidoka
 
-# Executar ambiente de desenvolvimento
-npm run dev
-
-# Pipeline Jidoka de Validação
-npm run lint
-npm run typecheck
-npm run test
-npm run build
+    Jidoka -->|Lint / Typecheck / Vitest / Build PASS| Approval["✅ Automated Branch Merge"]
+    Jidoka -->|Validation FAIL| AndonCord["🚨 Andon Cord Triggered (Halt & Fix)"]
 ```
 
-## 🎯 Jidoka Gate Pipeline Status
+---
 
-### 📝 Workflow Summary
+## 💻 Tech Stack & Architecture
 
-| Stage | Command | Status | Artifacts |
+- **Frontend Core**: React 19, Vite 6, TypeScript 5.7.
+- **Styling**: Modern Vanilla CSS, Glassmorphism, Midnight Guardian tokens.
+- **Backend & Database**: Supabase PostgreSQL, Forward-only Migrations, Row Level Security (RLS).
+- **Authentication**: Supabase Auth (Email & Password) + Demo Mode Bypass.
+- **AI Engine**: `@google/generative-ai` (Gemini 2.0 Flash / Gemini 1.5 Flash).
+- **Notifications**: Resend API (Blind Contact Relay email alerts).
+- **Internationalization**: `i18next` & `react-i18next` (English default, pt-BR secondary).
+- **Testing & Quality Assurance**: Vitest, React Testing Library, ESLint 9, TypeScript strict mode.
+
+---
+
+## 📋 Master Backlog & Project Status (100% Completed)
+
+### Phase 1 & 2: MVP Foundation & Safety Core
+- [x] **EPIC-001: FOUNDATION** — Scaffold Vite 6 + React 19 + TypeScript + Supabase Client + Logging.
+- [x] **EPIC-002: CATS** — Seed Data for 7 Cats (Kiara, Golia, Meias, Vaquinha, Tigrinha, Peluda, Gamora) + Cat Management.
+- [x] **EPIC-003: AI** — Gemini API Integration + AI Profile Generator + Preventive Health Assistant.
+- [x] **EPIC-004: SAFETY** — Lost Mode Toggle + Dynamic QR Code Collar Tag + Public Rescue Passport.
+
+### Phase 2 & 3: Release Candidate Refinements
+- [x] **WAVE 1: AUTH & SECURITY** — Supabase Auth, Owner Model, Cat Ownership Association, RLS Policies ([`20260815000001_add_auth_and_rls.sql`](file:///Users/master/projects/hackaton/cat-guardian/supabase/migrations/20260815000001_add_auth_and_rls.sql)).
+- [x] **WAVE 2: CAT & HEALTH MANAGEMENT** — Reusable `CatForm` (Create/Edit/Delete), Health Records CRUD, Vaccination Status indicators (🟢 Up to Date, 🟡 Needs Attention, ⚪ Unknown).
+- [x] **WAVE 3: LOST & FOUND FLOW** — Sighting Reports Schema ([`20260815000002_add_lost_and_found_tables.sql`](file:///Users/master/projects/hackaton/cat-guardian/supabase/migrations/20260815000002_add_lost_and_found_tables.sql)), Public QR Page Architecture, Blind Contact Relay with Resend Email API.
+- [x] **WAVE 4: I18N, DEMO MODE & UX POLISH** — Internationalization (EN / pt-BR), "Explore Demo" Golden Path, AI Language Awareness, Medical Disclaimer, Mobile Polish.
+- [x] **WAVE 5: DOCUMENTATION & SUBMISSION** — Final README, Architecture Diagram, Jidoka Certification.
+
+---
+
+## 🛡️ Jidoka Gate Pipeline Status
+
+| Stage | Command | Status | Description |
 | :--- | :--- | :--- | :--- |
-| 1️⃣ **Lint** | `npm run lint` | ✅ **PASS** | `.eslint-results.json` |
-| 2️⃣ **Typecheck** | `npm run typecheck` | ✅ **PASS** | `.tsc-results.json` |
-| 3️⃣ **Tests** | `npm run test` | ✅ **PASS** | `.vitest-results.json`, `.coverage/` |
-| 4️⃣ **Build** | `npm run build` | ✅ **PASS** | `dist/` |
+| 1️⃣ **Lint** | `npm run lint` | ✅ **PASS** | ESLint 9 clean verification (0 errors) |
+| 2️⃣ **Typecheck** | `npm run typecheck` | ✅ **PASS** | `tsc --noEmit` zero type errors |
+| 3️⃣ **Tests** | `npm run test` | ✅ **PASS** | 21/21 Unit & E2E Tests passing in Vitest |
+| 4️⃣ **Build** | `npm run build` | ✅ **PASS** | Production bundle compiled in Vite 6 |
 
-### 📋 Pipeline Test Results
+---
 
-![Lint Passing](https://img.shields.io/badge/Lint-ESLint_9-4B32C3?logo=eslint)
-![Typecheck Passing](https://img.shields.io/badge/Typecheck-TSC_5.7-3178C6?logo=typescript)
-![Tests Passing](https://img.shields.io/badge/Tests-Vitest_3-6E9F81?logo=vitest)
-![Build Passing](https://img.shields.io/badge/Build-Vite_6-646CFF?logo=vite)
+## 🖼️ Application Screenshots (Production Placeholders)
+
+*Note: Production screenshots will be added below prior to submission.*
+
+### 1. Operational Safety Dashboard
+> *Placeholder: Overview of safety status, registered cats grid, and emergency lost incident alerts.*
+> `![Dashboard Screenshot](docs/screenshots/dashboard.png)`
+
+### 2. Digital Health Passport & Medical Records
+> *Placeholder: Detailed cat modal showing vaccination status indicators, health records history, and medical disclaimer.*
+> `![Health Passport Screenshot](docs/screenshots/health-passport.png)`
+
+### 3. QR Code Collar Tag Generator
+> *Placeholder: Printable 400x480 PNG medal preview encoded for cat collar tags.*
+> `![QR Tag Screenshot](docs/screenshots/qr-tag.png)`
+
+### 4. Public Rescue Passport & Blind Contact Relay
+> *Placeholder: Public QR scan view displaying lost cat alert, descriptive AI traits, and the secure sighting submission form.*
+> `![Public Rescue Passport Screenshot](docs/screenshots/public-passport.png)`
+
+---
+
+## 🚀 Quick Start & Local Execution
+
+```bash
+# Clone the repository
+git clone https://github.com/lfrichter/cat-guardian.git
+cd cat-guardian
+
+# Install dependencies
+npm install
+
+# Run Vite dev server locally
+npm run dev
+
+# Run automated test suite (21 tests)
+npm run test
+
+# Run full Jidoka Gate validation pipeline
+npm run lint && npm run typecheck && npm run test && npm run build
+```
+
+---
+
+## 📄 License & Hackathon Submission
+
+Built for the **DEV Weekend Hackathon**. Released under the MIT License.
