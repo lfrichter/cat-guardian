@@ -14,8 +14,15 @@ export interface SightingEmailParams {
   message?: string
 }
 
-// Temporarily paused until midnight due to Resend daily quota limit reached (163/100)
-export const EMAIL_PAUSED_UNTIL_MIDNIGHT = true
+/**
+ * Automatically pauses email sending for today (2026-08-16) due to Resend daily limit quota (163/100).
+ * Resumes automatically tomorrow (2026-08-17) at 00:00:00 without requiring any manual code changes.
+ */
+export function isEmailPausedToday(): boolean {
+  const quotaExceededDate = '2026-08-16' // Quota reset date
+  const todayStr = new Date().toISOString().split('T')[0] // Current YYYY-MM-DD
+  return todayStr <= quotaExceededDate
+}
 
 export const emailService = {
   /**
@@ -28,8 +35,10 @@ export const emailService = {
     location,
     message,
   }: SightingEmailParams): Promise<boolean> {
-    if (EMAIL_PAUSED_UNTIL_MIDNIGHT) {
-      console.warn('[emailService] Email dispatch temporarily disabled until midnight (Resend daily quota limit exceeded).')
+    if (isEmailPausedToday()) {
+      console.warn(
+        '[emailService] Email dispatch temporarily disabled for today (2026-08-16) due to Resend daily limit quota (163/100). Will automatically resume tomorrow.'
+      )
       return false
     }
 
