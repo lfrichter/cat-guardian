@@ -93,3 +93,13 @@ export function getLocalizedColorPattern(cat: Cat, currentLang = 'en'): string {
   }
   return cat.colorPattern || ''
 }
+
+/**
+ * Security helper to verify if a user has owner authorization to generate or download a Collar Tag for a cat.
+ */
+export function canGenerateCollarTag(cat: Cat, currentUser: { email?: string; id?: string } | null): boolean {
+  if (!currentUser) return false
+  if (cat.ownerEmail && currentUser.email && cat.ownerEmail === currentUser.email) return true
+  if (cat.ownerId && currentUser.id && cat.ownerId === currentUser.id) return true
+  return false
+}

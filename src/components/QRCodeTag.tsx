@@ -1,19 +1,25 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { QRCodeSVG } from 'qrcode.react'
-import { Cat } from '@/types/cat'
-import { Download, QrCode, AlertTriangle, ShieldCheck } from 'lucide-react'
+import { Cat, canGenerateCollarTag } from '@/types/cat'
+import { OwnerProfile } from '@/types/owner'
+import { Download, QrCode, AlertTriangle, ShieldCheck, Lock } from 'lucide-react'
 
 interface QRCodeTagProps {
   cat: Cat
+  currentUser?: OwnerProfile | null
   onClose?: () => void
 }
 
-export const QRCodeTag: React.FC<QRCodeTagProps> = ({ cat }) => {
+export const QRCodeTag: React.FC<QRCodeTagProps> = ({ cat, currentUser }) => {
   const { t } = useTranslation()
+  const isAuthorizedOwner = canGenerateCollarTag(cat, currentUser || null)
+
   const publicUrl = `${window.location.origin}/?catId=${cat.id}&mode=public`
 
   const handleDownload = () => {
+    if (!isAuthorizedOwner) return
+
     const svgElement = document.getElementById(`qr-svg-${cat.id}`)
     if (!svgElement) return
 
@@ -62,6 +68,27 @@ export const QRCodeTag: React.FC<QRCodeTagProps> = ({ cat }) => {
     }
 
     img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)))
+  }
+
+  if (!isAuthorizedOwner) {
+    return (
+      <div
+        className="glass-panel"
+        style={{
+          padding: '1.5rem',
+          textAlign: 'center',
+          background: 'var(--color-surface)',
+          borderRadius: 'var(--radius-lg)',
+          border: '1px dashed var(--color-danger)',
+        }}
+      >
+        <Lock size={24} color="var(--color-danger)" style={{ marginBottom: '0.5rem' }} />
+        <h4 style={{ color: 'var(--color-text)', margin: '0 0 0.25rem 0' }}>Acesso Restrito ao Tutor</h4>
+        <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
+          Apenas o tutor proprietário cadastrado pode gerar e baixar a Tag de Coleira oficial deste felino.
+        </p>
+      </div>
+    )
   }
 
   return (

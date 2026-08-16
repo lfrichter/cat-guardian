@@ -198,20 +198,22 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
               </button>
             )}
 
-            <button
-              className="btn btn-secondary"
-              onClick={() => setShowQRTag(!showQRTag)}
-              style={{ fontSize: '0.85rem' }}
-            >
-              <QrCode size={16} color="var(--color-info)" /> {showQRTag ? t('passport.hideQRTag') : t('passport.viewCollarTag')}
-            </button>
+            {isOwner && (
+              <button
+                className="btn btn-secondary"
+                onClick={() => setShowQRTag(!showQRTag)}
+                style={{ fontSize: '0.85rem' }}
+              >
+                <QrCode size={16} color="var(--color-info)" /> {showQRTag ? t('passport.hideQRTag') : t('passport.viewCollarTag')}
+              </button>
+            )}
           </div>
         </div>
 
         {/* QR Code Tag View */}
-        {showQRTag && (
+        {showQRTag && isOwner && (
           <div style={{ marginBottom: '2rem' }}>
-            <QRCodeTag cat={cat} />
+            <QRCodeTag cat={cat} currentUser={currentUser} />
           </div>
         )}
 

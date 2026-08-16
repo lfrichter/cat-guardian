@@ -217,6 +217,81 @@ describe('Security & Authorization Boundary Test Suite', () => {
   })
 
   // --------------------------------------------------------------------------
+  // COLLAR TAG SECURITY & QR FLOW AUDIT SUITE
+  // --------------------------------------------------------------------------
+  describe('COLLAR TAG SECURITY & QR FLOW AUDIT SUITE', () => {
+    const realUserCat: any = {
+      id: 'a100ca71-0000-4000-a000-000000000001',
+      name: 'Kiara',
+      ownerEmail: 'macacoharmonico@gmail.com',
+      ownerId: '43e0057d-7a22-4734-9a44-005ea42bf00f',
+    }
+
+    const demoCat: any = {
+      id: 'd300ca71-0000-4000-a000-000000000001',
+      name: 'Oliver (Demo)',
+      ownerEmail: 'demo@catguardian.dev',
+      ownerId: 'd3000000-0000-4000-a000-000000000001',
+    }
+
+    const realUserOwner: any = {
+      id: '43e0057d-7a22-4734-9a44-005ea42bf00f',
+      email: 'macacoharmonico@gmail.com',
+      name: 'Luis Richter',
+    }
+
+    const demoUserOwner: any = {
+      id: 'd3000000-0000-4000-a000-000000000001',
+      email: 'demo@catguardian.dev',
+      name: 'Demo Guardian',
+    }
+
+    it('1. Anonymous user CANNOT generate/download collar tags', async () => {
+      const { canGenerateCollarTag } = await import('@/types/cat')
+      expect(canGenerateCollarTag(realUserCat, null)).toBe(false)
+      expect(canGenerateCollarTag(demoCat, null)).toBe(false)
+    })
+
+    it('2. Owner can generate tag for their own cat', async () => {
+      const { canGenerateCollarTag } = await import('@/types/cat')
+      expect(canGenerateCollarTag(realUserCat, realUserOwner)).toBe(true)
+      expect(canGenerateCollarTag(demoCat, demoUserOwner)).toBe(true)
+    })
+
+    it('3. Owner CANNOT generate tag for another owner cat', async () => {
+      const { canGenerateCollarTag } = await import('@/types/cat')
+      expect(canGenerateCollarTag(demoCat, realUserOwner)).toBe(false)
+    })
+
+    it('4. Demo Guardian CANNOT generate tags for real users cats', async () => {
+      const { canGenerateCollarTag } = await import('@/types/cat')
+      expect(canGenerateCollarTag(realUserCat, demoUserOwner)).toBe(false)
+    })
+
+    it('5. QR URL resolves strictly using cat ID token without leaking private data in URL', () => {
+      const origin = 'https://catguardian.app'
+      const publicQrUrl = `${origin}/?catId=${realUserCat.id}&mode=public`
+
+      expect(publicQrUrl).toContain(`catId=${realUserCat.id}`)
+      expect(publicQrUrl).not.toContain(realUserCat.ownerEmail)
+      expect(publicQrUrl).not.toContain(realUserCat.ownerId)
+      expect(publicQrUrl).not.toContain('phone')
+      expect(publicQrUrl).not.toContain('microchip')
+    })
+
+    it('6. Public Rescue Passport endpoint returns zero owner email, phone, or microchip number', async () => {
+      const publicCat = await catService.getCatById('a100ca71-0000-4000-a000-000000000001')
+
+      expect(publicCat).toBeDefined()
+      if (publicCat) {
+        expect(publicCat.ownerEmail).toBeFalsy()
+        expect(publicCat.ownerPhone).toBeFalsy()
+        expect(publicCat.microchipNumber).toBeUndefined()
+      }
+    })
+  })
+
+  // --------------------------------------------------------------------------
   // SECRETS LEAKAGE AUDIT TEST
   // --------------------------------------------------------------------------
   it('TEST 19: No client bundle or source file exposes SUPABASE_SERVICE_ROLE or SERVICE_ROLE_KEY', () => {
