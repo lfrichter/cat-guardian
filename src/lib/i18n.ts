@@ -64,6 +64,8 @@ const resources = {
         hideQRTag: 'Hide QR Tag',
         protectedContactNotice: 'Owner contact details are protected. Use the Blind Contact Relay to notify the owner securely.',
         openBlindRelay: 'Open Blind Contact Relay Form',
+        foundCatButton: 'I Found This Cat (Notify Owner)',
+        sendMessageButton: 'Send Message to Owner',
         disclaimer: 'Informational safety passport. Does not replace veterinary diagnosis or official biometric identification.',
       },
       qrTag: {
@@ -201,6 +203,8 @@ const resources = {
         hideQRTag: 'Ocultar Tag QR',
         protectedContactNotice: 'Dados de contato do tutor protegidos. Utilize o Blind Contact Relay para notificar o tutor de forma anônima.',
         openBlindRelay: 'Abrir Formulário de Contato Cego (Blind Relay)',
+        foundCatButton: 'Encontrei Este Felino (Notificar Tutor)',
+        sendMessageButton: 'Enviar Mensagem ao Tutor',
         disclaimer: 'Passaporte informativo de segurança. Não substitui diagnóstico veterinário nem identificação biométrica oficial.',
       },
       qrTag: {

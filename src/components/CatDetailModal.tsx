@@ -183,11 +183,11 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
               >
                 {cat.isLost ? (
                   <>
-                    <AlertTriangle size={16} /> Encontrei Este Felino (Notificar Tutor)
+                    <AlertTriangle size={16} /> {t('passport.foundCatButton')}
                   </>
                 ) : (
                   <>
-                    <MessageSquare size={16} /> Enviar Mensagem ao Tutor
+                    <MessageSquare size={16} /> {t('passport.sendMessageButton')}
                   </>
                 )}
               </button>
