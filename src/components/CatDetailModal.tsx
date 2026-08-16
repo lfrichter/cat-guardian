@@ -37,7 +37,11 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
   const [dateAdministered, setDateAdministered] = React.useState('')
   const [nextDueDate, setNextDueDate] = React.useState('')
 
-  const isOwner = Boolean(currentUser && (!cat?.ownerId || cat?.ownerId === currentUser.id))
+  const isOwner = Boolean(
+    currentUser &&
+    ((cat?.ownerEmail && currentUser.email && cat.ownerEmail === currentUser.email) ||
+     (cat?.ownerId && currentUser.id && cat.ownerId === currentUser.id))
+  )
 
   React.useEffect(() => {
     if (cat) {
@@ -158,7 +162,7 @@ export const CatDetailModal: React.FC<CatDetailModalProps> = ({
 
           {/* Action Buttons: Strict Auth Separation */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {currentUser ? (
+            {isOwner ? (
               <>
                 {onEditCat && (
                   <button
