@@ -17,6 +17,10 @@
   <a href="https://github.com/lfrichter/cat-guardian"><strong>Explore GitHub Repository »</strong></a>
 </p>
 
+<p align="center">
+  <img src="docs/screenshots/cat_qr_pendant.webp" alt="Cat Guardian Dynamic QR Collar Tag Pendant" width="680" style="border-radius: 16px;" />
+</p>
+
 ---
 
 ## 🐈 Why I Built It
