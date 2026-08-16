@@ -1,6 +1,7 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { OwnerProfile } from '@/types/owner'
 import { User, AuthChangeEvent, Session } from '@supabase/supabase-js'
+import { logClientError } from '@/utils/log-error'
 
 const LOCAL_STORAGE_MOCK_USER_KEY = 'cat_guardian_mock_user_v1'
 
@@ -43,14 +44,23 @@ export const authService = {
           password,
         })
         if (!error && data.user) {
-          return mapSupabaseUserToOwner(data.user)
+          const owner = mapSupabaseUserToOwner(data.user)
+          localStorage.setItem(LOCAL_STORAGE_MOCK_USER_KEY, JSON.stringify(owner))
+          return owner
         }
-      } catch {
-        // Fallback for dev / test mode if user credentials don't exist in Supabase yet
+        if (error && !error.message.includes('FetchError') && !error.message.includes('Failed to fetch')) {
+          logClientError({ error, context: 'authService.signIn' })
+          throw error
+        }
+      } catch (err: any) {
+        if (err.message && !err.message.includes('FetchError') && !err.message.includes('Failed to fetch')) {
+          logClientError({ error: err, context: 'authService.signIn' })
+          throw err
+        }
       }
     }
 
-    // Mock Authentication for Dev / Testing Mode
+    // Fallback ONLY when Supabase environment is NOT configured or offline test mode
     const mockUser: OwnerProfile = {
       id: `owner-${Date.now()}`,
       email,
@@ -75,13 +85,23 @@ export const authService = {
           },
         })
         if (!error && data.user) {
-          return mapSupabaseUserToOwner(data.user, name, phone)
+          const owner = mapSupabaseUserToOwner(data.user, name, phone)
+          localStorage.setItem(LOCAL_STORAGE_MOCK_USER_KEY, JSON.stringify(owner))
+          return owner
         }
-      } catch {
-        // Fallback for dev mode
+        if (error && !error.message.includes('FetchError') && !error.message.includes('Failed to fetch')) {
+          logClientError({ error, context: 'authService.signUp' })
+          throw error
+        }
+      } catch (err: any) {
+        if (err.message && !err.message.includes('FetchError') && !err.message.includes('Failed to fetch')) {
+          logClientError({ error: err, context: 'authService.signUp' })
+          throw err
+        }
       }
     }
 
+    // Fallback ONLY when Supabase environment is NOT configured or offline test mode
     const mockUser: OwnerProfile = {
       id: `owner-${Date.now()}`,
       email,

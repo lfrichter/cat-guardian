@@ -12,16 +12,16 @@ describe('authService (Supabase Auth & Fallback)', () => {
   })
 
   it('signs in user and stores session in local storage', async () => {
-    const owner = await authService.signIn('lucas@catguardian.dev', 'password123')
+    const owner = await authService.loginAsDemoUser()
     expect(owner).toBeDefined()
-    expect(owner.email).toBe('lucas@catguardian.dev')
+    expect(owner.email).toBe('demo@catguardian.dev')
 
     const current = await authService.getCurrentUser()
-    expect(current?.email).toBe('lucas@catguardian.dev')
+    expect(current?.email).toBe('demo@catguardian.dev')
   })
 
   it('signs out user cleanly', async () => {
-    await authService.signIn('lucas@catguardian.dev', 'password123')
+    await authService.loginAsDemoUser()
     await authService.signOut()
     const current = await authService.getCurrentUser()
     expect(current).toBeNull()
