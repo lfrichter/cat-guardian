@@ -136,7 +136,16 @@ export const catService = {
     }
 
     const enrichCatWithSeed = (cat: Cat): Cat => {
-      const seed = SEED_CATS.find((s) => s.id === cat.id || s.name === cat.name)
+      const catNameClean = cat.name.toLowerCase().trim()
+      const seed = SEED_CATS.find((s) => {
+        if (s.id === cat.id) return true
+        const sNameClean = s.name.toLowerCase().trim()
+        if (sNameClean === catNameClean) return true
+        const sFirst = sNameClean.split(' ')[0]
+        const cFirst = catNameClean.split(' ')[0]
+        return sFirst.length > 2 && sFirst === cFirst
+      })
+
       if (seed) {
         const isUserCat = Boolean(
           (currentUserEmail && seed.ownerEmail === currentUserEmail) ||
@@ -144,6 +153,7 @@ export const catService = {
         )
         return {
           ...cat,
+          breedLocalized: cat.breedLocalized || seed.breedLocalized,
           aiProfileLocalized: cat.aiProfileLocalized || seed.aiProfileLocalized,
           colorPatternLocalized: cat.colorPatternLocalized || seed.colorPatternLocalized,
           ...(isUserCat
