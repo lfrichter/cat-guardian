@@ -122,19 +122,38 @@ export const catService = {
 
     if (isSupabaseConfigured()) {
       try {
-        const { data, error } = await supabase
+        // 1. Fetch owned cats with full details (granted by Supabase RLS)
+        const { data: ownedData } = await supabase
           .from('cats')
           .select('*')
           .order('name', { ascending: true })
 
-        if (!error && data && data.length > 0) {
-          return data.map(mapRowToCat).map((c) => {
-            const isOwner = Boolean(
-              (currentUserEmail && c.ownerEmail === currentUserEmail) ||
-              (currentUserId && c.ownerId === currentUserId)
-            )
-            return isOwner ? c : sanitizeCatForPublicRescue(c)
+        const ownedMap = new Map<string, Cat>()
+        if (ownedData && ownedData.length > 0) {
+          ownedData.forEach((row) => {
+            const cat = mapRowToCat(row)
+            ownedMap.set(cat.id, cat)
           })
+        }
+
+        // 2. Fetch all public cat profiles (bypasses RLS to show platform community wall)
+        const { data: publicData, error: publicError } = await supabase
+          .from('public_cat_profiles')
+          .select('*')
+          .order('name', { ascending: true })
+
+        if (!publicError && publicData && publicData.length > 0) {
+          return publicData.map((row: any) => {
+            if (ownedMap.has(row.id)) {
+              return ownedMap.get(row.id)!
+            }
+            return sanitizeCatForPublicRescue(mapRowToCat(row))
+          })
+        }
+
+        // Fallback if public_cat_profiles is empty
+        if (ownedMap.size > 0) {
+          return Array.from(ownedMap.values())
         }
       } catch (err) {
         logClientError({ error: err, context: 'catService.getCats' })
