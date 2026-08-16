@@ -96,9 +96,39 @@ export const authService = {
    * TASK-202: Explore Demo Golden Path silent login for demonstration mode.
    */
   async loginAsDemoUser(): Promise<OwnerProfile> {
+    const demoEmail = 'demo@catguardian.dev'
+    const demoPassword = 'DemoGuardian2026!'
+
+    if (isSupabaseConfigured()) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: demoEmail,
+          password: demoPassword,
+        })
+
+        if (error || !data.user) {
+          // If sign in fails, attempt registration
+          const signUpRes = await supabase.auth.signUp({
+            email: demoEmail,
+            password: demoPassword,
+            options: {
+              data: { name: 'Demo Guardian Tutor', phone: '+55 11 98888-7771' },
+            },
+          })
+          if (!signUpRes.error && signUpRes.data.user) {
+            return mapSupabaseUserToOwner(signUpRes.data.user, 'Demo Guardian Tutor', '+55 11 98888-7771')
+          }
+        } else if (data.user) {
+          return mapSupabaseUserToOwner(data.user, 'Demo Guardian Tutor', '+55 11 98888-7771')
+        }
+      } catch {
+        // Fallback to local sandbox if Supabase Auth is unavailable
+      }
+    }
+
     const demoUser: OwnerProfile = {
       id: 'owner-demo-golden-path',
-      email: 'demo@catguardian.dev',
+      email: demoEmail,
       name: 'Demo Guardian Tutor',
       phone: '+55 11 98888-7771',
     }

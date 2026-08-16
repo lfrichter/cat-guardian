@@ -112,6 +112,7 @@ export const catService = {
   async getCatById(id: string): Promise<Cat | null> {
     if (isSupabaseConfigured()) {
       try {
+        // First try fetching from owner-protected cats table (if user is authenticated)
         const { data, error } = await supabase
           .from('cats')
           .select('*')
@@ -120,6 +121,21 @@ export const catService = {
 
         if (!error && data) {
           return mapRowToCat(data)
+        }
+
+        // If owner query yields no results (e.g. unauthenticated public QR scan), query public_cat_profiles view
+        try {
+          const { data: publicData, error: publicError } = await (supabase as any)
+            .from('public_cat_profiles')
+            .select('*')
+            .eq('id', id)
+            .single()
+
+          if (!publicError && publicData) {
+            return mapRowToCat(publicData)
+          }
+        } catch {
+          // Public view query fallback for dev/test mock instances
         }
       } catch (err) {
         logClientError({ error: err, context: 'catService.getCatById', metadata: { id } })

@@ -11,7 +11,7 @@ describe('PublicCatPassport UI Component', () => {
 
   it('renders missing cat message when cat ID is invalid', async () => {
     render(<PublicCatPassport catId="invalid-id" />)
-    const errorMsg = await screen.findByText(/Cat Not Found|Gato Não Encontrado/i)
+    const errorMsg = await screen.findByText(/Cat Not Found|Passaporte Não Encontrado/i)
     expect(errorMsg).toBeInTheDocument()
   })
 

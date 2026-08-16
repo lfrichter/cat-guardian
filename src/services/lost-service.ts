@@ -47,28 +47,24 @@ export const lostService = {
 
     if (isSupabaseConfigured()) {
       try {
-        const { data, error } = await (supabase.from('sightings') as any)
-          .insert({
-            cat_id: input.catId,
-            lost_incident_id: input.lostIncidentId,
+        const { data, error } = await (supabase as any).rpc('submit_sighting', {
+          p_cat_id: input.catId,
+          p_location: input.location,
+          p_message: input.message || null,
+          p_finder_name: input.finderName || null,
+          p_finder_phone: input.finderPhone,
+        })
+
+        if (!error && data && data.success) {
+          return {
+            id: data.sighting_id || newSighting.id,
+            catId: input.catId,
+            lostIncidentId: input.lostIncidentId,
             location: input.location,
             message: input.message,
-            finder_name: input.finderName,
-            finder_phone: input.finderPhone,
-          })
-          .select()
-          .single()
-
-        if (!error && data) {
-          return {
-            id: data.id,
-            catId: data.cat_id,
-            lostIncidentId: data.lost_incident_id || undefined,
-            location: data.location,
-            message: data.message || undefined,
-            finderName: data.finder_name || undefined,
-            finderPhone: data.finder_phone,
-            createdAt: data.created_at,
+            finderName: input.finderName,
+            finderPhone: input.finderPhone,
+            createdAt: newSighting.createdAt,
           }
         }
       } catch (err) {
