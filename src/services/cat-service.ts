@@ -48,9 +48,12 @@ function getLocalCats(): Cat[] {
   }
   try {
     const parsed: Cat[] = JSON.parse(stored)
-    // If local storage has obsolete seed IDs ('seed-cat-...') or missing owner email updates, force refresh from SEED_CATS
+    // If local storage has obsolete seed IDs ('seed-cat-...') or old demo cat names, force refresh from SEED_CATS
     const hasObsoleteIds = parsed.some((c) => c.id.startsWith('seed-cat-'))
-    if (hasObsoleteIds) {
+    const hasObsoleteDemoCats = parsed.some(
+      (c) => c.name.includes('(Demo)') && !['Oliver (Demo)', 'Simba (Demo)', 'Luna (Demo)'].includes(c.name)
+    )
+    if (hasObsoleteIds || hasObsoleteDemoCats) {
       localStorage.setItem(LOCAL_STORAGE_CATS_KEY, JSON.stringify(SEED_CATS))
       return SEED_CATS
     }
@@ -163,10 +166,15 @@ export const catService = {
 
         const ownedMap = new Map<string, Cat>()
         if (ownedData && ownedData.length > 0) {
-          ownedData.forEach((row) => {
-            const cat = mapRowToCat(row)
-            ownedMap.set(cat.id, cat)
-          })
+          ownedData
+            .filter(
+              (row: any) =>
+                !(row.name && row.name.includes('(Demo)') && !['Oliver (Demo)', 'Simba (Demo)', 'Luna (Demo)'].includes(row.name))
+            )
+            .forEach((row: any) => {
+              const cat = mapRowToCat(row)
+              ownedMap.set(cat.id, cat)
+            })
         }
 
         // 2. Fetch all public cat profiles (bypasses RLS to show platform community wall)
@@ -176,14 +184,19 @@ export const catService = {
           .order('name', { ascending: true })
 
         if (!publicError && publicData && publicData.length > 0) {
-          return publicData.map((row: any) => {
-            if (ownedMap.has(row.id)) {
-              return ownedMap.get(row.id)!
-            }
-            const cat = mapRowToCat(row)
-            const enriched = enrichCatWithSeed(cat)
-            return checkIsOwner(enriched) ? enriched : sanitizeCatForPublicRescue(enriched)
-          })
+          return publicData
+            .filter(
+              (row: any) =>
+                !(row.name && row.name.includes('(Demo)') && !['Oliver (Demo)', 'Simba (Demo)', 'Luna (Demo)'].includes(row.name))
+            )
+            .map((row: any) => {
+              if (ownedMap.has(row.id)) {
+                return ownedMap.get(row.id)!
+              }
+              const cat = mapRowToCat(row)
+              const enriched = enrichCatWithSeed(cat)
+              return checkIsOwner(enriched) ? enriched : sanitizeCatForPublicRescue(enriched)
+            })
         }
 
         // Fallback if public_cat_profiles is empty
