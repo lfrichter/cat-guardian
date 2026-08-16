@@ -1,6 +1,6 @@
 -- Migration: Isolate Demo Guardian Sandbox and Mask Public Microchip
 -- Problem: Demo Guardian must own ONLY its 3 dedicated demo cats and MUST NOT have access to real users' cats (e.g. macacoharmonico@gmail.com).
--- Solution: Seed 3 dedicated demo cats with owner_id = 'd3m00000-0000-0000-0000-000000000001' and verify strict owner RLS policies.
+-- Solution: Seed 3 dedicated demo cats with valid UUIDs and owner_id = 'd3m00000-0000-0000-0000-000000000001', verifying strict owner RLS policies.
 
 -- ============================================================================
 -- 1. RE-VERIFY PUBLIC RESCUE VIEW (Zero Microchip, Zero Owner PII)
@@ -43,7 +43,7 @@ INSERT INTO public.cats (
   ai_profile_summary
 ) VALUES
 (
-  'demo-cat-kiara',
+  'd3m0ca71-0000-0000-0000-000000000001',
   'd3m00000-0000-0000-0000-000000000001',
   'Kiara (Demo)',
   'SRD / Vira-lata',
@@ -60,7 +60,7 @@ INSERT INTO public.cats (
   'Gata curiosa e dócil em ambiente de demonstração.'
 ),
 (
-  'demo-cat-golia',
+  'd3m0ca72-0000-0000-0000-000000000002',
   'd3m00000-0000-0000-0000-000000000001',
   'Golia (Demo)',
   'Maine Coon Mix',
@@ -77,7 +77,7 @@ INSERT INTO public.cats (
   'Felino de grande porte em modo de resgate ativo.'
 ),
 (
-  'demo-cat-meias',
+  'd3m0ca73-0000-0000-0000-000000000003',
   'd3m00000-0000-0000-0000-000000000001',
   'Meias (Demo)',
   'Tuxedo / SRD',

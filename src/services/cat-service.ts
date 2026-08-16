@@ -149,7 +149,15 @@ export const catService = {
       }
     }
     const cats = getLocalCats()
-    const found = cats.find((c) => c.id === id) || null
+    const found =
+      cats.find(
+        (c) =>
+          c.id === id ||
+          (id === 'd3m0ca71-0000-0000-0000-000000000001' && c.id === 'seed-cat-kiara') ||
+          (id === 'd3m0ca72-0000-0000-0000-000000000002' && c.id === 'seed-cat-golia') ||
+          (id === 'd3m0ca73-0000-0000-0000-000000000003' && c.id === 'seed-cat-meias')
+      ) || null
+
     if (found) {
       const mockUser = typeof window !== 'undefined' ? localStorage.getItem('cat_guardian_mock_user_v1') : null
       if (!mockUser) {
