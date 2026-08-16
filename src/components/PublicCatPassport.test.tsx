@@ -13,4 +13,16 @@ describe('PublicCatPassport UI Component', () => {
     const errorMsg = await screen.findByText(/Gato Não Encontrado/i)
     expect(errorMsg).toBeInTheDocument()
   })
+
+  it('renders public safety CTA button for missing cat', async () => {
+    render(<PublicCatPassport catId="seed-cat-meias" />)
+    const ctaButton = await screen.findByText(/I Found This Cat/i)
+    expect(ctaButton).toBeInTheDocument()
+  })
+
+  it('renders public safety CTA button for protected cat', async () => {
+    render(<PublicCatPassport catId="seed-cat-kiara" />)
+    const ctaButton = await screen.findByText(/Send Message to Owner/i)
+    expect(ctaButton).toBeInTheDocument()
+  })
 })

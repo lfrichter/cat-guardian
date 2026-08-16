@@ -2,7 +2,7 @@ import React from 'react'
 import { Cat } from '@/types/cat'
 import { catService } from '@/services/cat-service'
 import { lostService } from '@/services/lost-service'
-import { AlertTriangle, ShieldCheck, Send, CheckCircle2, Sparkles, MessageSquare } from 'lucide-react'
+import { AlertTriangle, ShieldCheck, Send, CheckCircle2, Sparkles, MessageSquare, MapPin, Loader2 } from 'lucide-react'
 
 interface PublicCatPassportProps {
   catId: string
@@ -12,12 +12,13 @@ interface PublicCatPassportProps {
 export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onBackToApp }) => {
   const [cat, setCat] = React.useState<Cat | null>(null)
   const [loading, setLoading] = React.useState(true)
+  const [showForm, setShowForm] = React.useState(false)
   const [finderName, setFinderName] = React.useState('')
   const [finderPhone, setFinderPhone] = React.useState('')
   const [locationText, setLocationText] = React.useState('')
   const [finderNotes, setFinderNotes] = React.useState('')
-  const [sightingSent, setSightingSent] = React.useState(false)
   const [submitting, setSubmitting] = React.useState(false)
+  const [sightingSent, setSightingSent] = React.useState(false)
 
   React.useEffect(() => {
     catService.getCatById(catId).then((c) => {
@@ -40,6 +41,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
         finderPhone,
       })
       setSightingSent(true)
+      setShowForm(false)
     } finally {
       setSubmitting(false)
     }
@@ -52,7 +54,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
           setLocationText(`GPS: ${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`)
         },
         () => {
-          setLocationText('GPS indisponível. Informe a rua/bairro manualmente.')
+          setLocationText('GPS indisponível. Por favor informe o endereço manualmente.')
         }
       )
     }
@@ -82,7 +84,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
 
   return (
     <div style={{ maxWidth: '680px', margin: '2rem auto', padding: '0 1rem' }}>
-      {/* Lost Mode Emergency Banner */}
+      {/* Header Banner */}
       {cat.isLost ? (
         <div
           style={{
@@ -99,7 +101,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
             <h2 style={{ fontSize: '1.6rem', fontWeight: '800', margin: 0 }}>GATO DECLARADO DESAPARECIDO</h2>
           </div>
           <p style={{ margin: 0, fontSize: '0.95rem', opacity: 0.95, lineHeight: 1.5 }}>
-            Por favor, ajude este felino a voltar para casa! Preencha o formulário seguro de avistamento abaixo para notificar instantaneamente o tutor.
+            Por favor, ajude este felino a voltar para casa! Notifique o tutor com segurança caso o tenha avistado.
           </p>
           {cat.lostNotes && (
             <div style={{ marginTop: '0.85rem', padding: '0.75rem', background: 'rgba(0, 0, 0, 0.25)', borderRadius: '8px', fontSize: '0.9rem' }}>
@@ -130,7 +132,7 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
         </div>
       )}
 
-      {/* Cat Information Card (Strict Privacy: Owner details excluded) */}
+      {/* Cat Information Card */}
       <div className="glass-panel" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           <img
@@ -173,83 +175,159 @@ export const PublicCatPassport: React.FC<PublicCatPassportProps> = ({ catId, onB
           </div>
         )}
 
-        {/* Blind Contact Relay Form (TASK-142: Zero exposure of Owner phone/email) */}
-        <div style={{ background: 'var(--color-surface)', padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--glass-border)' }}>
-          <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <MessageSquare size={18} color="var(--color-primary)" /> Enviar Mensagem ao Tutor (Blind Contact Relay)
-          </h3>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
-            Informe seus dados e o local do felino. O Cat Guardian intermediará a comunicação e notificará o tutor instantaneamente sem expor contatos.
-          </p>
+        {/* STEP 1: CTA Button based on Lost vs Protected Status */}
+        {sightingSent ? (
+          <div style={{ background: 'rgba(52, 211, 153, 0.15)', border: '1px solid rgba(52, 211, 153, 0.4)', padding: '1.5rem', borderRadius: '14px', textAlign: 'center', color: 'var(--color-success)' }}>
+            <CheckCircle2 size={42} style={{ marginBottom: '0.5rem' }} />
+            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem' }}>Mensagem enviada com sucesso!</h3>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', margin: 0 }}>
+              Message sent! The owner has been notified securely.
+            </p>
+          </div>
+        ) : (
+          <div>
+            {!showForm && (
+              <button
+                className={cat.isLost ? 'btn btn-danger' : 'btn btn-primary'}
+                onClick={() => setShowForm(true)}
+                style={{
+                  width: '100%',
+                  justifyContent: 'center',
+                  padding: '1.1rem 1.5rem',
+                  fontSize: '1.1rem',
+                  fontWeight: '700',
+                  borderRadius: '16px',
+                  boxShadow: cat.isLost ? 'var(--shadow-glow-coral)' : 'var(--shadow-glow-lavender)',
+                }}
+              >
+                {cat.isLost ? (
+                  <>
+                    <AlertTriangle size={22} /> [ 🚨 Encontrei Este Felino / I Found This Cat ]
+                  </>
+                ) : (
+                  <>
+                    <MessageSquare size={22} /> [ ✉️ Enviar Mensagem ao Tutor / Send Message to Owner ]
+                  </>
+                )}
+              </button>
+            )}
 
-          {sightingSent ? (
-            <div style={{ textAlign: 'center', padding: '1.5rem', color: 'var(--color-success)' }}>
-              <CheckCircle2 size={40} style={{ marginBottom: '0.5rem' }} />
-              <h4>Mensagem & Avistamento Enviados com Sucesso!</h4>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-                O tutor de {cat.name} foi notificado por e-mail e pelo sistema de segurança. Muito obrigado por ajudar!
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleReportSighting}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>Seu Nome</label>
-                  <input
-                    type="text"
-                    value={finderName}
-                    onChange={(e) => setFinderName(e.target.value)}
-                    placeholder="Ex: Maria"
-                    style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>Seu Telefone para Contato *</label>
-                  <input
-                    type="tel"
-                    required
-                    value={finderPhone}
-                    onChange={(e) => setFinderPhone(e.target.value)}
-                    placeholder="(11) 99999-9999"
-                    style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
-                  />
-                </div>
-              </div>
-
-              <div style={{ marginBottom: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Local de Avistamento *</label>
-                  <button type="button" onClick={handleGetLocation} style={{ background: 'none', border: 'none', color: 'var(--color-info)', fontSize: '0.75rem', cursor: 'pointer' }}>
-                    📍 Capturar GPS Atual
+            {/* STEP 2: Blind Relay Form UI */}
+            {showForm && (
+              <div
+                style={{
+                  background: 'var(--color-surface)',
+                  padding: '1.75rem',
+                  borderRadius: '16px',
+                  border: `1px solid ${cat.isLost ? 'rgba(251, 113, 133, 0.4)' : 'var(--glass-border)'}`,
+                  marginTop: '1rem',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <MessageSquare size={18} color={cat.isLost ? 'var(--color-danger)' : 'var(--color-primary)'} />
+                    Blind Contact Relay — Notificar Tutor
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setShowForm(false)}
+                    style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: '0.85rem' }}
+                  >
+                    Cancelar
                   </button>
                 </div>
-                <input
-                  type="text"
-                  required
-                  value={locationText}
-                  onChange={(e) => setLocationText(e.target.value)}
-                  placeholder="Ex: Rua Oscar Freire, próximo à padaria..."
-                  style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
-                />
-              </div>
 
-              <div style={{ marginBottom: '1.25rem' }}>
-                <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>Mensagem / Observação para o Tutor</label>
-                <textarea
-                  rows={2}
-                  value={finderNotes}
-                  onChange={(e) => setFinderNotes(e.target.value)}
-                  placeholder="Ex: Está bem cuidado, dei água..."
-                  style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px', fontSize: '0.85rem' }}
-                />
-              </div>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
+                  Preencha seus dados abaixo. O tutor receberá uma notificação instantânea por e-mail sem expor os contatos de ambas as partes.
+                </p>
 
-              <button type="submit" className="btn btn-primary" disabled={submitting} style={{ width: '100%', justifyContent: 'center' }}>
-                <Send size={18} /> {submitting ? 'Enviando Alerta ao Tutor...' : 'Notificar Tutor com Segurança'}
-              </button>
-            </form>
-          )}
-        </div>
+                <form onSubmit={handleReportSighting}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                    <div>
+                      <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>
+                        Seu Nome / Your Name
+                      </label>
+                      <input
+                        type="text"
+                        value={finderName}
+                        onChange={(e) => setFinderName(e.target.value)}
+                        placeholder="Ex: Maria"
+                        style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>
+                        Seu Contato (Telefone ou E-mail) *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={finderPhone}
+                        onChange={(e) => setFinderPhone(e.target.value)}
+                        placeholder="(11) 99999-9999 ou seu@email.com"
+                        style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                      <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
+                        Onde você viu o gato? / Where did you see the cat? *
+                      </label>
+                      <button
+                        type="button"
+                        onClick={handleGetLocation}
+                        style={{ background: 'none', border: 'none', color: 'var(--color-info)', fontSize: '0.75rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.2rem' }}
+                      >
+                        <MapPin size={12} /> Capturar GPS Atual
+                      </button>
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      value={locationText}
+                      onChange={(e) => setLocationText(e.target.value)}
+                      placeholder="Ex: Rua Oscar Freire, próximo à padaria..."
+                      style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: '1.25rem' }}>
+                    <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.25rem' }}>
+                      Mensagem / Observações / Notes
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={finderNotes}
+                      onChange={(e) => setFinderNotes(e.target.value)}
+                      placeholder="Ex: Está calmo, dei água e coloquei em um local seguro..."
+                      style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px', fontSize: '0.85rem' }}
+                    />
+                  </div>
+
+                  {/* STEP 3: Submit Button with Loading State */}
+                  <button
+                    type="submit"
+                    className={cat.isLost ? 'btn btn-danger' : 'btn btn-primary'}
+                    disabled={submitting}
+                    style={{ width: '100%', justifyContent: 'center', padding: '0.85rem' }}
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 size={18} className="spin" /> Enviando Notificação ao Tutor...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={18} /> [ Send to Owner / Notificar Tutor ]
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {onBackToApp && (
