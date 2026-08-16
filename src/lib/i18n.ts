@@ -138,6 +138,8 @@ const resources = {
         subtitle: 'Feline Preventive Care Assistant',
         placeholder: 'e.g. How often should I brush long fur? How to encourage water intake?',
         loading: 'Consulting preventive care guidelines...',
+        administeredLabel: 'Administered:',
+        boosterLabel: 'Booster Due:',
       },
     },
   },
