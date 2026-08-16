@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cat, CreateCatInput, UpdateCatInput } from '@/types/cat'
 import { X, Cat as CatIcon, Sparkles, Trash2 } from 'lucide-react'
 
@@ -10,6 +11,7 @@ interface CatFormModalProps {
 }
 
 export const CatFormModal: React.FC<CatFormModalProps> = ({ catToEdit, onClose, onSave, onDelete }) => {
+  const { t } = useTranslation()
   const isEditing = Boolean(catToEdit)
   const [name, setName] = React.useState(catToEdit?.name || '')
   const [breed, setBreed] = React.useState(catToEdit?.breed || 'SRD')
@@ -108,10 +110,10 @@ export const CatFormModal: React.FC<CatFormModalProps> = ({ catToEdit, onClose, 
           </div>
           <div>
             <h2 style={{ fontSize: '1.5rem', margin: 0, color: 'var(--color-text)' }}>
-              {isEditing ? `Editar Perfil: ${catToEdit?.name}` : 'Cadastrar Novo Felino'}
+              {isEditing ? `${t('catForm.editTitle')} ${catToEdit?.name}` : t('catForm.createTitle')}
             </h2>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>
-              {isEditing ? 'Atualize as informações do passaporte' : 'Crie o passaporte de segurança felino'}
+              {isEditing ? t('catForm.editSubtitle') : t('catForm.createSubtitle')}
             </p>
           </div>
         </div>
@@ -120,26 +122,26 @@ export const CatFormModal: React.FC<CatFormModalProps> = ({ catToEdit, onClose, 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
             <div>
               <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-                Nome do Gato *
+                {t('catForm.catNameLabel')}
               </label>
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ex: Mingau"
+                placeholder={t('catForm.placeholderName')}
                 style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
               />
             </div>
             <div>
               <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-                Raça
+                {t('catForm.breedLabel')}
               </label>
               <input
                 type="text"
                 value={breed}
                 onChange={(e) => setBreed(e.target.value)}
-                placeholder="Ex: Siamês / SRD"
+                placeholder={t('catForm.placeholderBreed')}
                 style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
               />
             </div>
@@ -148,26 +150,26 @@ export const CatFormModal: React.FC<CatFormModalProps> = ({ catToEdit, onClose, 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
             <div>
               <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-                Gênero
+                {t('catForm.genderLabel')}
               </label>
               <select
                 value={gender}
                 onChange={(e) => setGender(e.target.value as 'macho' | 'fêmea' | 'outro')}
                 style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
               >
-                <option value="fêmea">Fêmea</option>
-                <option value="macho">Macho</option>
+                <option value="fêmea">{t('catList.female')}</option>
+                <option value="macho">{t('catList.male')}</option>
               </select>
             </div>
             <div>
               <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-                Microchip ID
+                {t('catForm.microchipLabel')}
               </label>
               <input
                 type="text"
                 value={microchipNumber}
                 onChange={(e) => setMicrochipNumber(e.target.value)}
-                placeholder="Ex: 982000341..."
+                placeholder={t('catForm.placeholderMicrochip')}
                 style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
               />
             </div>
@@ -175,21 +177,21 @@ export const CatFormModal: React.FC<CatFormModalProps> = ({ catToEdit, onClose, 
 
           <div style={{ marginBottom: '1rem' }}>
             <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-              Cor e Padrão de Pelagem *
+              {t('catForm.colorPatternLabel')}
             </label>
             <input
               type="text"
               required
               value={colorPattern}
               onChange={(e) => setColorPattern(e.target.value)}
-              placeholder="Ex: Branco com manchas pretas estilo Tuxedo"
+              placeholder={t('catForm.placeholderColorPattern')}
               style={{ width: '100%', padding: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px' }}
             />
           </div>
 
           <div style={{ marginBottom: '1rem' }}>
             <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-              URL da Foto
+              {t('catForm.photoUrlLabel')}
             </label>
             <input
               type="url"
@@ -202,20 +204,20 @@ export const CatFormModal: React.FC<CatFormModalProps> = ({ catToEdit, onClose, 
 
           <div className="ai-highlight-box" style={{ marginBottom: '1.5rem', padding: '1rem', borderRadius: '12px' }}>
             <label style={{ fontSize: '0.85rem', color: 'var(--color-primary-light)', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem', fontWeight: '600' }}>
-              <Sparkles size={16} /> Resumo de Identificação de IA / Anotações
+              <Sparkles size={16} /> {t('catForm.aiNotesLabel')}
             </label>
             <textarea
               rows={2}
               value={rawNotes}
               onChange={(e) => setRawNotes(e.target.value)}
-              placeholder="Ex: Manchinha rosa na ponta do focinho, assustado com trovoada..."
+              placeholder={t('catForm.placeholderAiNotes')}
               style={{ width: '100%', padding: '0.6rem', background: 'var(--color-bg)', border: '1px solid var(--glass-border)', color: 'var(--color-text)', borderRadius: '8px', fontSize: '0.85rem' }}
             />
           </div>
 
           <div style={{ display: 'flex', gap: '1rem' }}>
             <button type="submit" className="btn btn-primary" style={{ flex: 1, justifyContent: 'center', padding: '0.85rem' }}>
-              {isEditing ? 'Salvar Alterações' : 'Cadastrar Felino'}
+              {isEditing ? t('catForm.saveChanges') : t('catForm.registerCat')}
             </button>
 
             {isEditing && onDelete && (
@@ -242,14 +244,14 @@ export const CatFormModal: React.FC<CatFormModalProps> = ({ catToEdit, onClose, 
               }}
             >
               <p style={{ color: 'var(--color-danger)', margin: '0 0 0.75rem 0', fontSize: '0.85rem', fontWeight: '600' }}>
-                Tem certeza que deseja excluir este passaporte felino?
+                {t('catForm.confirmDelete')}
               </p>
               <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
                 <button type="button" className="btn btn-danger" onClick={handleDelete} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
-                  Sim, Excluir
+                  {t('catForm.yesDelete')}
                 </button>
                 <button type="button" className="btn btn-secondary" onClick={() => setShowConfirmDelete(false)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
-                  Cancelar
+                  {t('catForm.cancel')}
                 </button>
               </div>
             </div>
