@@ -153,6 +153,9 @@ export const catService = {
         )
         return {
           ...cat,
+          photoUrl: (cat.name?.toLowerCase().includes('gamora') || cat.id === 'a100ca77-0000-4000-a000-000000000007') && cat.photoUrl?.includes('photo-1514888286974')
+            ? seed.photoUrl
+            : cat.photoUrl || seed.photoUrl,
           breedLocalized: cat.breedLocalized || seed.breedLocalized,
           aiProfileLocalized: cat.aiProfileLocalized || seed.aiProfileLocalized,
           colorPatternLocalized: cat.colorPatternLocalized || seed.colorPatternLocalized,

@@ -163,7 +163,7 @@ export const SEED_CATS: Cat[] = [
     },
     microchipNumber: '982000341829018',
     isLost: false,
-    photoUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1513245543132-31f507417b26?auto=format&fit=crop&w=600&q=80',
     ownerName: 'Luis Richter',
     ownerPhone: '+55 11 98888-7771',
     ownerEmail: 'macacoharmonico@gmail.com',
